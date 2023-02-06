@@ -1,0 +1,6 @@
+ENT.Base 			= "npc_vj_piv_panzer"
+ENT.Type 			= "ai"
+ENT.PrintName 		= "Megapanzer"
+ENT.Author 			= "Warkin"
+ENT.Purpose 		= "Spawn it and fight with it!"
+ENT.Instructions 	= "Click on the spawnicon to spawn it."

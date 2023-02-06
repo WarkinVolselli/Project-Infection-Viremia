@@ -1,0 +1,6 @@
+ENT.Base 			= "npc_vj_piv_runner_base"
+ENT.Type 			= "ai"
+ENT.PrintName 		= "Runner (Female)"
+ENT.Author 			= "Warkin"
+ENT.Purpose 		= "Spawn it and fight with it!"
+ENT.Instructions 	= "Click on the spawnicon to spawn it."
