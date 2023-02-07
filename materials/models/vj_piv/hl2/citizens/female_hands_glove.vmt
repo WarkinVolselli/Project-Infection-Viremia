@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models\vj_piv\hl2\citizens\female_hands_glove"
+    "$bumpmap" "models\vj_piv\hl2\citizens\female_hands_glove_n"
+	"$halflambert" 1
+	"$nocull" 1
+}
