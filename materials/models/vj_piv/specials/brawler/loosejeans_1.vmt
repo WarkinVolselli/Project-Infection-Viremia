@@ -1,0 +1,12 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/vj_piv/specials/brawler/loosejeans_1"
+	"$bumpmap"  "models/vj_piv/specials/brawler/loosejeans_n"
+	"$halflambert" 1
+	"$nocull" 1
+
+	"$phong" "1"
+	"$phongexponent" "4"
+	"$phongboost" "0.3"
+	"$phongfresnelranges" "[0.1 0.2 0.5]"
+}
