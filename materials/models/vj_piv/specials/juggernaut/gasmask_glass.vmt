@@ -1,0 +1,5 @@
+"vertexlitgeneric"
+{
+	"$baseTexture" "models\vj_piv\specials\juggernaut\gasmask_glass"
+	"$selfillum" "1"
+}
