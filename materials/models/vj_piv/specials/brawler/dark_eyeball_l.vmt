@@ -1,5 +1,6 @@
-"UnlitGeneric"
+"VertexLitGeneric"
 {
-	"$basetexture" "models/vj_piv/specials/brawler/eyeglow"
+	"$basetexture" "models/Humans/Male/eyeball_l"
+	"$halflambert" 1
 }
 
