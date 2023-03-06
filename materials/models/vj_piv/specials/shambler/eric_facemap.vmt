@@ -1,0 +1,15 @@
+"VertexLitGeneric"
+{
+	// Original shader: VertexLitTexture
+	"$basetexture" "models/vj_piv/specials/shambler/eric_facemap"
+	"$bumpmap"    "models/vj_piv/specials/shambler/eric_facemap_normal"
+    "$phong" "1"
+	"$phongexponent" "10"
+	"$phongboost" "0.5"	
+	"$phongfresnelranges"	"[.1 0.2 1]"
+	"$halflambert" "1"
+	"$rimlight" "1"										
+	"$rimlightexponent" "10"							
+	"$rimlightboost" "0.1"
+	"$nocull" 1
+}
