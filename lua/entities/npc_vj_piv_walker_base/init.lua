@@ -320,7 +320,7 @@ function ENT:CustomOnPreInitialize()
 
     self.PI_LegHP = self.StartHealth / 2
 
-	if GetConVar("vj_piv_subtypes"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_panzer_boss" && self.PIV_Mutated == false then
+	if GetConVar("vj_piv_subtypes"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_shambler" && self.PIV_Mutated == false then
 
 		-- joggers
 		if math.random(1,GetConVar("vj_piv_jogger_chance"):GetInt()) == 1 && !PI_Crippled && !PI_FuckingCrawlingLittleCunt then
@@ -360,13 +360,6 @@ function ENT:CustomOnPreInitialize()
 
 	self.IsDigging = false
 	self:Dig()
-
-	if
-		self:GetClass() != "npc_vj_piv_stoker" &&
-		self:GetClass() != "npc_vj_piv_juggernaut" &&
-		self:GetClass() != "npc_vj_piv_cremator" &&
-		self:GetClass() != "npc_vj_piv_bruiser"
-	then
 
 		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_panzer" && self:GetClass() != "npc_vj_piv_panzer_boss" && self.PIV_FuckingCrawlingLittleCunt == false then
 				
@@ -431,8 +424,6 @@ function ENT:CustomOnPreInitialize()
 			self.ExtraGunModel1:SetLocalPos(self:GetPos())
 
 		end
-
-	end
 
 	self:Zombie_CustomOnPreInitialize()
 

@@ -5,8 +5,8 @@
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 --------------------------------------------------*/
 ------------------ Addon Information ------------------
-local PublicAddonName = "[VJ] Project Infection"
-local AddonName = "[VJ] Project Infection"
+local PublicAddonName = "[VJ] Project Infection: Viremia"
+local AddonName = "[VJ] Project Infection: Viremia"
 local AddonType = "NPC"
 local AutorunFile = "autorun/vj_projectinfection_autorun.lua"
 -------------------------------------------------------
@@ -80,9 +80,11 @@ if VJExists == true then
 	VJ.AddNPC("Thug (Male)","npc_vj_piv_brawler",vCat)
 	VJ.AddNPC("Thug (Female)","npc_vj_piv_brawler_f",vCat)
 	VJ.AddNPC("Demon","npc_vj_piv_brawler_boss",vCat)
+	
 	VJ.AddNPC("Panzer","npc_vj_piv_panzer",vCat)
 	VJ.AddNPC("Megapanzer","npc_vj_piv_panzer_boss",vCat)
 	
+	VJ.AddNPC("Shambler (Male)","npc_vj_piv_shambler",vCat)
 	-- ConVars --
 	
 	VJ.AddConVar("vj_piv_infection", 1, {FCVAR_ARCHIVE})
