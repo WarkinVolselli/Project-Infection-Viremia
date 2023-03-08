@@ -1,0 +1,15 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "Models/vj_piv/hl2/Charple/Charple6_sheet"
+	"$bumpmap" "Models/vj_piv/hl2/Charple/Charple6_normal"
+	"$detail "models/vj_piv/shared/detail/soot"
+	"$detailblendfactor" "1"
+	"$detailscale" "1"
+	"$detailblendmode" "2"
+	"$envmapcontrast" 1
+	"$phong" "1"
+	"$phongboost" "0.2"
+	"$phongexponent" "6"
+	"$phongtint" "[1 1 1]"
+	"$phongfresnelranges" "[1 1 5]"
+}

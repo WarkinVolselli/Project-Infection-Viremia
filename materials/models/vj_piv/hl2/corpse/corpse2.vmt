@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models/vj_piv/hl2/corpse/corpse2"
+	"$bumpmap" "models/vj_piv/hl2/corpse/corpse1_normal"
+	
+	"$phong" "1"
+	"$phongexponent" "10.0"
+	"$phongboost" "0.5"
+	"$phongfresnelranges"	"[0.3 0.7 1]"
+}
