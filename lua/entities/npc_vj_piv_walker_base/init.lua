@@ -302,7 +302,7 @@ function ENT:CustomOnPreInitialize()
 		self:PIV_CustomMutate()
 	end
 
-    if GetConVar("vj_piv_rebirth"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_panzer_boss" then 
+    if GetConVar("vj_piv_rebirth"):GetInt() == 1 &&	 self:GetClass() != "npc_vj_piv_panzer_boss" then 
 		self.PIV_CanMutate = true
 	end
 
@@ -310,7 +310,7 @@ function ENT:CustomOnPreInitialize()
 		self.CanOpenDoors = false -- Can it open doors?
 	end
 
-    if GetConVar("vj_piv_climbing"):GetInt() == 1 then
+    if GetConVar("vj_piv_climbing"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" then
 		self.PIVCanClimb = true
 	end
 
@@ -320,7 +320,7 @@ function ENT:CustomOnPreInitialize()
 
     self.PI_LegHP = self.StartHealth / 2
 
-	if GetConVar("vj_piv_subtypes"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_shambler" && self.PIV_Mutated == false then
+	if GetConVar("vj_piv_subtypes"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_stoker" && self.PIV_Mutated == false then
 
 		-- joggers
 		if math.random(1,GetConVar("vj_piv_jogger_chance"):GetInt()) == 1 && !PI_Crippled && !PI_FuckingCrawlingLittleCunt then
@@ -329,7 +329,7 @@ function ENT:CustomOnPreInitialize()
 		end
 
 		--shamblers
-		if math.random(1,GetConVar("vj_piv_shambler_chance"):GetInt()) == 1 && !self.PI_Jogger && !PI_Crippled && !PI_FuckingCrawlingLittleCunt then
+		if math.random(1,GetConVar("vj_piv_shambler_chance"):GetInt()) == 1 && !self.PI_Jogger && !PI_Crippled && !PI_FuckingCrawlingLittleCunt && self:GetClass() != "npc_vj_piv_shambler" then
 			self.PI_Shambler = true
 			self.AnimTbl_Walk = {ACT_WALK_RELAXED}
 			self.AnimTbl_Run = {ACT_WALK_RELAXED}
@@ -342,7 +342,7 @@ function ENT:CustomOnPreInitialize()
 			self.StartHealth = self.StartHealth * 2 
 		end
 
-		if math.random(1,GetConVar("vj_piv_crawler_chance"):GetInt()) == 1 then 
+		if math.random(1,GetConVar("vj_piv_crawler_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_spitter" then 
 		    self.PIV_CanMutate = false
 			self.PIV_FuckingCrawlingLittleCunt = true
 			self:Cripple()    
@@ -361,7 +361,7 @@ function ENT:CustomOnPreInitialize()
 	self.IsDigging = false
 	self:Dig()
 
-		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_panzer" && self:GetClass() != "npc_vj_piv_panzer_boss" && self.PIV_FuckingCrawlingLittleCunt == false then
+		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_husk"  && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_panzer" && self:GetClass() != "npc_vj_piv_panzer_boss" && self.PIV_FuckingCrawlingLittleCunt == false then
 				
 			self.WeHaveAWeapon = true
 			self.MeleeAttackDamage = math.random(20,25)
@@ -508,17 +508,17 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 
 	if key == "break_door" then
 	
-		if IsValid(self.PIV_DoorToBreak) then
+		if IsValid(self.PIVDoorToBreak) then
 		
 			VJ_CreateSound(self,self.SoundTbl_BeforeMeleeAttack,self.BeforeMeleeAttackSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a, self.BeforeMeleeAttackSoundPitch.b))
 			VJ_EmitSound(self,"vj_piv/BangDoor"..math.random(1,10)..".wav",75,100)
 			
-			if self:GetClass() == "npc_vj_piv_panzer" or self:GetClass() == "npc_vj_piv_panzer_boss" then
+			if self:GetClass() == "npc_vj_piv_berserker" or self:GetClass() == "npc_vj_piv_juggernaut" or self:GetClass() == "npc_vj_piv_bruiser" or self:GetClass() == "npc_vj_piv_exploder_walker" then
 				util.ScreenShake(self:GetPos(), self.WorldShakeOnMoveAmplitude, self.WorldShakeOnMoveFrequency, self.WorldShakeOnMoveDuration, self.WorldShakeOnMoveRadius)
 			end
 			
 			local doorDmg = self.MeleeAttackDamage
-			local door = self.PIV_DoorToBreak
+			local door = self.PIVDoorToBreak
 			
 			if door.DoorHealth == nil then
 				door.DoorHealth = 200 - doorDmg

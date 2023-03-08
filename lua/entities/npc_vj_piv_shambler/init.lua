@@ -39,7 +39,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
     local hp = self.StartHealth * 0.5
-	if math.random(1,4) == 1 && self.CanRevive == true then
+	if GetConVar("vj_piv_shambler_revive"):GetInt() == 1 && math.random(1,GetConVar("vj_piv_shambler_revive_chance"):GetInt()) == 1 && self.CanRevive == true then
 	if self:GetClass() == "npc_vj_piv_shambler" && IsValid(GetCorpse) then
 		
 		timer.Simple(math.random(5,10),function() if IsValid(GetCorpse) then

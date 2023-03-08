@@ -12,8 +12,6 @@ ENT.AnimTbl_IdleStand = {ACT_IDLE}
 ENT.AnimTbl_Walk = {ACT_WALK}
 ENT.AnimTbl_Run = {ACT_RUN}
 
-ENT.HullType = HULL_MEDIUM_TALL
-
 ENT.MeleeAttackDistance = 100
 ENT.MeleeAttackDamageDistance = 60
 

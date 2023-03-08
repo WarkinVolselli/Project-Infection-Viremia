@@ -54,7 +54,7 @@ end)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
-GetCorpse:VJ_PIVCreateBoneMerge(GetCorpse,self.Bonemerge:GetModel(),self.Bonemerge:GetSkin(),self.Bonemerge:GetColor(),self.Bonemerge:GetMaterial(),self.Bonemerge:GetPlayerColor())
+GetCorpse:VJ_PIV_CreateBoneMerge(GetCorpse,self.Bonemerge:GetModel(),self.Bonemerge:GetSkin(),self.Bonemerge:GetColor(),self.Bonemerge:GetMaterial(),self.Bonemerge:GetPlayerColor())
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:BonemergeCorpse(dmginfo,hitgroup,GetCorpse)    

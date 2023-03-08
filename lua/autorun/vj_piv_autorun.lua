@@ -8,7 +8,7 @@
 local PublicAddonName = "[VJ] Project Infection: Viremia"
 local AddonName = "[VJ] Project Infection: Viremia"
 local AddonType = "NPC"
-local AutorunFile = "autorun/vj_projectinfection_autorun.lua"
+local AutorunFile = "autorun/vj_piv_autorun.lua"
 -------------------------------------------------------
 local VJExists = file.Exists("lua/autorun/vj_base_autorun.lua","GAME")
 if VJExists == true then
@@ -59,23 +59,31 @@ if VJExists == true then
 	
 	*/  -- Comment box end
 
-	local vCat = "Project Infection: Viremia" -- Category, you can also set a category individually by replacing the vCat with a string value
+	local vCat = "Project Infection: Viremia"
 
 	VJ.AddNPC("Walker Base","npc_vj_piv_walker_base",vCat)
 	VJ.AddNPC("Runner Base","npc_vj_piv_runner_base",vCat)
 	
-	local vCat = "Project Infection: Viremia: Citizens" -- Category, you can also set a category individually by replacing the vCat with a string value
+	local vCat = "Project Infection: Viremia: Citizens"
 	
 	VJ.AddNPC("Civilian Walker (Female)","npc_vj_piv_walker_civ_f",vCat)
 	VJ.AddNPC("Civilian Walker (Male)","npc_vj_piv_walker_civ_m",vCat)
 	VJ.AddNPC("Civilian Runner (Female)","npc_vj_piv_runner_civ_f",vCat)
 	VJ.AddNPC("Civilian Runner (Male)","npc_vj_piv_runner_civ_m",vCat)
+	
 	VJ.AddNPC("Resistance Walker (Female)","npc_vj_piv_walker_reb_f",vCat)
 	VJ.AddNPC("Resistance Walker (Male)","npc_vj_piv_walker_reb_m",vCat)
 	VJ.AddNPC("Resistance Runner (Female)","npc_vj_piv_runner_reb_f",vCat)
 	VJ.AddNPC("Resistance Runner (Male)","npc_vj_piv_runner_reb_m",vCat)
 	
-	local vCat = "Project Infection: Viremia: Specials" -- Category, you can also set a category individually by replacing the vCat with a string value
+	VJ.AddNPC("Corpse Walker","npc_vj_piv_walker_corpse",vCat)
+	VJ.AddNPC("Corpse Runner","npc_vj_piv_runner_corpse",vCat)
+	VJ.AddNPC("Charple Walker","npc_vj_piv_walker_charple",vCat)
+	VJ.AddNPC("Charple Runner","npc_vj_piv_runner_charple",vCat)
+	
+	local vCat = "Project Infection: Viremia: Specials"
+	
+	VJ.AddNPC("Spitter","npc_vj_piv_spitter",vCat)
 	
 	VJ.AddNPC("Thug (Male)","npc_vj_piv_brawler",vCat)
 	VJ.AddNPC("Thug (Female)","npc_vj_piv_brawler_f",vCat)
@@ -84,10 +92,31 @@ if VJExists == true then
 	VJ.AddNPC("Panzer","npc_vj_piv_panzer",vCat)
 	VJ.AddNPC("Megapanzer","npc_vj_piv_panzer_boss",vCat)
 	
+	VJ.AddNPC("Stoker","npc_vj_piv_stoker",vCat)
 	VJ.AddNPC("Shambler (Male)","npc_vj_piv_shambler",vCat)
+	VJ.AddNPC("Husk (Male)","npc_vj_piv_husk",vCat)
+	VJ.AddNPC("Husk (Female)","npc_vj_piv_husk_f",vCat)
+	VJ.AddNPC("Virulent","npc_vj_piv_virulent",vCat)
+	
+	local vCat = "Project Infection: Viremia: Spawners"
+	
+	
+	VJ.AddNPC("Random Zombie Spawner","sent_vj_piv_random_zombie_spawner",vCat)
+	VJ.AddNPC("Random Walker Spawner","sent_vj_piv_random_walker_spawner",vCat)
+	VJ.AddNPC("Random Runner Spawner","sent_vj_piv_random_runner_spawner",vCat)
+	
+	VJ.AddNPC("Random Special Spawner","sent_vj_piv_random_special_spawner",vCat)
+	
+	VJ.AddNPC("Undead Spawner","sent_vj_piv_undead_spawner",vCat)	
+	VJ.AddNPC("Undead Spawner (Corpses)","sent_vj_piv_undead_spawner_corpses",vCat)
+	VJ.AddNPC("Undead Spawner Multi (Corpses)","sent_vj_piv_undead_spawner_multi_corpses",vCat)
+	
 	-- ConVars --
 	
+	-- general --
+	
 	VJ.AddConVar("vj_piv_infection", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_infection_type", 0, {FCVAR_ARCHIVE})	
 	VJ.AddConVar("vj_piv_climbing", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_firerunners", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_firerunners_chance", 4, {FCVAR_ARCHIVE})
@@ -103,12 +132,25 @@ if VJExists == true then
 	VJ.AddConVar("vj_piv_subtypes", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_weapons_dropping", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_weapons_dropping_stumble", 1, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_shambler_chance", 9, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_jogger_chance", 4, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_leaper_chance", 9, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_charger_chance", 4, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_shambler_chance", 10, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_jogger_chance", 5, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_leaper_chance", 10, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_charger_chance", 5, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_crawler_chance", 10, {FCVAR_ARCHIVE})
+	
+    -- specific --
+	
+	VJ.AddConVar("vj_piv_husk_run", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_husk_explode", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_husk_explode_chance", 4, {FCVAR_ARCHIVE})
 
+	VJ.AddConVar("vj_piv_virulent_run", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_virulent_explode", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_virulent_explode_chance", 4, {FCVAR_ARCHIVE})
+	
+	VJ.AddConVar("vj_piv_shambler_revive", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_shambler_revive_chance", 4, {FCVAR_ARCHIVE})
+	
 	if (CLIENT) then
 		local function VJ_PIV(Panel)
 			if !game.SinglePlayer() then
@@ -123,6 +165,7 @@ if VJExists == true then
 	local vj_resetbutton = {Options = {}, CVars = {}, Label = "Reset Everything:", MenuButton = "0"}
 		vj_resetbutton.Options["#vjbase.menugeneral.default"] = { 
 			vj_piv_infection = "1",
+			vj_piv_infection_type = "0",
 			vj_piv_climbing = "1",
 			vj_piv_firerunners = "1",
 			vj_piv_firerunners_chance = "4",
@@ -138,14 +181,27 @@ if VJExists == true then
 			vj_piv_subtypes = "1",
 			vj_piv_weapons_dropping = "1",
 			vj_piv_weapons_dropping_stumble = "1",
-			vj_piv_shambler_chance = "9",
-			vj_piv_jogger_chance = "4",
-			vj_piv_leaper_chance = "9",
-			vj_piv_charger_chance = "4",
+			vj_piv_shambler_chance = "10",
+			vj_piv_jogger_chance = "5",
+			vj_piv_leaper_chance = "10",
+			vj_piv_charger_chance = "5",
 			vj_piv_crawler_chance = "10",
+			
+			vj_piv_husk_run = "1",
+			vj_piv_husk_explode = "1",
+			vj_piv_husk_explode_chance = "4",
+			
+			vj_piv_virulent_run = "1",
+			vj_piv_virulent_explode = "1",
+			vj_piv_virulent_explode_chance = "4",
+			
+			vj_piv_shambler_revive = "1",
+			vj_piv_shambler_revive_chance = "4",
 		}
 		
 	Panel:AddControl("Checkbox", {Label = "Enable Infection System?", Command = "vj_piv_infection"})
+	
+	Panel:AddControl("Checkbox", {Label = "Enable Infection By Type?", Command = "vj_piv_infection_type"})
 
 	Panel:AddControl("Checkbox", {Label = "Enable Climbing System?", Command = "vj_piv_climbing"})
 
@@ -159,7 +215,7 @@ if VJExists == true then
 	Panel:AddControl("Checkbox", {Label = "Enable Death Animations?", Command = "vj_piv_deathanim"})
 	Panel:AddControl("Slider", {Label = "Death Animation Chance", Command = "vj_piv_deathanim_chance", Min = 1, Max = 10000})
 
-	Panel:AddControl("Checkbox", {Label = "Enable Eyeglow Lights?", Command = "vj_piv_lights"})
+	Panel:AddControl("Checkbox", {Label = "Enable Eyeglow?", Command = "vj_piv_lights"})
 
 	Panel:AddControl("Checkbox", {Label = "Allow Zombie Rebirth?", Command = "vj_piv_rebirth"})
 	Panel:AddControl("Checkbox", {Label = "All Zombies spawned Rebirthed?", Command = "vj_piv_rebirthall"})
@@ -176,6 +232,17 @@ if VJExists == true then
 	Panel:AddControl("Slider", {Label = "Leaper Subtype Chance", Command = "vj_piv_leaper_chance", Min = 1, Max = 10000})
 	Panel:AddControl("Slider", {Label = "Charger Subtype Chance", Command = "vj_piv_charger_chance", Min = 1, Max = 10000})
 	
+	Panel:AddControl("Checkbox", {Label = "Husks Can Run?", Command = "vj_piv_husk_run"})
+	Panel:AddControl("Checkbox", {Label = "Husks Can Explode?", Command = "vj_piv_husk_explode"})
+	Panel:AddControl("Slider", {Label = "Husk Explosion Chance", Command = "vj_piv_husk_explode_chance", Min = 1, Max = 10000})
+	
+	Panel:AddControl("Checkbox", {Label = "Virulents Can Run?", Command = "vj_piv_virulent_run"})
+	Panel:AddControl("Checkbox", {Label = "Virulents Can Explode?", Command = "vj_piv_virulent_explode"})
+	Panel:AddControl("Slider", {Label = "Virulent Explosion Chance", Command = "vj_piv_virulent_explode_chance", Min = 1, Max = 10000})
+	
+	Panel:AddControl("Checkbox", {Label = "Shamblers Can Revive?", Command = "vj_piv_shambler_revive"})
+	Panel:AddControl("Slider", {Label = "Shambler Revive Chance", Command = "vj_piv_shambler_revive_chance", Min = 1, Max = 10000})
+
 	end
 
 	function VJ_AddToMenu_PIV(Panel)
@@ -216,7 +283,7 @@ hook.Add("OnNPCKilled","PIV_Infection_NPC",function(victim,inflictor,attacker)
 	  for i = 0,18 do
 		bg[i] = victim:GetBodygroup(i)
 end	  
-        if attacker.PIV_Infection_IsWalker == true then
+        if attacker.PIV_Infection_IsWalker == true && GetConVar("vj_piv_infection_type"):GetInt() == 1 then
                     zombie = ents.Create("npc_vj_piv_walker_inf")		
 	elseif attacker.PIV_Infection_IsDrowned == true then
                     zombie = ents.Create("npc_vj_piv_drowned_inf")
@@ -228,7 +295,7 @@ end
 			zombie:Activate()
             //zombie:SetParent(zombie)
             zombie:Spawn()
-            zombie:VJ_PICreateBoneMerge(zombie,oldModel,oldSkin,bg)
+            zombie:VJ_PIV_CreateBoneMerge(zombie,oldModel,oldSkin,bg)
 		
            if victim.IsVJBaseSNPC == true then
                 victim.HasDeathRagdoll = false
@@ -253,7 +320,7 @@ hook.Add("PlayerDeath","PIV_Infection_Player",function(victim,inflictor,attacker
 	  for i = 0,18 do
 		bg[i] = victim:GetBodygroup(i)
 end	 	  
-        if attacker.PIV_Infection_IsWalker == true then
+        if attacker.PIV_Infection_IsWalker == true && GetConVar("vj_piv_infection_type"):GetInt() == 1  == true then
                     zombie = ents.Create("npc_vj_piv_walker_inf")		
 	elseif attacker.PIV_Infection_IsDrowned == true then
                     zombie = ents.Create("npc_vj_piv_drowned_inf")
@@ -297,7 +364,7 @@ end
            end 
       end	
 end)
-		function ENT:VJ_PICreateBoneMerge(targEnt,oldModel,oldSkin,bg)
+		function ENT:VJ_PIV_CreateBoneMerge(targEnt,oldModel,oldSkin,bg)
 			local creator = NULL
 			if targEnt:IsNPC() then
 				creator = IsValid(targEnt:GetCreator()) && targEnt:GetCreator()

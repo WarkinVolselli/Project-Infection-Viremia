@@ -9,8 +9,6 @@ ENT.Model = {"models/vj_piv/specials/military/juggernaut.mdl"} -- The game will 
 ENT.StartHealth = 1000
 ENT.PIV_HasArmor = true
 
-ENT.HullType = HULL_MEDIUM_TALL
-
 ENT.GeneralSoundPitch1 = 70
 ENT.GeneralSoundpitch2 = 70
 

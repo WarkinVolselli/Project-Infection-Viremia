@@ -12,8 +12,6 @@ ENT.PIV_HasArmor = true
 ENT.Berserk = false
 ENT.PIV_CanMutate = false
 
-ENT.HullType = HULL_MEDIUM_TALL
-
 ENT.GeneralSoundPitch1 = 50
 ENT.GeneralSoundpitch2 = 50
 
