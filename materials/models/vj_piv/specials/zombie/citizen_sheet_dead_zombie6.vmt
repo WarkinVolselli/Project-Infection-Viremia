@@ -1,0 +1,9 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\vj_piv\specials\zombie\citizen_sheet_dead_zombie6"
+    	"$bumpmap" "models\vj_piv\specials\zombie\refugee_sheet_n"
+	"$phong" "1"
+	"$phongboost" "1"
+	"$phongexponent" "38" 		
+	"$phongfresnelranges"	"[0.05 0.5 1]"
+}

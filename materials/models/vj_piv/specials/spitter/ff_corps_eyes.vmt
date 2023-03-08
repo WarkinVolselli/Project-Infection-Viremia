@@ -1,0 +1,21 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/vj_piv/specials/spitter/FF_Corps_Eyes"
+	"$surfaceprop" "flesh"
+	"$nodecal" "1"
+
+	"$selfillum" "1"
+	
+	"$phong" "1"
+	"$phongexponent" "4"
+	"$phongboost" "0.3"
+	"$phongfresnelranges" "[0.1 0.2 0.5]"
+} 
+
+
+
+
+
+
+
+

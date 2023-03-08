@@ -1,0 +1,20 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" 	"Models/vj_piv/specials/zombie/Combine_elite_zombie"
+	"$bumpmap" "models/vj_piv/specials/zombie/combine_elite_normal"
+	"$model" "1"
+	"$alphatest" "1"
+	"$phong" "1"
+	"$phongboost" "5"
+	"$halflambert" "1"
+	"$phongexponenttexture" "models/vj_piv/specials/zombie/combine_elite_phong"
+	"$phongalbedotint" "1"										
+	"$phongfresnelranges"	"[.1 .5  1]"
+
+
+
+.1
+}
+
+
+

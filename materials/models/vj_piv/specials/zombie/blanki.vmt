@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$model" "1"
+	"$alphatest" "1"
+	"$baseTexture" 	"Models/vj_piv/specials/zombie/blank"
+	"$nodecal" "1" 
+}
+
+
+
