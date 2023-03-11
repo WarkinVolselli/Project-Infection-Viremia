@@ -44,7 +44,7 @@ ENT.SoundTbl_BeforeMeleeAttack = {"vj_piv/spitter/super_puker_70.wav","vj_piv/sp
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnInitialize()	
 	self:SetModelScale(1.1)
-    self.PI_LegHP = self.StartHealth * 2
+	self:SetSkin(math.random(0,3))
 end	
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:RangeAttackCode_GetShootPos(TheProjectile)
