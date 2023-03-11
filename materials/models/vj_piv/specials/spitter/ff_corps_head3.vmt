@@ -1,0 +1,20 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/vj_piv/specials/spitter/FF_Corps_Head3"
+	"$surfaceprop" "flesh"
+	"$halflambert" 1
+	"$bumpmap" "models/vj_piv/specials/spitter/FF_Corps_Head_normal"
+
+	"$phong" "1"
+	"$phongexponent" "4"
+	"$phongboost" "0.3"
+	"$phongfresnelranges" "[0.1 0.2 0.5]"
+} 
+
+
+
+
+
+
+
+
