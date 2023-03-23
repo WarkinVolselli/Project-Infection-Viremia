@@ -1,0 +1,19 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models/vj_piv/specials/shikari/fast_zombie_sheet"
+	"$alphatest" 1
+	"$bumpmap" "models/vj_piv/specials/shikari/fast_zombie_sheet_normal"
+	"$surfaceprop" "flesh"
+	"$model" "1"
+	"$halflambert" "1"
+	"$phong" "1"
+	"$phongboost" "2"
+	"$phongexponent" "25"
+	"$phongalbedotint" "1"										
+	"$phongfresnelranges"	"[.5 .5 .5]"
+
+"$detail" "nature/dirtfloor005c"
+"$detailblendmode" 0
+"$detailblendfactor" .8
+
+}
