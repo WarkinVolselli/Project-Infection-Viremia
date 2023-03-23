@@ -30,9 +30,11 @@ function ENT:Zombie_CustomOnInitialize()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
-	if hitgroup == HITGROUP_HEAD then
-	dmginfo:ScaleDamage(1.25)
-	else
+	if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 then
+		dmginfo:ScaleDamage(GetConVarNumber("vj_piv_headshot_damage_mult"))
+    end
+	
+	if hitgroup == HITGROUP_HEAD then return end
 	dmginfo:ScaleDamage(0.75)
     end
 end

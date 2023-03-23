@@ -1,0 +1,6 @@
+ENT.Base 			= "npc_vj_piv_runner_combine_s"
+ENT.Type 			= "ai"
+ENT.PrintName 		= "Overwatch Elite Runner"
+ENT.Author 			= "Warkin"
+ENT.Purpose 		= "Spawn it and fight with it!"
+ENT.Instructions 	= "Click on the spawnicon to spawn it."

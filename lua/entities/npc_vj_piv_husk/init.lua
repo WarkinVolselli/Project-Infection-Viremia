@@ -53,13 +53,17 @@ function ENT:Zombie_CustomOnInitialize()
 	self.AnimTbl_Run = {ACT_WALK_RELAXED}
 	self.PIV_MovementAnims = 4
 	end
-
+	
+	if self.PIV_Mutated == true then
+	self.AnimTbl_Run = {ACT_RUN}
+	end
+	
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnThink_AIEnabled()
 
     if
-		GetConVar("vj_piv_husk_run"):GetInt() == 1 &&
+		GetConVar("vj_piv_husk_run"):GetInt() == 1 && 
         self.NextRunT < CurTime() &&
         !self.Running &&
         self:GetEnemy() != nil &&
@@ -188,10 +192,10 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
-	if hitgroup == HITGROUP_HEAD then
-	dmginfo:ScaleDamage(1.25)
+	if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 then
+		dmginfo:ScaleDamage(GetConVarNumber("vj_piv_headshot_damage_mult"))
 	else
-	dmginfo:ScaleDamage(0.9)
+		dmginfo:ScaleDamage(0.9)
     end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------

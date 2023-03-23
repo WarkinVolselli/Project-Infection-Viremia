@@ -187,9 +187,9 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		VJ_EmitSound(self,"vj_piv/Miss"..math.random(1,5)..".wav",70,100)
         self.PIV_NextRunT = CurTime() + 2
         if self.PIV_Mutated == false then
-			self.PIV_NextStrafeT = CurTime() + math.random(2,4)
+			self.PIV_NextStrafeT = CurTime() + math.random(3,6)
 		else
-			self.PIV_NextStrafeT = CurTime() + math.random(1,2)
+			self.PIV_NextStrafeT = CurTime() + math.random(2,4)
 		end
 	end
 	

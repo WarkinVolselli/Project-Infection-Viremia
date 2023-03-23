@@ -62,7 +62,7 @@ self.GodMode = true -- Immune to everything
 		        local tbl = VJ_PICK({"nz_sonic_attack_1"})
 		        self:VJ_ACT_PLAYACTIVITY(tbl,true,VJ_GetSequenceDuration(self,tbl),false)
 				
-   timer.Simple(1.3,function() if IsValid(self) then
+   timer.Simple(1.2,function() if IsValid(self) then
    	self:SetSkin(7)
 	
     ParticleEffectAttach("env_fire_tiny_smoke",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("chest"))
@@ -107,7 +107,7 @@ end)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnLeapAttack_AfterChecks(hitEnt, isProp)
-    hitEnt:Ignite(2) 
+    hitEnt:Ignite(math.random(2,4)) 
     return false
 end
 /*-----------------------------------------------

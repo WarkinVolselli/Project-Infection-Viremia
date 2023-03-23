@@ -25,6 +25,10 @@ ENT.PIV_Jogger = false
 ENT.PIV_Shambler = false
 ENT.PIV_HasArmor = false
 
+ENT.PIV_IsZombine = false
+ENT.PIV_IsMetropolice = false
+ENT.PIV_IsMilitary = false
+
 ENT.PIV_CanMutate = false
 ENT.PIV_Mutated = false
 
@@ -311,7 +315,7 @@ function ENT:CustomOnPreInitialize()
 	end
 
     if GetConVar("vj_piv_climbing"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" then
-		self.PIVCanClimb = true
+		self.PIV_CanClimb = true
 	end
 
     if GetConVar("vj_piv_deathanim"):GetInt() == 1 then 
@@ -323,13 +327,13 @@ function ENT:CustomOnPreInitialize()
 	if GetConVar("vj_piv_subtypes"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_stoker" && self.PIV_Mutated == false then
 
 		-- joggers
-		if math.random(1,GetConVar("vj_piv_jogger_chance"):GetInt()) == 1 && !PI_Crippled && !PI_FuckingCrawlingLittleCunt then
+		if math.random(1,GetConVar("vj_piv_jogger_chance"):GetInt()) == 1 && !PIV_Crippled && !PI_FuckingCrawlingLittleCunt then
 			self.AnimTbl_Run = {ACT_RUN}
-			self.PI_Jogger = true
+			self.PIV_Jogger = true
 		end
 
 		--shamblers
-		if math.random(1,GetConVar("vj_piv_shambler_chance"):GetInt()) == 1 && !self.PI_Jogger && !PI_Crippled && !PI_FuckingCrawlingLittleCunt && self:GetClass() != "npc_vj_piv_shambler" then
+		if math.random(1,GetConVar("vj_piv_shambler_chance"):GetInt()) == 1 && !self.PIV_Jogger && !PIV_Crippled && !PI_FuckingCrawlingLittleCunt && self:GetClass() != "npc_vj_piv_shambler" then
 			self.PI_Shambler = true
 			self.AnimTbl_Walk = {ACT_WALK_RELAXED}
 			self.AnimTbl_Run = {ACT_WALK_RELAXED}
@@ -342,7 +346,7 @@ function ENT:CustomOnPreInitialize()
 			self.StartHealth = self.StartHealth * 2 
 		end
 
-		if math.random(1,GetConVar("vj_piv_crawler_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_spitter" then 
+		if math.random(1,GetConVar("vj_piv_crawler_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_spitter" && self:GetClass() != "npc_vj_piv_cremator" then 
 		    self.PIV_CanMutate = false
 			self.PIV_FuckingCrawlingLittleCunt = true
 			self:Cripple()    
@@ -352,7 +356,7 @@ function ENT:CustomOnPreInitialize()
 			self.HasLeapAttack = false
 		end
 
-		if math.random(1,GetConVar("vj_piv_firerunners_chance"):GetInt()) == 1 && GetConVar("vj_piv_firerunners"):GetInt() == 1 then
+		if math.random(1,GetConVar("vj_piv_firerunners_chance"):GetInt()) == 1 && GetConVar("vj_piv_firerunners"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_cremator" && self:GetClass() != "npc_vj_piv_stoker" then
 			self.FireRun = true
 		end
 
@@ -361,7 +365,7 @@ function ENT:CustomOnPreInitialize()
 	self.IsDigging = false
 	self:Dig()
 
-		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_husk"  && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_panzer" && self:GetClass() != "npc_vj_piv_panzer_boss" && self.PIV_FuckingCrawlingLittleCunt == false then
+		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_cremator" && self:GetClass() != "npc_vj_piv_husk"  && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_panzer" && self:GetClass() != "npc_vj_piv_panzer_boss" && self.PIV_FuckingCrawlingLittleCunt == false then
 				
 			self.WeHaveAWeapon = true
 			self.MeleeAttackDamage = math.random(20,25)
@@ -446,6 +450,14 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 		elseif self.VJ_IsHugeMonster == true then
 			VJ_EmitSound(self, "vj_piv/demolisher/step/step_"..math.random(1,4)..".mp3", 70, 100)
 		end
+		
+	    if self.PIV_IsZombine == true && self.VJ_IsHugeMonster == false then
+			VJ_EmitSound(self, "npc/combine_soldier/gear"..math.random(1,6)..".wav", 70, 100)
+		end
+		
+	    if self.PIV_IsMetropolice == true && self.VJ_IsHugeMonster == false then
+			VJ_EmitSound(self, "npc/metropolice/gear"..math.random(1,6)..".wav", 70, 100)
+		end
 	end
 
 	if key == "slide" then
@@ -491,9 +503,17 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 		end
 		
 		if self.PIV_HasArmor == true && self.VJ_IsHugeMonster == false then
-			VJ_EmitSound(self, "vj_piv/mil_zomb/step_"..math.random(1,4)..".mp3", 70, 100)
+			VJ_EmitSound(self, "vj_piv/mil_zomb/step_"..math.random(1,4)..".mp3", 70, 80)
 		elseif self.VJ_IsHugeMonster == true then
-			VJ_EmitSound(self, "vj_piv/demolisher/step/step_"..math.random(1,4)..".mp3", 70, 100)
+			VJ_EmitSound(self, "vj_piv/demolisher/step/step_"..math.random(1,4)..".mp3", 70, 80)
+		end
+		
+		if self.PIV_IsZombine == true && self.VJ_IsHugeMonster == false then
+			VJ_EmitSound(self, "npc/combine_soldier/gear"..math.random(1,6)..".wav", 70, 80)
+		end
+		
+	    if self.PIV_IsMetropolice == true && self.VJ_IsHugeMonster == false then
+			VJ_EmitSound(self, "npc/metropolice/gear"..math.random(1,6)..".wav", 70, 80)
 		end
 
 		VJ_EmitSound(self, "physics/body/body_medium_impact_soft"..math.random(1,7)..".wav", 75, 100)
@@ -508,7 +528,7 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 
 	if key == "break_door" then
 	
-		if IsValid(self.PIVDoorToBreak) then
+		if IsValid(self.PIV_DoorToBreak) then
 		
 			VJ_CreateSound(self,self.SoundTbl_BeforeMeleeAttack,self.BeforeMeleeAttackSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a, self.BeforeMeleeAttackSoundPitch.b))
 			VJ_EmitSound(self,"vj_piv/BangDoor"..math.random(1,10)..".wav",75,100)
@@ -518,7 +538,7 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 			end
 			
 			local doorDmg = self.MeleeAttackDamage
-			local door = self.PIVDoorToBreak
+			local door = self.PIV_DoorToBreak
 			
 			if door.DoorHealth == nil then
 				door.DoorHealth = 200 - doorDmg
@@ -604,39 +624,39 @@ function ENT:CustomOnThink()
 		self:GetSequence() == self:LookupSequence("slumprise_a") or 
 		self:GetSequence() == self:LookupSequence("slumprise_a2")
 	then
-		self.PIVDoorToBreak = NULL
+		self.PIV_DoorToBreak = NULL
 	return end
 	
 		-- do we have a door breaking animations?
 		if VJ_AnimationExists(self,ACT_OPEN_DOOR) then
 		
-			if !IsValid(self.PIVDoorToBreak) then
+			if !IsValid(self.PIV_DoorToBreak) then
 				if ((!self.VJ_IsBeingControlled) or (self.VJ_IsBeingControlled && self.VJ_TheController:KeyDown(IN_DUCK))) then
 					for _,v in pairs(ents.FindInSphere(self:GetPos(),40)) do
 						if v:GetClass() == "func_door_rotating" && v:Visible(self) then
-							self.PIVDoorToBreak = v
+							self.PIV_DoorToBreak = v
 						end
 						if v:GetClass() == "prop_door_rotating" && v:Visible(self) then
 							local anim = string.lower(v:GetSequenceName(v:GetSequence()))
 							if string.find(anim,"idle") or string.find(anim,"open") /*or string.find(anim,"locked")*/ then
-								self.PIVDoorToBreak = v
+								self.PIV_DoorToBreak = v
 							break
 							end
 						end
 					end
 				end
 			else
-		    //local dist = self:VJ_GetNearestPointToEntityDistance(self.PIVDoorToBreak)
-		    if self.PlayingAttackAnimation or !self.PIVDoorToBreak:Visible(self) /*or (self:GetActivity() == ACT_OPEN_DOOR && dist <= 100)*/ then self.PIVDoorToBreak = NULL return end
+		    //local dist = self:VJ_GetNearestPointToEntityDistance(self.PIV_DoorToBreak)
+		    if self.PlayingAttackAnimation or !self.PIV_DoorToBreak:Visible(self) /*or (self:GetActivity() == ACT_OPEN_DOOR && dist <= 100)*/ then self.PIV_DoorToBreak = NULL return end
 			if self:GetActivity() != ACT_OPEN_DOOR then
 				local ang = self:GetAngles()
-				self:SetAngles(Angle(ang.x,(self.PIVDoorToBreak:GetPos() -self:GetPos()):Angle().y,ang.z))
+				self:SetAngles(Angle(ang.x,(self.PIV_DoorToBreak:GetPos() -self:GetPos()):Angle().y,ang.z))
 				self:VJ_ACT_PLAYACTIVITY(ACT_OPEN_DOOR,true,false,false)
 				-- self:SetState(VJ_STATE_ONLY_ANIMATION)
 			end
 		end
 	end
-		if !IsValid(self.PIVDoorToBreak) then
+		if !IsValid(self.PIV_DoorToBreak) then
 			-- self:SetState()
 		end
 end
@@ -1075,6 +1095,12 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 		self:Cripple() -- crippled
 	end
 	
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
+	if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 then
+	dmginfo:ScaleDamage(GetConVarNumber("vj_piv_headshot_damage_mult"))
+    end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)

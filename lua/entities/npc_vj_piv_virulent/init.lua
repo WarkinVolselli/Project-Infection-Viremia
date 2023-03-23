@@ -54,7 +54,7 @@ function ENT:RangeAttackCode_GetShootPos(TheProjectile)
 	return self:CalculateProjectile("Curve",self:GetPos() +self:GetUp() *self.RangeAttackPos_Up +self:GetForward() *self.RangeAttackPos_Forward, self:GetEnemy():GetPos() +self:GetEnemy():OBBCenter() +self:GetEnemy():GetRight() *math.Rand(0,60) +self:GetEnemy():GetForward() *math.Rand(-50,50) +self:GetEnemy():GetUp() *math.Rand(-50,50), 600)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnInitialize()
+function ENT:Zombie_CustomOnInitialize()
 
 	self:SetSkin(math.random(0,3))
 	
@@ -73,6 +73,11 @@ function ENT:CustomOnInitialize()
 	self.AnimTbl_Run = {ACT_WALK_STIMULATED}
 	self.PIV_MovementAnims = 2
 	end
+	
+	if self.PIV_Mutated == true then
+	self.AnimTbl_Run = {ACT_RUN}
+	end
+	
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
@@ -145,6 +150,14 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
+	if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 then
+		dmginfo:ScaleDamage(GetConVarNumber("vj_piv_headshot_damage_mult"))
+	else
+		dmginfo:ScaleDamage(0.9)
+    end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 	if dmginfo:GetDamage() > 49 or dmginfo:GetDamageForce():Length() > 10000 then
 		if self.PIV_NextShoveT < CurTime() then
@@ -152,6 +165,37 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 			self.PIV_NextShoveT = CurTime() + math.random(5,8)
 		end
 	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:PIV_CustomMutate()
+self.AnimTbl_Walk = {ACT_WALK}
+self.AnimTbl_Run = {ACT_RUN}
+
+self.StartHealth = self.StartHealth *2
+self:SetHealth(self.StartHealth)
+		
+local mymaxhealth = self:Health()
+self:SetMaxHealth(mymaxhealth)
+
+self.PIV_LegHP = self.PIV_LegHP *2
+
+if GetConVar("vj_piv_lights"):GetInt() == 1 then 
+
+self.Light2 = ents.Create("light_dynamic")
+self.Light2:SetKeyValue("brightness", "7")
+self.Light2:SetKeyValue("distance", "50")
+self.Light2:SetLocalPos(self:GetPos())
+self.Light2:SetLocalAngles(self:GetAngles())
+self.Light2:Fire("Color", "127 255 0 255")
+self.Light2:SetParent(self)
+self.Light2:Spawn()
+self.Light2:Activate()
+self.Light2:Fire("SetParentAttachment","eyes")
+self.Light2:Fire("TurnOn", "", 0)
+self:DeleteOnRemove(self.Light2)
+
+end
+
 end
 /*-----------------------------------------------
 	*** Copyright (c) 2012-2021 by DrVrej, All rights reserved. ***
