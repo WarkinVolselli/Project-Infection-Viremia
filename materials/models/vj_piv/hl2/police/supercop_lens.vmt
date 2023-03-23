@@ -1,0 +1,9 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/vj_piv/hl2/police/supercop_lens"
+	"$envmap" "env_cubemap"
+	"$basealphaenvmapmask" 1
+	"$selfillum" "1"
+//	"$envmap" "models/protocop/envmap"
+//	"$envmapsphere" 1
+}

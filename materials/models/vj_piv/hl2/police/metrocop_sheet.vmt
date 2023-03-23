@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "Models/vj_piv/hl2/police/metrocop_sheet"
+	"$bumpmap" "Models/vj_piv/hl2/police/metrocop_sheet_normal"
+	"$envmap" "env_cubemap"
+	"$basealphaenvmapmask" 1
+	"$envmaptint" "[.5 .5 .5]"
+	"$envmap" "models/vj_piv/hl2/police/metrocop_sheet_env"
+	"$envmapsphere" 1
+}

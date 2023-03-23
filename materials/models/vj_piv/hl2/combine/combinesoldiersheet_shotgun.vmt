@@ -1,0 +1,19 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" 	"Models/vj_piv/hl2/combine/combinesoldiersheet_shotgun"
+	"$bumpmap" "models/vj_piv/hl2/combine/combinesoldier_normal"
+	"$surfaceprop" "flesh"
+	"$selfillum" 1
+	"$model" 1
+	"$phong" 1
+	"$phongboost" "2"
+	"$halflambert" "1"
+	"$phongexponenttexture" "models/vj_piv/hl2/combine/combinesoldier_phong"
+	"$phongalbedotint" "1"										
+	"$phongfresnelranges"	"[.1 .5 1.0]"
+}
+
+
+
+
+
