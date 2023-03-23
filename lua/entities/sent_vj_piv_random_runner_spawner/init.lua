@@ -11,6 +11,10 @@ local ent_tbl = {
 	"npc_vj_piv_runner_civ_m",
 	"npc_vj_piv_runner_reb_f",
 	"npc_vj_piv_runner_reb_m",
+	"npc_vj_piv_runner_civ_f",
+	"npc_vj_piv_runner_civ_m",
+	"npc_vj_piv_runner_reb_f",
+	"npc_vj_piv_runner_reb_m",
 	"npc_vj_piv_runner_corpse",
 	"npc_vj_piv_runner_charple",
 }

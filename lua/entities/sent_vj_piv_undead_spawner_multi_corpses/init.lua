@@ -19,6 +19,7 @@ local ent_tbl = {
 	"npc_vj_piv_husk_f",
 	"npc_vj_piv_stoker",
 	"npc_vj_piv_virulent",
+	"npc_vj_piv_shikari",
 }
 ENT.EntitiesToSpawn = {
 	{EntityName = "NPC1",SpawnPosition = {vForward=0,vRight=0,vUp=0},Entities = ent_tbl},
@@ -35,10 +36,15 @@ end
 function  ENT:CustomOnEntitySpawn ( ent ,  spawnKey ,  spawnTbl ,  initSpawn )  
 
 	local rise = VJ_PICK({"vjseq_slumprise_a","vjseq_slumprise_a2","vjseq_slumprise_a_attack","vjseq_slumprise_b","vjseq_infectionrise","vjseq_lying_to_standing_alert","vjseq_lying_to_standing_alert03c","vjseq_lying_to_standing_alert03d"})
-	ent:VJ_ACT_PLAYACTIVITY(rise,true,VJ_GetSequenceDuration(self,tbl),false)
+	ent:VJ_ACT_PLAYACTIVITY(rise,true,VJ_GetSequenceDuration(self,rise),false)
 
 	if ent:GetClass() == "npc_vj_piv_virulent" then
-		ent:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_a",true,VJ_GetSequenceDuration(self,rise),false)
+		ent:VJ_ACT_PLAYACTIVITY("vjseq_slumprise_a",true,VJ_GetSequenceDuration(self,false),false)
+	end
+	
+	if ent:GetClass() == "npc_vj_piv_shikari" then
+		local rise2 = VJ_PICK({"vjseq_slumprise_a","vjseq_slumprise_b","vjseq_slumprise_c"})
+		ent:VJ_ACT_PLAYACTIVITY(rise2,true,VJ_GetSequenceDuration(self,rise2),false)
 	end
 	
 end
