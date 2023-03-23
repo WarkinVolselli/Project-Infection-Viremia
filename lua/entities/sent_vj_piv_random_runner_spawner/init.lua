@@ -17,6 +17,10 @@ local ent_tbl = {
 	"npc_vj_piv_runner_reb_m",
 	"npc_vj_piv_runner_corpse",
 	"npc_vj_piv_runner_charple",
+	"npc_vj_piv_runner_combine_s",
+	"npc_vj_piv_runner_combine_p",
+	"npc_vj_piv_runner_combine_e",
+	"npc_vj_piv_runner_metropolice",
 }
 ENT.EntitiesToSpawn = {
 	{EntityName = "NPC1",SpawnPosition = {vForward=0,vRight=0,vUp=0},Entities = ent_tbl},
