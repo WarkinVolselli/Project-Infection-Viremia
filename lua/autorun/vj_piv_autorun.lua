@@ -80,10 +80,29 @@ if VJExists == true then
 	VJ.AddNPC("Corpse Runner","npc_vj_piv_runner_corpse",vCat)
 	VJ.AddNPC("Charple Walker","npc_vj_piv_walker_charple",vCat)
 	VJ.AddNPC("Charple Runner","npc_vj_piv_runner_charple",vCat)
+
+	local vCat = "Project Infection: Viremia: Combine"
+	
+	VJ.AddNPC("Civil Protection Walker","npc_vj_piv_walker_metropolice",vCat)
+	VJ.AddNPC("Civil Protection Runner","npc_vj_piv_runner_metropolice",vCat)
+	
+	VJ.AddNPC("Overwatch Soldier Walker","npc_vj_piv_walker_combine_s",vCat)
+	VJ.AddNPC("Overwatch Soldier Runner","npc_vj_piv_runner_combine_s",vCat)
+	
+	VJ.AddNPC("Overwatch Prisonguard Walker","npc_vj_piv_walker_combine_p",vCat)
+	VJ.AddNPC("Overwatch Prisonguard Runner","npc_vj_piv_runner_combine_p",vCat)
+
+	VJ.AddNPC("Overwatch Elite Walker","npc_vj_piv_walker_combine_e",vCat)
+	VJ.AddNPC("Overwatch Elite Runner","npc_vj_piv_runner_combine_e",vCat)
 	
 	local vCat = "Project Infection: Viremia: Specials"
 	
+	VJ.AddNPC("Stalker","npc_vj_piv_stalker",vCat)
+	
 	VJ.AddNPC("Spitter","npc_vj_piv_spitter",vCat)
+
+	VJ.AddNPC("Cremator","npc_vj_piv_cremator",vCat)
+	VJ.AddNPC("Stoker","npc_vj_piv_stoker",vCat)
 	
 	VJ.AddNPC("Thug (Male)","npc_vj_piv_brawler",vCat)
 	VJ.AddNPC("Thug (Female)","npc_vj_piv_brawler_f",vCat)
@@ -92,14 +111,17 @@ if VJExists == true then
 	VJ.AddNPC("Panzer","npc_vj_piv_panzer",vCat)
 	VJ.AddNPC("Megapanzer","npc_vj_piv_panzer_boss",vCat)
 	
-	VJ.AddNPC("Stoker","npc_vj_piv_stoker",vCat)
+	VJ.AddNPC("Shikari","npc_vj_piv_shikari",vCat)
 	VJ.AddNPC("Shambler (Male)","npc_vj_piv_shambler",vCat)
 	VJ.AddNPC("Husk (Male)","npc_vj_piv_husk",vCat)
 	VJ.AddNPC("Husk (Female)","npc_vj_piv_husk_f",vCat)
 	VJ.AddNPC("Virulent","npc_vj_piv_virulent",vCat)
 	
 	local vCat = "Project Infection: Viremia: Spawners"
-	
+
+	VJ.AddNPC("Random Zombie","sent_vj_piv_random_zombie",vCat)
+	VJ.AddNPC("Random Walker","sent_vj_piv_random_walker",vCat)
+	VJ.AddNPC("Random Runner","sent_vj_piv_random_runner",vCat)
 	
 	VJ.AddNPC("Random Zombie Spawner","sent_vj_piv_random_zombie_spawner",vCat)
 	VJ.AddNPC("Random Walker Spawner","sent_vj_piv_random_walker_spawner",vCat)
@@ -120,12 +142,14 @@ if VJExists == true then
 	VJ.AddConVar("vj_piv_climbing", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_firerunners", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_firerunners_chance", 4, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_headshot_damage", 1, {FCVAR_ARCHIVE})	
+	VJ.AddConVar("vj_piv_headshot_damage_mult", 2, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_spawnanim", 0, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_deathanim", 1, {FCVAR_ARCHIVE}) 
+	VJ.AddConVar("vj_piv_deathanim_chance", 3, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_lights", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_rebirth", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_rebirthall", 0, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_deathanim_chance", 3, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_weapons", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_weapons_chance", 5, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_doorbreaking", 1, {FCVAR_ARCHIVE})
@@ -137,6 +161,12 @@ if VJExists == true then
 	VJ.AddConVar("vj_piv_leaper_chance", 10, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_charger_chance", 5, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_crawler_chance", 10, {FCVAR_ARCHIVE})
+
+	-- sounds --
+
+	VJ.AddConVar("vj_piv_walk_voice", 0, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_run_voice", 0, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_giant_voice", 0, {FCVAR_ARCHIVE})
 	
     -- specific --
 	
@@ -166,27 +196,44 @@ if VJExists == true then
 		vj_resetbutton.Options["#vjbase.menugeneral.default"] = { 
 			vj_piv_infection = "1",
 			vj_piv_infection_type = "0",
+			
 			vj_piv_climbing = "1",
+			
 			vj_piv_firerunners = "1",
 			vj_piv_firerunners_chance = "4",
+			
+			vj_piv_headshot_damage = "1",
+			vj_piv_headshot_damage_mult = "2",
+			
 			vj_piv_spawnanim = "0",
 			vj_piv_deathanim = "1",
+			vj_piv_deathanim_chance = "3",
+			
 			vj_piv_lights = "1",
+			
 			vj_piv_rebirth = "1",
 			vj_piv_rebirthall = "0",
-			vj_piv_deathanim_chance = "3",
+			
 			vj_piv_weapons = "1",
 			vj_piv_weapons_chance = "5",
+			
 			vj_piv_doorbreaking = "1",
+			
 			vj_piv_subtypes = "1",
+			
 			vj_piv_weapons_dropping = "1",
 			vj_piv_weapons_dropping_stumble = "1",
-			vj_piv_shambler_chance = "10",
+			
+			vj_piv_shambler_chance = "10", 
 			vj_piv_jogger_chance = "5",
 			vj_piv_leaper_chance = "10",
 			vj_piv_charger_chance = "5",
 			vj_piv_crawler_chance = "10",
 			
+			vj_piv_walk_voice = "0",
+			vj_piv_run_voice = "0",
+			vj_piv_giant_voice = "0",
+						
 			vj_piv_husk_run = "1",
 			vj_piv_husk_explode = "1",
 			vj_piv_husk_explode_chance = "4",
@@ -198,7 +245,7 @@ if VJExists == true then
 			vj_piv_shambler_revive = "1",
 			vj_piv_shambler_revive_chance = "4",
 		}
-		
+	
 	Panel:AddControl("Checkbox", {Label = "Enable Infection System?", Command = "vj_piv_infection"})
 	
 	Panel:AddControl("Checkbox", {Label = "Enable Infection By Type?", Command = "vj_piv_infection_type"})
@@ -210,11 +257,14 @@ if VJExists == true then
 	Panel:AddControl("Checkbox", {Label = "Enable Door Breaking?", Command = "vj_piv_doorbreaking"})
 	
 	Panel:AddControl("Checkbox", {Label = "Enable Fire Runners?", Command = "vj_piv_firerunners"})
-	Panel:AddControl("Slider", {Label = "Fire Runner Chance", Command = "vj_piv_firerunners_chance", Min = 1, Max = 10000})
+	Panel:AddControl("Slider", {Label = "Fire Runner Chance", Command = "vj_piv_firerunners_chance", Min = 1, Max = 100})
 
 	Panel:AddControl("Checkbox", {Label = "Enable Death Animations?", Command = "vj_piv_deathanim"})
-	Panel:AddControl("Slider", {Label = "Death Animation Chance", Command = "vj_piv_deathanim_chance", Min = 1, Max = 10000})
+	Panel:AddControl("Slider", {Label = "Death Animation Chance", Command = "vj_piv_deathanim_chance", Min = 1, Max = 100})
 
+	Panel:AddControl("Checkbox", {Label = "Enable Headshot Damage Multiplier?", Command = "vj_piv_headshot_damage"})
+	Panel:AddControl("Slider", {Label = "Headshot Damage Multiplier", Command = "vj_piv_headshot_damage_mult", Min = 1, Max = 100})
+	
 	Panel:AddControl("Checkbox", {Label = "Enable Eyeglow?", Command = "vj_piv_lights"})
 
 	Panel:AddControl("Checkbox", {Label = "Allow Zombie Rebirth?", Command = "vj_piv_rebirth"})
@@ -223,25 +273,52 @@ if VJExists == true then
 	Panel:AddControl("Checkbox", {Label = "Enable Zombie Weapons?", Command = "vj_piv_weapons"})
 	Panel:AddControl("Checkbox", {Label = "Enable Weapon Dropping?", Command = "vj_piv_weapons_dropping"})
 	Panel:AddControl("Checkbox", {Label = "Zombies Drop Weapons on Stumble?", Command = "vj_piv_weapons_dropping_stumble"})
-	Panel:AddControl("Slider", {Label = "Zombie Weapon Chance", Command = "vj_piv_weapons_chance", Min = 1, Max = 10000})
+	Panel:AddControl("Slider", {Label = "Zombie Weapon Chance", Command = "vj_piv_weapons_chance", Min = 1, Max = 100})
 
-	Panel:AddControl("Checkbox", {Label = "Allow Subtypes?", Command = "vj_piv_subtypes"})
-	Panel:AddControl("Slider", {Label = "Crawler Subtype Chance", Command = "vj_piv_crawler_chance", Min = 1, Max = 10000})
-	Panel:AddControl("Slider", {Label = "Shambler Subtype Chance", Command = "vj_piv_shambler_chance", Min = 1, Max = 10000})
-	Panel:AddControl("Slider", {Label = "Jogger Subtype Chance", Command = "vj_piv_jogger_chance", Min = 1, Max = 10000})
-	Panel:AddControl("Slider", {Label = "Leaper Subtype Chance", Command = "vj_piv_leaper_chance", Min = 1, Max = 10000})
-	Panel:AddControl("Slider", {Label = "Charger Subtype Chance", Command = "vj_piv_charger_chance", Min = 1, Max = 10000})
+	Panel:AddControl("Checkbox", {Label = "Allow Variants?", Command = "vj_piv_subtypes"})
+
+	Panel:AddControl("Slider", {Label = "Shambler Variant Chance", Command = "vj_piv_shambler_chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Jogger Variant Chance", Command = "vj_piv_jogger_chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Leaper Variant Chance", Command = "vj_piv_leaper_chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Charger Variant Chance", Command = "vj_piv_charger_chance", Min = 1, Max = 100})
 	
+	-- walker voice
+	
+	local combobox_walkervoice = {Options = {}, CVars = {}, Label = "Walker Voice", MenuButton = "0"}
+	combobox_walkervoice.Options["No More Room In Hell"] = {vj_piv_walk_voice = 0}
+	combobox_walkervoice.Options["Dying Light"] = {vj_piv_walk_voice = 1}
+	combobox_walkervoice.Options["Left 4 Dead 2"] = {vj_piv_walk_voice = 2}
+	combobox_walkervoice.Options["Random"] = {vj_piv_walk_voice = 3}
+	Panel:AddControl("ComboBox", combobox_walkervoice)
+	
+	-- runner voice
+	
+	local combobox_runnervoice = {Options = {}, CVars = {}, Label = "Runner Voice", MenuButton = "0"}
+	combobox_runnervoice.Options["No More Room In Hell"] = {vj_piv_run_voice = 0}
+	combobox_runnervoice.Options["Dying Light"] = {vj_piv_run_voice = 1}
+	combobox_runnervoice.Options["Left 4 Dead 2"] = {vj_piv_run_voice = 2}
+	combobox_runnervoice.Options["Random"] = {vj_piv_run_voice = 3}
+	Panel:AddControl("ComboBox", combobox_runnervoice)
+	
+	-- giant voice
+	
+	local combobox_giantvoice = {Options = {}, CVars = {}, Label = "Giant Voice", MenuButton = "0"}
+	combobox_giantvoice.Options["Dying Light Demolisher"] = {vj_piv_giant_voice = 0}
+	combobox_giantvoice.Options["Left 4 Dead 2 Tank"] = {vj_piv_giant_voice = 1}
+	combobox_giantvoice.Options["Left 4 Dead 2 Charger"] = {vj_piv_giant_voice = 2}
+	combobox_giantvoice.Options["Random"] = {vj_piv_giant_voice = 3}
+	Panel:AddControl("ComboBox", combobox_giantvoice)
+
 	Panel:AddControl("Checkbox", {Label = "Husks Can Run?", Command = "vj_piv_husk_run"})
 	Panel:AddControl("Checkbox", {Label = "Husks Can Explode?", Command = "vj_piv_husk_explode"})
-	Panel:AddControl("Slider", {Label = "Husk Explosion Chance", Command = "vj_piv_husk_explode_chance", Min = 1, Max = 10000})
+	Panel:AddControl("Slider", {Label = "Husk Explosion Chance", Command = "vj_piv_husk_explode_chance", Min = 1, Max = 100})
 	
 	Panel:AddControl("Checkbox", {Label = "Virulents Can Run?", Command = "vj_piv_virulent_run"})
 	Panel:AddControl("Checkbox", {Label = "Virulents Can Explode?", Command = "vj_piv_virulent_explode"})
-	Panel:AddControl("Slider", {Label = "Virulent Explosion Chance", Command = "vj_piv_virulent_explode_chance", Min = 1, Max = 10000})
+	Panel:AddControl("Slider", {Label = "Virulent Explosion Chance", Command = "vj_piv_virulent_explode_chance", Min = 1, Max = 100})
 	
 	Panel:AddControl("Checkbox", {Label = "Shamblers Can Revive?", Command = "vj_piv_shambler_revive"})
-	Panel:AddControl("Slider", {Label = "Shambler Revive Chance", Command = "vj_piv_shambler_revive_chance", Min = 1, Max = 10000})
+	Panel:AddControl("Slider", {Label = "Shambler Revive Chance", Command = "vj_piv_shambler_revive_chance", Min = 1, Max = 100})
 
 	end
 
