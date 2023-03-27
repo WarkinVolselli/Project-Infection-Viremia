@@ -79,7 +79,7 @@ function ENT:CustomOnMeleeAttack_BeforeChecks()
 	
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnMeleeAttac_AfterChecks(hitEnt, isProp)
+function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt, isProp)
     hitEnt:Ignite(math.random(3,6)) 
     return false
 end
