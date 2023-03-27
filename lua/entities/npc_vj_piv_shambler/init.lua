@@ -13,7 +13,7 @@ ENT.CanRevive = true
 ENT.AnimTbl_Walk = {ACT_WALK_RELAXED}
 ENT.AnimTbl_Run = {ACT_WALK_RELAXED}
 
-ENT.PIV_LegHP = 100
+ENT.PIV_LegHP = 100 
 
 
 ENT.SoundTbl_Idle = {"vj_piv/shambler/idle_1.mp3","vj_piv/shambler/idle_2.mp3","vj_piv/shambler/idle_3.mp3","vj_piv/shambler/idle_4.mp3"}
@@ -30,13 +30,17 @@ function ENT:Zombie_CustomOnInitialize()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
+
+	if hitgroup == HITGROUP_HEAD then return end
+		dmginfo:ScaleDamage(0.75) 
+	end	
+	
 	if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 then
 		dmginfo:ScaleDamage(GetConVarNumber("vj_piv_headshot_damage_mult"))
     end
-	
-	if hitgroup == HITGROUP_HEAD then return end
-	dmginfo:ScaleDamage(0.75)
-    end
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)

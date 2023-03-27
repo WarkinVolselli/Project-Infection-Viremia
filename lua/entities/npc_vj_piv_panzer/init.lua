@@ -12,8 +12,6 @@ ENT.PIV_HasArmor = true
 ENT.GeneralSoundPitch1 = 70
 ENT.GeneralSoundpitch2 = 70
 
-ENT.DeathAnimationChance = 1
-
 ENT.PIV_LegHP = 500
 
 ENT.SoundTbl_Idle = {
@@ -169,11 +167,13 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
-	dmginfo:ScaleDamage(0.5)
+
 
 	if hitgroup == HITGROUP_HEAD then return end
 		if (dmginfo:IsBulletDamage()) then
+			dmginfo:ScaleDamage(0.5)
 			local attacker = dmginfo:GetAttacker()
 			self.DamageSpark1 = ents.Create("env_spark")
 			self.DamageSpark1:SetKeyValue("Magnitude","1")
@@ -189,12 +189,16 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 		end
 		if self.HasSounds == true && self.HasImpactSounds == true then VJ_EmitSound(self,"vj_impact_metal/bullet_metal/metalsolid"..math.random(1,10)..".wav",70) 
 	end	
+	
+	if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 then
+		dmginfo:ScaleDamage(GetConVarNumber("vj_piv_headshot_damage_mult"))
+    end
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:PIV_CustomMutate()
 self.AnimTbl_Walk = {ACT_WALK}
-self.AnimTbl_Run = {ACT_SPRINT}
+self.AnimTbl_Run = {ACT_RUN_RELAXED}
 
 self.StartHealth = self.StartHealth *1.5
 self:SetHealth(self.StartHealth)

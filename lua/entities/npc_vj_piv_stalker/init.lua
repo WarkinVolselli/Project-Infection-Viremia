@@ -8,7 +8,6 @@ include('shared.lua')
 ENT.Model = {"models/vj_piv/hl2/combine/Combine_Soldier.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.PIV_IsZombine = true
 
-ENT.DeathAnimationChance = 1
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
 self:SetMaterial("Models/effects/vol_light001")
@@ -43,10 +42,18 @@ VJ_EmitSound(self,{"ambient/energy/spark1.wav","ambient/energy/spark2.wav","ambi
 	end)
 	timer.Simple(1,function() if IsValid(self) then
          self:SetMaterial("")
-self:DrawShadow(true)
-self:SetRenderFX(kRenderFxNone)
+	self:DrawShadow(true)
+	self:SetRenderFX(kRenderFxNone)
     end
-	end)
+end)
+	
+if self.DeathAnimationCodeRan == false then
+	ParticleEffectAttach("electrical_arc_01_parent",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("eyes"))
+	ParticleEffectAttach("electrical_arc_01_parent",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("chest"))
+	self:SetMaterial("")
+	self:DrawShadow(true)
+	self:SetRenderFX(kRenderFxNone)
+end
 
 end
 -------------------------------------------------------------------------------------------------------------------
@@ -55,6 +62,35 @@ function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_AfterStartTimer()
+self:SetMaterial("models/alyx/emptool_glow")
+self.VJ_NoTarget = false
+VJ_EmitSound(self,{"ambient/energy/spark1.wav","ambient/energy/spark2.wav","ambient/energy/spark3.wav","ambient/energy/spark4.wav","ambient/energy/spark5.wav","ambient/energy/spark6.wav"},100,math.random(100,95))
+   timer.Simple(0.2,function() if IsValid(self) then
+         self:SetMaterial("Models/effects/vol_light001")
+    end
+	end)
+   timer.Simple(0.4,function() if IsValid(self) then
+         self:SetMaterial("models/alyx/emptool_glow")
+		 VJ_EmitSound(self,{"ambient/energy/spark1.wav","ambient/energy/spark2.wav","ambient/energy/spark3.wav","ambient/energy/spark4.wav","ambient/energy/spark5.wav","ambient/energy/spark6.wav"},100,math.random(100,95))
+    end
+	end)
+   timer.Simple(0.6,function() if IsValid(self) then
+         self:SetMaterial("Models/effects/vol_light001")
+    end
+	end)
+   timer.Simple(0.8,function() if IsValid(self) then
+         self:SetMaterial("models/alyx/emptool_glow")
+		 VJ_EmitSound(self,{"ambient/energy/spark1.wav","ambient/energy/spark2.wav","ambient/energy/spark3.wav","ambient/energy/spark4.wav","ambient/energy/spark5.wav","ambient/energy/spark6.wav"},100,math.random(100,95))
+    end
+	end)
+	timer.Simple(1,function() if IsValid(self) then
+         self:SetMaterial("Models/effects/vol_light001")
+	     self.VJ_NoTarget = true
+    end
+	end)
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnLeapAttack_AfterStartTimer()
 self:SetMaterial("models/alyx/emptool_glow")
 self.VJ_NoTarget = false
 VJ_EmitSound(self,{"ambient/energy/spark1.wav","ambient/energy/spark2.wav","ambient/energy/spark3.wav","ambient/energy/spark4.wav","ambient/energy/spark5.wav","ambient/energy/spark6.wav"},100,math.random(100,95))

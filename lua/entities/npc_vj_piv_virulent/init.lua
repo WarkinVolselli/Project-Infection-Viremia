@@ -11,6 +11,8 @@ ENT.StartHealth = 400
 ENT.PIV_Infection = true
 ENT.PIV_Infection_IsWalker = true
 
+ENT.PIV_Virulent_Explode = false
+
 ENT.BloodColor = "Yellow" -- The blood type, this will determine what it should use (decal, particle, etc.)
 
 ENT.AnimTbl_MeleeAttack = {"vjges_melee_01"} -- Melee Attack Animations
@@ -78,6 +80,16 @@ function ENT:Zombie_CustomOnInitialize()
 	self.AnimTbl_Run = {ACT_RUN}
 	end
 	
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Zombie_CustomOnPreInitialize()
+	if GetConVar("vj_piv_virulent_explode"):GetInt() == 1 && math.random(1,GetConVar("vj_piv_virulent_explode_chance"):GetInt()) == 1 then
+		self.PIV_Virulent_Explode = true
+		self.HasDeathAnimation = true
+		self.HasDeathRagdoll = false
+		self.DeathAnimationChance = 1
+		self.AnimTbl_Death = {"vjseq_releasecrab"}
+	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
@@ -196,6 +208,106 @@ self:DeleteOnRemove(self.Light2)
 
 end
 
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnKilled(dmginfo,hitgroup)
+   	if self.PIV_Virulent_Explode == true then
+			util.VJ_SphereDamage(self,self,self:GetPos(),150,math.random(0,0),DMG_BLAST,true,true,{Force=20})
+		for k,v in ipairs(ents.FindInSphere(self:GetPos(),150)) do
+			v:TakeDamage(math.random(30,40))
+		end
+			util.ScreenShake(self:GetPos(),44,600,1.5,2000)
+		end
+	end
+	
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnPriorToKilled(dmginfo,hitgroup)
+	if self.PIV_Virulent_Explode == true then
+		VJ_EmitSound(self,{"vj_piv/gore/PreExplode1.wav","vj_piv/gore/PreExplode2.wav","vj_piv/gore/PreExplode3.wav"},75,math.random(100,100))
+	timer.Simple(0.25,function() if IsValid(self) then
+		VJ_EmitSound(self,{"vj_piv/gore/HeadshotDevestate3.wav","vj_piv/gore/HeadshotDevestate4.wav","vj_piv/gore/HeadshotDevestate5.wav"},75,math.random(100,100))
+	timer.Simple(0.70,function() if IsValid(self) then
+		VJ_EmitSound(self,{"vj_piv/gore/Explode1.wav","vj_piv/gore/Explode2.wav","vj_piv/gore/Explode3.wav"},100,math.random(100,100))
+        local bloodeffect = EffectData()
+		bloodeffect:SetOrigin(self:GetPos()+ self:GetUp()*80)
+		bloodeffect:SetColor(VJ_Color2Byte(Color(155,137,59,255)))
+		bloodeffect:SetScale(250)
+		util.Effect("VJ_Blood1",bloodeffect)
+		
+		local bloodspray = EffectData()
+			bloodspray:SetOrigin(self:GetPos() +self:OBBCenter())
+			bloodspray:SetColor(VJ_Color2Byte(Color(155,137,59,255)))
+			bloodspray:SetScale(1)
+			bloodspray:SetFlags(3)
+			bloodspray:SetColor(1)
+			util.Effect("bloodspray",bloodspray)
+			util.Effect("bloodspray",bloodspray)
+			
+
+			
+		
+		self:CreateGibEntity("obj_vj_gib","models/Gibs/HGIBS_rib.mdl",{Pos=self:LocalToWorld(Vector(0,0,50)),Ang=self:GetAngles()+Angle(0,-90,0),Vel=self:GetRight()*math.Rand(-20,20)+self:GetForward()*math.Rand(-20,20)+self:GetUp()*math.Rand(-20,400)})
+		self:CreateGibEntity("obj_vj_gib","models/Gibs/HGIBS_rib.mdl",{Pos=self:LocalToWorld(Vector(0,0,50)),Ang=self:GetAngles()+Angle(0,-90,0),Vel=self:GetRight()*math.Rand(-20,20)+self:GetForward()*math.Rand(-20,20)+self:GetUp()*math.Rand(-20,400)})
+		self:CreateGibEntity("obj_vj_gib","models/Gibs/HGIBS_rib.mdl",{Pos=self:LocalToWorld(Vector(0,0,50)),Ang=self:GetAngles()+Angle(0,-90,0),Vel=self:GetRight()*math.Rand(-20,20)+self:GetForward()*math.Rand(-20,20)+self:GetUp()*math.Rand(-20,200)})
+		self:CreateGibEntity("obj_vj_gib","models/Gibs/HGIBS_rib.mdl",{Pos=self:LocalToWorld(Vector(0,0,50)),Ang=self:GetAngles()+Angle(0,-90,0),Vel=self:GetRight()*math.Rand(-20,20)+self:GetForward()*math.Rand(-20,20)+self:GetUp()*math.Rand(-20,200)})
+		self:CreateGibEntity("obj_vj_gib","models/Gibs/HGIBS_rib.mdl",{Pos=self:LocalToWorld(Vector(0,0,50)),Ang=self:GetAngles()+Angle(0,-90,0),Vel=self:GetRight()*math.Rand(-20,20)+self:GetForward()*math.Rand(-20,20)+self:GetUp()*math.Rand(-20,500)})
+		self:CreateGibEntity("obj_vj_gib","models/Gibs/HGIBS_rib.mdl",{Pos=self:LocalToWorld(Vector(0,0,50)),Ang=self:GetAngles()+Angle(0,-90,0),Vel=self:GetRight()*math.Rand(-20,20)+self:GetForward()*math.Rand(-20,20)+self:GetUp()*math.Rand(-20,500)})
+		self:CreateGibEntity("obj_vj_gib","models/Gibs/HGIBS.mdl",{Pos=self:LocalToWorld(Vector(0,0,50)),Ang=self:GetAngles()+Angle(0,-90,0),Vel=self:GetRight()*math.Rand(-20,20)+self:GetForward()*math.Rand(-20,20)+self:GetUp()*math.Rand(-20,500)})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Small",{Pos=self:LocalToWorld(Vector(0,0,30))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Small",{Pos=self:LocalToWorld(Vector(0,0,30))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Small",{Pos=self:LocalToWorld(Vector(0,0,30))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Small",{Pos=self:LocalToWorld(Vector(0,0,30))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Small",{Pos=self:LocalToWorld(Vector(0,0,30))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Small",{Pos=self:LocalToWorld(Vector(0,0,30))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Small",{Pos=self:LocalToWorld(Vector(0,0,30))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Small",{Pos=self:LocalToWorld(Vector(0,0,30))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Small",{Pos=self:LocalToWorld(Vector(0,0,30))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Small",{Pos=self:LocalToWorld(Vector(0,0,30))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Small",{Pos=self:LocalToWorld(Vector(0,0,30))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Small",{Pos=self:LocalToWorld(Vector(0,0,30))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Small",{Pos=self:LocalToWorld(Vector(0,0,30))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Small",{Pos=self:LocalToWorld(Vector(0,0,30))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Small",{Pos=self:LocalToWorld(Vector(0,0,30))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Small",{Pos=self:LocalToWorld(Vector(0,0,30))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Big",{Pos=self:LocalToWorld(Vector(0,0,35))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Big",{Pos=self:LocalToWorld(Vector(0,0,35))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Big",{Pos=self:LocalToWorld(Vector(0,0,35))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Big",{Pos=self:LocalToWorld(Vector(0,0,40))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Big",{Pos=self:LocalToWorld(Vector(0,0,40))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Big",{Pos=self:LocalToWorld(Vector(0,0,40))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Big",{Pos=self:LocalToWorld(Vector(0,0,35))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Big",{Pos=self:LocalToWorld(Vector(0,0,30))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Big",{Pos=self:LocalToWorld(Vector(0,0,40))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Big",{Pos=self:LocalToWorld(Vector(0,0,40))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Big",{Pos=self:LocalToWorld(Vector(0,0,35))})
+		self:CreateGibEntity("obj_vj_gib","UseAlien_Big",{Pos=self:LocalToWorld(Vector(0,0,30))})
+		
+        for i=1,math.random(1,50) do
+            local carproj = ents.Create("obj_vj_piv_flesh")
+            carproj:SetPos(self:LocalToWorld(Vector(0,0,0)))
+            carproj:SetAngles(Angle(math.random(0,360),math.random(0,360),math.random(0,360)))
+            carproj:SetOwner(self)
+            carproj:Spawn()
+            carproj:Activate()
+            local phys = carproj:GetPhysicsObject()
+            if IsValid(phys) then
+                phys:SetVelocity(Vector(math.Rand(-100,100),math.Rand(-100,100),math.Rand(200,400)) *2 +self:GetUp()*math.Rand(25,50))
+            end
+        end
+	
+end
+end)
+end
+end)
+end
+end
+-------------------------------------------------------------------------------------------------------------------
+function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
+	if self.PIV_Virulent_Explode then 
+		self.AnimTbl_Death = {
+			"vjseq_releasecrab"
+		}
+	end
 end
 /*-----------------------------------------------
 	*** Copyright (c) 2012-2021 by DrVrej, All rights reserved. ***

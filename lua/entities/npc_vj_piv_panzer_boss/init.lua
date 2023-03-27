@@ -15,8 +15,6 @@ ENT.PIV_CanMutate = false
 ENT.GeneralSoundPitch1 = 50
 ENT.GeneralSoundpitch2 = 50
 
-ENT.DeathAnimationChance = 1
-
 ENT.HasSoundTrack = true
 ENT.SoundTrackVolume = 0.3
 ENT.SoundTbl_SoundTrack = {"vj_piv/music/yakuzads_that_man.mp3"}
@@ -46,8 +44,7 @@ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
-	dmginfo:ScaleDamage(0.5)
-	
+
 	if self.Berserk == false && (self:Health() <= (self:GetMaxHealth() / 2)) then
 		self.Berserk = true
 		self.AnimTbl_Run = {ACT_RUN_RELAXED}
@@ -58,6 +55,7 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 
 	if hitgroup == HITGROUP_HEAD then return end
 		if (dmginfo:IsBulletDamage()) then
+			dmginfo:ScaleDamage(0.75)
 			local attacker = dmginfo:GetAttacker()
 			self.DamageSpark1 = ents.Create("env_spark")
 			self.DamageSpark1:SetKeyValue("Magnitude","1")
@@ -73,6 +71,11 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 		end
 		if self.HasSounds == true && self.HasImpactSounds == true then VJ_EmitSound(self,"vj_impact_metal/bullet_metal/metalsolid"..math.random(1,10)..".wav",70) 
 	end	
+	
+	if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 then
+		dmginfo:ScaleDamage(GetConVarNumber("vj_piv_headshot_damage_mult"))
+    end
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
