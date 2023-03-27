@@ -127,6 +127,7 @@ if VJExists == true then
 	VJ.AddNPC("Random Walker Spawner","sent_vj_piv_random_walker_spawner",vCat)
 	VJ.AddNPC("Random Runner Spawner","sent_vj_piv_random_runner_spawner",vCat)
 	
+	VJ.AddNPC("Random Special","sent_vj_piv_random_special",vCat)
 	VJ.AddNPC("Random Special Spawner","sent_vj_piv_random_special_spawner",vCat)
 	
 	VJ.AddNPC("Undead Spawner","sent_vj_piv_undead_spawner",vCat)	
@@ -146,7 +147,7 @@ if VJExists == true then
 	VJ.AddConVar("vj_piv_headshot_damage_mult", 2, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_spawnanim", 0, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_deathanim", 1, {FCVAR_ARCHIVE}) 
-	VJ.AddConVar("vj_piv_deathanim_chance", 3, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_deathanim_chance", 4, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_lights", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_rebirth", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_rebirthall", 0, {FCVAR_ARCHIVE})
@@ -207,7 +208,7 @@ if VJExists == true then
 			
 			vj_piv_spawnanim = "0",
 			vj_piv_deathanim = "1",
-			vj_piv_deathanim_chance = "3",
+			vj_piv_deathanim_chance = "4",
 			
 			vj_piv_lights = "1",
 			
