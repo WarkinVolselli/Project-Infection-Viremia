@@ -65,8 +65,7 @@ self.GodMode = true -- Immune to everything
    timer.Simple(1.2,function() if IsValid(self) then
    	self:SetSkin(7)
 	
-    ParticleEffectAttach("env_fire_tiny_smoke",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("chest"))
-    ParticleEffectAttach("env_fire_small",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("origin"))
+    ParticleEffectAttach("fire_medium_03",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("origin"))
 	
 self.Light1 = ents.Create("light_dynamic")
 	self.Light1:SetKeyValue("brightness", "0.04")
