@@ -21,8 +21,6 @@ ENT.GeneralSoundpitch2 = 120
 ENT.PIV_NextStrafeT = 0
 ENT.PIV_NextRunT = 0
 
-ENT.DeathAnimationChance = 1
-
 ENT.HasSoundTrack = true
 ENT.SoundTrackVolume = 0.3
 ENT.SoundTbl_SoundTrack = {"vj_piv/music/yakuzads_majima_theme.mp3"}
