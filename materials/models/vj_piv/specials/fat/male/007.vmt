@@ -1,0 +1,11 @@
+VertexLitGeneric
+{
+"$basetexture"	"models\vj_piv\specials\fat\male\007"
+"$bumpmap" "models\vj_piv\specials\fat\male\001_normal"
+$lightwarptexture "models\vj_piv\shared\coach_head_wrp"
+$halflambert 0
+$diffuseexp 1
+$phongboost 2
+$phongfresnelranges "[.2 0.5 5]"
+$ambientocclusion 1
+}
