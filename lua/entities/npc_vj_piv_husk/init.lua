@@ -67,7 +67,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 		self.HasDeathAnimation = true
 		self.DeathAnimationChance = 1
 		self.AnimTbl_Death = {"vjseq_releasecrab"}
-		self.DeathCorpseModel = {"models/vj_piv/specials/husk/zombie_legs.mdl"}
+		self.DeathCorpseModel = {"models/vj_piv/specials/husk/zombie_legs.mdl"} 
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -78,7 +78,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
         self.NextRunT < CurTime() &&
         !self.Running &&
         self:GetEnemy() != nil &&
-        !self.LNR_Crippled &&
+        !self.PIV_Crippled &&
         !self.Dead &&
         !self:IsBusy() &&
 		self.PIV_Mutated == false
