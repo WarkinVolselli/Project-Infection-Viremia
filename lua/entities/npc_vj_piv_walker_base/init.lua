@@ -324,7 +324,7 @@ function ENT:CustomOnPreInitialize()
 
     self.PI_LegHP = self.StartHealth / 2
 
-	if GetConVar("vj_piv_subtypes"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_stoker" && self.PIV_Mutated == false then
+	if GetConVar("vj_piv_subtypes"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_fat_walker_m" && self:GetClass() != "npc_vj_piv_fat_runner_m" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_stoker" && self.PIV_Mutated == false then
 
 		-- joggers
 		if math.random(1,GetConVar("vj_piv_jogger_chance"):GetInt()) == 1 && !PIV_Crippled && !PI_FuckingCrawlingLittleCunt then

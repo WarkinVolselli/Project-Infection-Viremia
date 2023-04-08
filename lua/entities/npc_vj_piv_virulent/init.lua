@@ -147,10 +147,9 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		self.PIV_Mutated == false
     then
 
-        VJ_EmitSound(self,self.SoundTbl_Pain,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
-		
         self.Running = false
         self.NextRunT = CurTime() + math.random(6,12)
+	    VJ_EmitSound(self,self.SoundTbl_Pain,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
 		
 		if self.PIV_MovementAnims == 1 then
 			self.AnimTbl_Run = {ACT_WALK}
