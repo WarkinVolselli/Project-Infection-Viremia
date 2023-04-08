@@ -103,8 +103,6 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		self.PIV_Mutated == false
     then
 
-        VJ_EmitSound(self,self.SoundTbl_Pain,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
-		
         self.Running = false
         self.NextRunT = CurTime() + math.random(6,12)
 		
@@ -119,11 +117,12 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		end
 	
 	    self.SoundTbl_CombatIdle = {"vj_piv/husk/zed_clot_alpha_vox_yell_short_01.ogg","vj_piv/husk/zed_clot_alpha_vox_yell_short_02.ogg","vj_piv/husk/zed_clot_alpha_vox_yell_short_03.ogg","vj_piv/husk/zed_clot_alpha_vox_growl_short_alt_01.ogg","vj_piv/husk/zed_clot_alpha_vox_growl_short_alt_02.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_med_01.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_med_02.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_med_03.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_med_04.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_med_05.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_short_01.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_short_02.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_short_03.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_short_04.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_short_05.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_short_06.ogg"}
-
+	
         if self:IsMoving() then
 
 			local stop = VJ_PICK({"vjseq_running_to_standing","vjseq_running_to_standing_02","vjseq_shove_forward_01"})
 		    self:VJ_ACT_PLAYACTIVITY(stop,true,VJ_GetSequenceDuration(self,tbl),false)
+			VJ_EmitSound(self,self.SoundTbl_Pain,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
 
         end
 
