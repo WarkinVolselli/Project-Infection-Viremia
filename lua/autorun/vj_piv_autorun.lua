@@ -97,6 +97,12 @@ if VJExists == true then
 	
 	local vCat = "Project Infection: Viremia: Specials"
 	
+	VJ.AddNPC("Bloated Walker (Male)","npc_vj_piv_fat_walker_m",vCat)
+--	VJ.AddNPC("Bloated Walker (Female)","npc_vj_piv_fat_walker_f",vCat)
+	
+	VJ.AddNPC("Bloated Runner (Male)","npc_vj_piv_fat_runner_m",vCat)
+--	VJ.AddNPC("Bloated Runner (Female)","npc_vj_piv_fat_runner_f",vCat)
+	
 	VJ.AddNPC("Stalker","npc_vj_piv_stalker",vCat)
 	
 	VJ.AddNPC("Spitter","npc_vj_piv_spitter",vCat)
