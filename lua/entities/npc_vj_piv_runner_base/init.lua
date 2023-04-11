@@ -326,7 +326,7 @@ function ENT:CustomOnPreInitialize()
 	self.NextEvadeTime = CurTime() 
     self.PIV_LegHP = self.StartHealth / 2
 
-	if GetConVar("vj_piv_subtypes"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self.PIV_Mutated == false then
+	if GetConVar("vj_piv_subtypes"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_revenant" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self.PIV_Mutated == false then
 
 		if math.random(1,GetConVar("vj_piv_charger_chance"):GetInt()) == 1 && !PIV_Crippled && !PIV_FuckingCrawlingLittleCunt then
 			self.AnimTbl_Run = {ACT_RUN_RELAXED}

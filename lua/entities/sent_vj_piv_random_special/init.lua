@@ -10,6 +10,7 @@ ENT.SingleSpawner = true
 ENT.Model = {"models/hunter/plates/plate.mdl"} -- The models it should spawn with | Picks a random one from the table
 local ent_tbl = {
 	"npc_vj_piv_shambler",
+	"npc_vj_piv_revenant",
 	"npc_vj_piv_husk",
 	"npc_vj_piv_husk_f",
 	"npc_vj_piv_brawler",

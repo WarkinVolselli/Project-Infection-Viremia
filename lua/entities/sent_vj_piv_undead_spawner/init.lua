@@ -15,6 +15,7 @@ local ent_tbl = {
 	"npc_vj_piv_walker_charple",
 	"npc_vj_piv_shambler",
 	"npc_vj_piv_shambler",
+	"npc_vj_piv_revenant",
 	"npc_vj_piv_husk",
 	"npc_vj_piv_husk_f",
 	"npc_vj_piv_stoker",
