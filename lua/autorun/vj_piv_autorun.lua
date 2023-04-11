@@ -119,6 +119,7 @@ if VJExists == true then
 	
 	VJ.AddNPC("Shikari","npc_vj_piv_shikari",vCat)
 	VJ.AddNPC("Shambler (Male)","npc_vj_piv_shambler",vCat)
+	VJ.AddNPC("Revenant (Male)","npc_vj_piv_revenant",vCat)
 	VJ.AddNPC("Husk (Male)","npc_vj_piv_husk",vCat)
 	VJ.AddNPC("Husk (Female)","npc_vj_piv_husk_f",vCat)
 	VJ.AddNPC("Virulent","npc_vj_piv_virulent",vCat)
@@ -187,6 +188,8 @@ if VJExists == true then
 	
 	VJ.AddConVar("vj_piv_shambler_revive", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_shambler_revive_chance", 4, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_shambler_revive_revenant", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_shambler_revive_revenant_chance", 4, {FCVAR_ARCHIVE})
 	
 	if (CLIENT) then
 		local function VJ_PIV(Panel)
@@ -251,6 +254,8 @@ if VJExists == true then
 			
 			vj_piv_shambler_revive = "1",
 			vj_piv_shambler_revive_chance = "4",
+			vj_piv_shambler_revive_revenant = "1",
+			vj_piv_shambler_revive_revenant_chance = "4",
 		}
 	
 	Panel:AddControl("Checkbox", {Label = "Enable Infection System?", Command = "vj_piv_infection"})
@@ -326,6 +331,8 @@ if VJExists == true then
 	
 	Panel:AddControl("Checkbox", {Label = "Shamblers Can Revive?", Command = "vj_piv_shambler_revive"})
 	Panel:AddControl("Slider", {Label = "Shambler Revive Chance", Command = "vj_piv_shambler_revive_chance", Min = 1, Max = 100})
+	Panel:AddControl("Checkbox", {Label = "Shamblers Can Revive As Revenants?", Command = "vj_piv_shambler_revive_revenant"})
+	Panel:AddControl("Slider", {Label = "Shambler Revive As Revenant Chance", Command = "vj_piv_shambler_revive_revenant_chance", Min = 1, Max = 100})
 
 	end
 
