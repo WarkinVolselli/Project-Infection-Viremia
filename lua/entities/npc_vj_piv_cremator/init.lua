@@ -20,12 +20,13 @@ ENT.AnimTbl_Walk = {ACT_WALK_AIM}
 ENT.AnimTbl_Run = {ACT_WALK_AIM}
 
 ENT.SoundTbl_Breath = {"ambient/fire/firebig.wav"}
-ENT.BreathSoundLevel = 70
-ENT.SoundTbl_Alert = {"vj_projectinfection/npc/crimhead/crimhead_alert1.wav","vj_projectinfection/npc/crimhead/crimhead_alert2.wav"}
-ENT.SoundTbl_BeforeMeleeAttack = {"vj_projectinfection/npc/crimhead/crimhead_attack1.wav","vj_projectinfection/npc/crimhead/crimhead_attack2.wav"}
-ENT.SoundTbl_Death = {"vj_projectinfection/npc/crimhead/crimhead_die.wav"}
-ENT.SoundTbl_BeforeRangeAttack = {"vj_projectinfection/npc/crimhead/crimhead_frenzy.wav"}
-ENT.SoundTbl_Pain = {"vj_projectinfection/npc/crimhead/crimhead_pain.wav"}
+ENT.SoundTbl_Idle = {"vj_piv/cremator/volatile_attack_fake_00_0.wav","vj_piv/cremator/volatile_attack_fake_01_0.wav","vj_piv/cremator/volatile_attack_fake_02_0.wav","vj_piv/cremator/volatile_attack_fake_03_0.wav","vj_piv/cremator/volatile00_idle_calm_00_0.wav","vj_piv/cremator/volatile00_idle_calm_01_0.wav"}
+ENT.SoundTbl_CombatIdle = {"vj_piv/cremator/volatile00_move_upset_00_0.wav","vj_piv/cremator/volatile00_move_upset_01_0.wav","vj_piv/cremator/volatile00_move_upset_02_0.wav","vj_piv/cremator/volatile00_move_upset_03_0.wav","vj_piv/cremator/volatile_buggy_grab_taunt_00_0.wav","vj_piv/cremator/volatile_buggy_grab_taunt_01_0.wav","vj_piv/cremator/volatile_buggy_grab_taunt_02_0.wav","vj_piv/cremator/volatile00_idle_upset_00_0.wav","vj_piv/cremator/volatile00_idle_upset_01_0.wav"}
+ENT.BreathSoundLevel = 60
+ENT.SoundTbl_Alert = {"vj_piv/cremator/volatile_taunt_00_0.wav","vj_piv/cremator/volatile_taunt_01_0.wav","vj_piv/cremator/volatile_taunt_02_0.wav","vj_piv/cremator/volatile_taunt_03_0.wav","vj_piv/cremator/volatile_alarming_00_0.wav","vj_piv/cremator/volatile_alarming_01_0.wav","vj_piv/cremator/volatile_alarming_02_0.wav","vj_piv/cremator/volatile00_enemy_spotted_00_0.wav","vj_piv/cremator/volatile00_enemy_spotted_01_0.wav","vj_piv/cremator/volatile00_enemy_spotted_02_0.wav","vj_piv/cremator/volatile00_enemy_spotted_03_0.wav"}
+ENT.SoundTbl_BeforeMeleeAttack = {"vj_piv/cremator/volatile00_jump_attack_00_0.wav","vj_piv/cremator/volatile00_jump_attack_01_0.wav","vj_piv/cremator/volatile00_jump_attack_02_0.wav","vj_piv/cremator/volatile00_jump_attack_03_0.wav","vj_piv/cremator/volatile00_jump_attack_04_0.wav","vj_piv/cremator/volatile00_attack_00_0.wav","vj_piv/cremator/volatile00_attack_01_0.wav","vj_piv/cremator/volatile00_attack_02_0.wav","vj_piv/cremator/volatile00_attack_03_0.wav","vj_piv/cremator/volatile00_attack_04_0.wav","vj_piv/cremator/volatile00_attack_05_0.wav"}
+ENT.SoundTbl_Death = {"vj_piv/cremator/volatile00_death_00_0.wav","vj_piv/cremator/volatile00_death_01_0.wav","vj_piv/cremator/volatile00_death_02_0.wav","vj_piv/cremator/volatile00_death_03_0.wav"}
+ENT.SoundTbl_Pain = {"vj_piv/cremator/volatile_buggy_grab_attack_00_0.wav","vj_piv/cremator/volatile_buggy_grab_attack_01_0.wav","vj_piv/cremator/volatile_buggy_grab_attack_02_0.wav","vj_piv/cremator/volatile00_pain_00_0.wav","vj_piv/cremator/volatile00_pain_01_0.wav","vj_piv/cremator/volatile00_pain_02_0.wav","vj_piv/cremator/volatile00_pain_03_0.wav","vj_piv/cremator/volatile00_pain_03_0.wav","vj_piv/cremator/volatile00_pain_light_01_0.wav","vj_piv/cremator/volatile00_pain_light_02_0.wav","vj_piv/cremator/volatile00_pain_light_03_0.wav"}
 ENT.GeneralSoundPitch1 = 90
 ENT.GeneralSoundPitch2 = 80
 
@@ -39,7 +40,7 @@ ENT.PIV_LegHP = 10000
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
 self:SetSkin(math.random(0,5))
-
+self.HasBreathSound = true
 if self:IsDirt(self:GetPos()) then -- digout breaks particles, this respawns them with a slight delay if over dirt
    timer.Simple(0.2,function() if IsValid(self) then
     ParticleEffectAttach("fire_medium_03",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("origin"))

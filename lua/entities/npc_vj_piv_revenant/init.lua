@@ -22,6 +22,7 @@ ENT.AnimTbl_Walk = {ACT_WALK_RELAXED}
 ENT.AnimTbl_Run = {ACT_RUN_RELAXED}
 
 ENT.PIV_LegHP = 100 
+ENT.BreathSoundLevel = 60
 
 
 

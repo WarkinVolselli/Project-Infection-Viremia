@@ -24,6 +24,8 @@ ENT.NextAnyAttackTime_Leap = 1.5
 ENT.LeapAttackVelocityForward = 100
 ENT.LeapAttackVelocityUp = 250
 
+ENT.SoundTbl_Breath = {"ambient/fire/firebig.wav"}
+ENT.BreathSoundLevel = 60
 ENT.SoundTbl_Idle = {"vj_piv/stoker/idle_1.mp3","vj_piv/stoker/idle_2.mp3","vj_piv/stoker/idle_3.mp3","vj_piv/stoker/idle_4.mp3"}
 ENT.SoundTbl_BeforeMeleeAttack = {"vj_piv/stoker/attack_1.mp3","vj_piv/stoker/attack_2.mp3"}
 ENT.SoundTbl_Alert = {"vj_piv/stoker/attack_1.mp3","vj_piv/stoker/attack_2.mp3"}
@@ -70,6 +72,7 @@ self.GodMode = true -- Immune to everything
    	self:SetSkin(7)
 	
     ParticleEffectAttach("fire_medium_03",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("origin"))
+	self.HasBreathSound = true
 	
 self.Light1 = ents.Create("light_dynamic")
 	self.Light1:SetKeyValue("brightness", "0.04")
