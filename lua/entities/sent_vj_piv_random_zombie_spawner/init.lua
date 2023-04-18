@@ -42,7 +42,7 @@ ENT.EntitiesToSpawn = {
 
 
 function ENT:CustomOnInitialize() 
-self:SetMaterial("nodraw")
+self:SetNoDraw(true)
 end
 
 

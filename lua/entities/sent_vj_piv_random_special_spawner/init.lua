@@ -20,6 +20,7 @@ local ent_tbl = {
 	"npc_vj_piv_shikari",
 	"npc_vj_piv_fat_walker_m",
 	"npc_vj_piv_fat_runner_m",
+	"npc_vj_piv_shocker",
 }
 ENT.EntitiesToSpawn = {
 	{EntityName = "NPC1",SpawnPosition = {vForward=0,vRight=0,vUp=0},Entities = ent_tbl},
@@ -27,7 +28,7 @@ ENT.EntitiesToSpawn = {
 
 
 function ENT:CustomOnInitialize() 
-self:SetMaterial("nodraw")
+self:SetNoDraw(true)
 end
 
 

@@ -38,6 +38,7 @@ ENT.PI_LegHP = 10000
 ENT.Apeshit = false
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnInitialize()
+	self.HasBreathSound = false
 	self:SetSkin(6)
 	self:SetModelScale(1.1)
     self.PI_LegHP = self.StartHealth * 2
@@ -60,9 +61,10 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 self.AnimTbl_IdleStand = {"ACT_CROUCHIDLE"} -- The idle animation when AI is enabled
 self.AnimTbl_Walk = {ACT_RUN_STEALTH}
 self.AnimTbl_Run = {ACT_RUN_STEALTH}
-
+self.SetCorpseOnFire = true
 self.HasLeapAttack = true
 self.GodMode = true -- Immune to everything
+
 
                 VJ_EmitSound(self,"vj_piv/stoker/rage_"..math.random(1,2)..".mp3",0,90)
 		        local tbl = VJ_PICK({"nz_sonic_attack_1"})

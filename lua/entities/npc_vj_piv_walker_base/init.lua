@@ -17,7 +17,7 @@ ENT.VJC_Data = {
 }
 
 ENT.MeleeAttackDamageType = DMG_CLUB -- Type of Damage
-
+ 
 ENT.PIV_Infection = true
 ENT.PIV_Infection_IsWalker = true
 ENT.PIV_FuckingCrawlingLittleCunt = false
@@ -346,7 +346,7 @@ function ENT:CustomOnPreInitialize()
 			self.StartHealth = self.StartHealth * 2 
 		end
 
-		if math.random(1,GetConVar("vj_piv_crawler_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_spitter" then 
+		if math.random(1,GetConVar("vj_piv_crawler_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_spewer" && self:GetClass() != "npc_vj_piv_spitter" then 
 		    self.PIV_CanMutate = false
 			self.PIV_FuckingCrawlingLittleCunt = true
 			self:Cripple()    
@@ -364,7 +364,7 @@ function ENT:CustomOnPreInitialize()
 
 	self.IsDigging = false
 	self:Dig()
-
+	
 		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_cremator" && self:GetClass() != "npc_vj_piv_husk"  && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_panzer" && self:GetClass() != "npc_vj_piv_panzer_boss" && self.PIV_FuckingCrawlingLittleCunt == false then
 				
 			self.WeHaveAWeapon = true

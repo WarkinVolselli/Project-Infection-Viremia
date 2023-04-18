@@ -20,7 +20,7 @@ ENT.MeleeAttackDamageType = DMG_CLUB -- Type of Damage
 
 ENT.PIV_Infection = true
 ENT.PIV_Infection_IsWalker = false
-ENT.PIV_FuckingCrawlingLittleCunt = false
+ENT.PIV_FuckingCrawlingLittleCunt = false 
 ENT.PIV_Charger = false
 ENT.PIV_Leaper = false
 ENT.PIV_HasArmor = false
@@ -357,7 +357,7 @@ function ENT:CustomOnPreInitialize()
 
 		end
 
-		if math.random(1,GetConVar("vj_piv_crawler_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_stalker" then 
+		if math.random(1,GetConVar("vj_piv_crawler_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_shocker" then 
 			self.PIV_CanMutate = false
 			self.PIV_FuckingCrawlingLittleCunt = true
 			self:Cripple()    
@@ -374,14 +374,8 @@ function ENT:CustomOnPreInitialize()
 	self.IsDigging = false
 	self:Dig()
 	
-	if
-		self:GetClass() != "npc_vj_piv_shocker" &&
-		self:GetClass() != "npc_vj_piv_rabid" &&
-		self:GetClass() != "npc_vj_piv_berserker" &&
-		self:GetClass() != "npc_vj_piv_cloaker"
-	then
 
-		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_stalker" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self.PIV_FuckingCrawlingLittleCunt == false then
+		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_shocker" && self:GetClass() != "npc_vj_piv_stalker" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self.PIV_FuckingCrawlingLittleCunt == false then
 
 			self.WeHaveAWeapon = true
 			self.MeleeAttackDamage = 25
@@ -444,8 +438,6 @@ function ENT:CustomOnPreInitialize()
 			self.ExtraGunModel1:SetLocalPos(self:GetPos())
 
 		end
-
-	end
 
 	self:Zombie_CustomOnPreInitialize()
 

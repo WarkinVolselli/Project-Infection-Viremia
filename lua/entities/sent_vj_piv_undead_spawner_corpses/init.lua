@@ -33,7 +33,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function  ENT:CustomOnEntitySpawn ( ent ,  spawnKey ,  spawnTbl ,  initSpawn )  
 
-	local rise = VJ_PICK({"vjseq_slumprise_a","vjseq_slumprise_a2","vjseq_slumprise_a_attack","vjseq_slumprise_b","vjseq_infectionrise","vjseq_lying_to_standing_alert","vjseq_lying_to_standing_alert03c","vjseq_lying_to_standing_alert03d"})
+	local rise = VJ_PICK({"vjseq_slumprise_a","vjseq_slumprise_a2","vjseq_slumprise_b","vjseq_infectionrise","vjseq_lying_to_standing_alert","vjseq_lying_to_standing_alert03c","vjseq_lying_to_standing_alert03d"})
 	ent:VJ_ACT_PLAYACTIVITY(rise,true,VJ_GetSequenceDuration(self,rise),false)
 
 	if ent:GetClass() == "npc_vj_piv_virulent" then
