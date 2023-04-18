@@ -267,9 +267,9 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 
 	if dmginfo:IsDamageType(DMG_CLUB) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_GENERIC) then
 		if dmginfo:GetDamage() > 40 or dmginfo:GetDamageForce():Length() > 10000 then
-			if self.PIVNextShoveT < CurTime() then
+			if self.PIV_NextShoveT < CurTime() then
 				self:VJ_ACT_PLAYACTIVITY("vjseq_flinch_heavy_f",true,false,false)
-				self.PIVNextShoveT = CurTime() + math.random(8,12)
+				self.PIV_NextShoveT = CurTime() + math.random(8,12)
 			end
 		end
     return !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt  && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)

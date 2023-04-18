@@ -11,11 +11,11 @@ ENT.StartHealth = 400
 ENT.Immune_Fire = true -- Immune to fire-type damages
 
 ENT.HasLeapAttack = false 
-ENT.LeapAttackDamage = 25
+ENT.LeapAttackDamage = math.random(20,25)
 ENT.LeapAttackDamageType = DMG_SLASH 
 ENT.AnimTbl_LeapAttack = {ACT_LEAP} 
 ENT.LeapDistance = 350
-ENT.LeapToMeleeDistance = 250
+ENT.LeapToMeleeDistance = 150
 ENT.LeapAttackDamageDistance = 150
 ENT.TimeUntilLeapAttackDamage = 0.8
 ENT.TimeUntilLeapAttackVelocity = 0.1 
