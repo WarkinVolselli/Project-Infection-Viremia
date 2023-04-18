@@ -106,6 +106,8 @@ if VJExists == true then
 	VJ.AddNPC("Stalker","npc_vj_piv_stalker",vCat)
 	
 	VJ.AddNPC("Spitter","npc_vj_piv_spitter",vCat)
+--	VJ.AddNPC("Spewer","npc_vj_piv_spewer",vCat)
+	VJ.AddNPC("Shocker","npc_vj_piv_shocker",vCat)
 
 	VJ.AddNPC("Cremator","npc_vj_piv_cremator",vCat)
 	VJ.AddNPC("Stoker","npc_vj_piv_stoker",vCat)
