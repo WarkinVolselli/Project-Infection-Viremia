@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models\vj_piv/specials/specimen/hair_c"
+	"$alphatest" 1
+	"$nocull" 1	
+}
+

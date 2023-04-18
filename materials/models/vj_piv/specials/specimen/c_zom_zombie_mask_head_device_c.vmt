@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models\vj_piv/specials/specimen/c_zom_zombie_mask_head_device_c"
+        "$bumpmap" "models\vj_piv/specials/specimen/c_zom_zombie_mask_head_device_n"
+	"$alphatest" 1
+	"$nocull" 1
+	"$phong" "1"
+	"$phongexponent" 15
+	"$phongboost" "0.3"
+	"$phongfresnelranges"	"[ .3 1.2 8]"
+//	"$PhongAlbedoTint" "1"
+
+
+}

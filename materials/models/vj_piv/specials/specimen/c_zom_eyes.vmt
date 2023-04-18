@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models\vj_piv/specials/specimen/c_zom_bruiser_alphas_c"
+        "$bumpmap" "models\vj_piv/specials/specimen/c_zom_bruiser_alphas_n"
+	"$selfillum" 1
+	"$additive" 1
+}
+
