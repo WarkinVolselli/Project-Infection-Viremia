@@ -98,8 +98,8 @@ if VJExists == true then
 	local vCat = "Project Infection: Viremia: Specials"
 	
 	VJ.AddNPC("Bloated Walker (Male)","npc_vj_piv_fat_walker_m",vCat)
-	
 	VJ.AddNPC("Bloated Runner (Male)","npc_vj_piv_fat_runner_m",vCat)
+	VJ.AddNPC("Bruiser","npc_vj_piv_bruiser",vCat)
 	
 	VJ.AddNPC("Stalker","npc_vj_piv_stalker",vCat)
 	VJ.AddNPC("Creep","npc_vj_piv_creep",vCat)
@@ -149,6 +149,7 @@ if VJExists == true then
 	VJ.AddConVar("vj_piv_infection", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_infection_type", 0, {FCVAR_ARCHIVE})	
 	VJ.AddConVar("vj_piv_climbing", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_cripple", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_firerunners", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_firerunners_chance", 4, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_headshot_damage", 1, {FCVAR_ARCHIVE})	
@@ -210,6 +211,8 @@ if VJExists == true then
 			
 			vj_piv_climbing = "1",
 			
+			vj_piv_cripple = "1",
+			
 			vj_piv_firerunners = "1",
 			vj_piv_firerunners_chance = "4",
 			
@@ -264,6 +267,8 @@ if VJExists == true then
 	Panel:AddControl("Checkbox", {Label = "Enable Infection By Type?", Command = "vj_piv_infection_type"})
 
 	Panel:AddControl("Checkbox", {Label = "Enable Climbing System?", Command = "vj_piv_climbing"})
+	
+	Panel:AddControl("Checkbox", {Label = "Enable Crippling System?", Command = "vj_piv_cripple"})
 
 	Panel:AddControl("Checkbox", {Label = "Enable Spawn Animations?", Command = "vj_piv_spawnanim"})
 
