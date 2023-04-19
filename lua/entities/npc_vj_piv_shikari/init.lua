@@ -31,12 +31,12 @@ ENT.AnimTbl_Flinch = {ACT_FLINCH_PHYSICS} -- If it uses normal based animation, 
 
 	-- ====== Sound File Paths ====== --
 -- Leave blank if you don't want any sounds to play
-ENT.SoundTbl_FootStep = {"vj_projectinfection/npc/foot1.wav","vj_projectinfection/npc/foot2.wav","vj_projectinfection/npc/foot3.wav"}
-ENT.SoundTbl_Alert = {"vj_projectinfection/npc/shikari/fz_alert_close1.wav","vj_projectinfection/npc/shikari/fz_alert_far1.wav","vj_projectinfection/npc/shikari/fz_alert_far2.wav"}
+
+ENT.SoundTbl_Alert = {"vj_piv/shikari/fz_alert_close1.wav","vj_piv/shikari/fz_alert_far1.wav","vj_piv/shikari/fz_alert_far2.wav"}
 ENT.SoundTbl_BeforeMeleeAttack = {"npc/fast_zombie/leap1.wav"}
-ENT.SoundTbl_Pain = {"vj_projectinfection/npc/shikari/pain1.wav","vj_projectinfection/npc/shikari/pain2.wav","vj_projectinfection/npc/shikari/pain3.wav","vj_projectinfection/npc/shikari/pain4.wav"}
-ENT.SoundTbl_Death = {"vj_projectinfection/npc/shikari/die1.wav","vj_projectinfection/npc/shikari/die2.wav","vj_projectinfection/npc/shikari/die3.wav","vj_projectinfection/npc/shikari/die4.wav"}
-ENT.SoundTbl_LeapAttackJump = {"vj_projectinfection/npc/shikari/leap1.wav"}
+ENT.SoundTbl_Pain = {"vj_piv/shikari/pain1.wav","vj_piv/shikari/pain2.wav","vj_piv/shikari/pain3.wav","vj_piv/shikari/pain4.wav"}
+ENT.SoundTbl_Death = {"vj_piv/shikari/die1.wav","vj_piv/shikari/die2.wav","vj_piv/shikari/die3.wav","vj_piv/shikari/die4.wav"}
+ENT.SoundTbl_LeapAttackJump = {"vj_piv/shikari/leap1.wav"}
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
 	self:SetCollisionBounds(Vector(13,13,50), Vector(-13,-13,0))
