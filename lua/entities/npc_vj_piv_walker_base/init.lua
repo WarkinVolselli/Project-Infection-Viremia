@@ -306,15 +306,15 @@ function ENT:CustomOnPreInitialize()
 		self:PIV_CustomMutate()
 	end
 
-    if GetConVar("vj_piv_rebirth"):GetInt() == 1 &&	 self:GetClass() != "npc_vj_piv_panzer_boss" then 
+    if GetConVar("vj_piv_rebirth"):GetInt() == 1 &&	self:GetClass() != "npc_vj_piv_panzer_boss" then 
 		self.PIV_CanMutate = true
 	end
 
-    if GetConVar("vj_piv_doorbreaking"):GetInt() == 1 then
+    if GetConVar("vj_piv_doorbreaking"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_bruiser" then
 		self.CanOpenDoors = false -- Can it open doors?
 	end
 
-    if GetConVar("vj_piv_climbing"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" then
+    if GetConVar("vj_piv_climbing"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" then
 		self.PIV_CanClimb = true
 	end
 
@@ -324,7 +324,7 @@ function ENT:CustomOnPreInitialize()
 
     self.PI_LegHP = self.StartHealth / 2
 
-	if GetConVar("vj_piv_subtypes"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_cremator"  && self:GetClass() != "npc_vj_piv_fat_walker_m" && self:GetClass() != "npc_vj_piv_fat_runner_m" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_stoker" && self.PIV_Mutated == false then
+	if GetConVar("vj_piv_subtypes"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_cremator"  && self:GetClass() != "npc_vj_piv_fat_walker_m" && self:GetClass() != "npc_vj_piv_fat_runner_m" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_stoker" && self.PIV_Mutated == false then
 
 		-- joggers
 		if math.random(1,GetConVar("vj_piv_jogger_chance"):GetInt()) == 1 && !PIV_Crippled && !PI_FuckingCrawlingLittleCunt && self:GetClass() != "npc_vj_piv_shambler" then
@@ -365,7 +365,7 @@ function ENT:CustomOnPreInitialize()
 	self.IsDigging = false
 	self:Dig()
 	
-		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_cremator" && self:GetClass() != "npc_vj_piv_husk"  && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_panzer" && self:GetClass() != "npc_vj_piv_panzer_boss" && self.PIV_FuckingCrawlingLittleCunt == false then
+		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_cremator" && self:GetClass() != "npc_vj_piv_husk"  && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_panzer" && self:GetClass() != "npc_vj_piv_panzer_boss" && self.PIV_FuckingCrawlingLittleCunt == false then
 				
 			self.WeHaveAWeapon = true
 			self.MeleeAttackDamage = math.random(20,25)
@@ -440,6 +440,7 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 
 	if key == "step" then
 		self:FootStepSoundCode()
+		
 	    if self.VJ_IsHugeMonster == true then
 			util.ScreenShake(self:GetPos(), 1, 5, 1, 1000)
 			VJ_EmitSound(self, "vj_piv/charger_run_left_0"..math.random(1,4)..".wav", 70, 100)
@@ -447,7 +448,7 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 		
 	    if self.PIV_HasArmor == true && self.VJ_IsHugeMonster == false then
 			VJ_EmitSound(self, "vj_piv/mil_zomb/step_"..math.random(1,4)..".mp3", 70, 100)
-		elseif self.VJ_IsHugeMonster == true then
+		elseif self.PIV_HasArmor == true && self.VJ_IsHugeMonster == true then
 			VJ_EmitSound(self, "vj_piv/demolisher/step/step_"..math.random(1,4)..".mp3", 70, 100)
 		end
 		
@@ -1082,7 +1083,7 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 	return !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt  && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
 	end
 
-	if GetConVarNumber("VJ_piv_Cripple") == 1 then  -- if the convars not on don't run this
+	if GetConVarNumber("vj_piv_cripple") == 1 then  -- if the convars not on don't run this
 		if hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then -- are we hitting the leg?
 			self.PIV_LegHP = self.PIV_LegHP -dmginfo:GetDamage() -- take away leg hp
 		end

@@ -56,10 +56,6 @@ if self.DeathAnimationCodeRan == false then
 end
 
 end
--------------------------------------------------------------------------------------------------------------------
-function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
-	self.AnimTbl_Death = {"vjseq_nz_death_elec_1","vjseq_nz_death_elec_2","vjseq_nz_death_elec_3","vjseq_nz_death_elec_4","vjseq_nz_death_elec_5"} 
-end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_AfterStartTimer()
 self:SetMaterial("models/alyx/emptool_glow")

@@ -71,6 +71,7 @@ ENT.SoundTbl_Death = {
 function ENT:Zombie_CustomOnInitialize()
 	self:SetSkin(math.random(0,1))
 	self:SetModelScale(1.2)
+	self.PIV_LegHP = self.PIV_LegHP *2
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)

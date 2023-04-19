@@ -450,6 +450,7 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 
 	if key == "step" then
 		self:FootStepSoundCode()
+		
 	    if self.VJ_IsHugeMonster == true then
 			util.ScreenShake(self:GetPos(), 1, 5, 1, 1000)
 			VJ_EmitSound(self, "vj_piv/charger_run_left_0"..math.random(1,4)..".wav", 70, 100)
@@ -457,7 +458,7 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 		
 	    if self.PIV_HasArmor == true && self.VJ_IsHugeMonster == false then
 			VJ_EmitSound(self, "vj_piv/mil_zomb/step_"..math.random(1,4)..".mp3", 70, 100)
-		elseif self.VJ_IsHugeMonster == true then
+		elseif self.PIV_HasArmor == true && self.VJ_IsHugeMonster == true then
 			VJ_EmitSound(self, "vj_piv/demolisher/step/step_"..math.random(1,4)..".mp3", 70, 100)
 		end
 		
@@ -1118,7 +1119,7 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 	return !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt  && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
 	end
 
-	if GetConVarNumber("VJ_piv_Cripple") == 1 then  -- if the convars not on don't run this
+	if GetConVarNumber("vj_piv_cripple") == 1 then  -- if the convars not on don't run this
 		if hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then -- are we hitting the leg?
 			self.PIV_LegHP = self.PIV_LegHP -dmginfo:GetDamage() -- take away leg hp
 		end
