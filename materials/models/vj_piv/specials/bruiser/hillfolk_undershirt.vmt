@@ -1,0 +1,19 @@
+vertexlitgeneric
+{
+$baseTexture "models\vj_piv\specials\bruiser\hillfolk_undershirt_color"
+$bumpmap "models\vj_piv\specials\bruiser\hillfolk_undershirt_normal"
+
+$phong 1
+$phongboost 5
+$phongexponent 14
+$halflambert 0
+
+$phongtint "[0 0 0]"
+$phongfresnelranges "[.1 .5 1]"
+
+$lightwarptexture "models\vj_piv\shared\coach_head_wrp"
+$ambientocclusion 1
+$ambientboost 0
+$color2 "[1.5 1.5 1.5]"
+
+}

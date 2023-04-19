@@ -1,0 +1,22 @@
+vertexlitgeneric
+{
+$baseTexture "models\vj_piv\specials\bruiser\hillfolk2_color"
+$bumpmap "models\vj_piv\specials\bruiser\hillfolk_normal"
+$phongexponenttexture "models\vj_piv\specials\bruiser\charger_body_exponent"
+$phong 1
+$phongboost 4
+$phongexponent 30
+$halflambert 0
+
+$phongtint "[0 0 0]"
+$phongfresnelranges "[.1 .5 1]"
+
+$allowdiffusemodulation 0
+$lightwarptexture "models\vj_piv\shared\coach_head_wrp"
+$ambientocclusion 1
+$alphatest 1
+$diffuseexp 1
+$ambientboost 0
+$color2 "[1.5 1.5 1.5]"
+
+}
