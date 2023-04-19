@@ -37,6 +37,11 @@ ENT.SoundTbl_BeforeMeleeAttack = {"npc/fast_zombie/leap1.wav"}
 ENT.SoundTbl_Pain = {"vj_piv/shikari/pain1.wav","vj_piv/shikari/pain2.wav","vj_piv/shikari/pain3.wav","vj_piv/shikari/pain4.wav"}
 ENT.SoundTbl_Death = {"vj_piv/shikari/die1.wav","vj_piv/shikari/die2.wav","vj_piv/shikari/die3.wav","vj_piv/shikari/die4.wav"}
 ENT.SoundTbl_LeapAttackJump = {"vj_piv/shikari/leap1.wav"}
+
+ENT.AlertSoundLevel = 85
+ENT.BeforeMeleeAttackSoundLevel = 85
+ENT.LeapAttackJumpSoundLevel = 85
+
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
 	self:SetCollisionBounds(Vector(13,13,50), Vector(-13,-13,0))
