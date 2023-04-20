@@ -266,7 +266,7 @@ if VJExists == true then
 	
 	Panel:AddControl("Checkbox", {Label = "Enable Infection By Type?", Command = "vj_piv_infection_type"})
 
-	Panel:AddControl("Checkbox", {Label = "Enable Climbing System?", Command = "vj_piv_climbing"})
+	Panel:AddControl("Checkbox", {Label = "Enable Climbing System? [EXPERIMENTAL]", Command = "vj_piv_climbing"})
 	
 	Panel:AddControl("Checkbox", {Label = "Enable Crippling System?", Command = "vj_piv_cripple"})
 
@@ -285,8 +285,8 @@ if VJExists == true then
 	
 	Panel:AddControl("Checkbox", {Label = "Enable Eyeglow?", Command = "vj_piv_lights"})
 
-	Panel:AddControl("Checkbox", {Label = "Allow Zombie Rebirth?", Command = "vj_piv_rebirth"})
-	Panel:AddControl("Checkbox", {Label = "All Zombies spawned Rebirthed?", Command = "vj_piv_rebirthall"})
+	Panel:AddControl("Checkbox", {Label = "Allow Zombie Rebirth? [EXPERIMENTAL]", Command = "vj_piv_rebirth"})
+	Panel:AddControl("Checkbox", {Label = "All Zombies spawned Rebirthed? [EXPERIMENTAL]", Command = "vj_piv_rebirthall"})
 
 	Panel:AddControl("Checkbox", {Label = "Enable Zombie Weapons?", Command = "vj_piv_weapons"})
 	Panel:AddControl("Checkbox", {Label = "Enable Weapon Dropping?", Command = "vj_piv_weapons_dropping"})
