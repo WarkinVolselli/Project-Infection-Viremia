@@ -9,7 +9,7 @@ include("shared.lua")
 ENT.Model = {"models/spitball_small.mdl"} -- The models it should spawn with | Picks a random one from the table
 ENT.DoesDirectDamage = true -- Should it do a direct damage when it hits something?
 ENT.DirectDamage = 10 -- How much damage should it do when it hits something
-ENT.DirectDamageType = DMG_ACID -- Damage type
+ENT.DirectDamageType = DMG_POISON -- Damage type
 ENT.DecalTbl_DeathDecals = {"YellowBlood"}
 ENT.SoundTbl_OnCollide = {"vj_acid/acid_splat.wav"}
 ENT.OnCollideSoundLevel = 70

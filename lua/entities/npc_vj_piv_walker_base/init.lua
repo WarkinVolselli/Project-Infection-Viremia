@@ -39,6 +39,8 @@ ENT.PIV_CurAnims = -1 -- 0 = Normal | 1 = On fire
 ENT.PIV_CanClimb = false
 ENT.PIV_IsClimbing = false
 ENT.PIV_NextClimbT = 0
+
+ENT.PIV_WeaponType = 0
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.VJ_NPC_Class = {"CLASS_ZOMBIE"} -- NPCs with the same class with be allied to each other
 ENT.BloodColor = "Red" -- The blood type, this will determine what it should use (decal, particle, etc.)
@@ -324,7 +326,7 @@ function ENT:CustomOnPreInitialize()
 
     self.PI_LegHP = self.StartHealth / 2
 
-	if GetConVar("vj_piv_subtypes"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_cremator"  && self:GetClass() != "npc_vj_piv_fat_walker_m" && self:GetClass() != "npc_vj_piv_fat_runner_m" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_stoker" && self.PIV_Mutated == false then
+	if GetConVar("vj_piv_subtypes"):GetInt() == 1 && self.WeHaveAWeapon == false && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_cremator"  && self:GetClass() != "npc_vj_piv_fat_walker_m" && self:GetClass() != "npc_vj_piv_fat_runner_m" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_stoker" && self.PIV_Mutated == false then
 
 		-- joggers
 		if math.random(1,GetConVar("vj_piv_jogger_chance"):GetInt()) == 1 && !PIV_Crippled && !PI_FuckingCrawlingLittleCunt && self:GetClass() != "npc_vj_piv_shambler" then
@@ -365,7 +367,7 @@ function ENT:CustomOnPreInitialize()
 	self.IsDigging = false
 	self:Dig()
 	
-		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_cremator" && self:GetClass() != "npc_vj_piv_husk"  && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_panzer" && self:GetClass() != "npc_vj_piv_panzer_boss" && self.PIV_FuckingCrawlingLittleCunt == false then
+		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_cremator" && self:GetClass() != "npc_vj_piv_husk"  && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_panzer" && self:GetClass() != "npc_vj_piv_panzer_boss" then
 				
 			self.WeHaveAWeapon = true
 			self.MeleeAttackDamage = math.random(20,25)
@@ -374,7 +376,8 @@ function ENT:CustomOnPreInitialize()
 			self.ExtraGunModel1 = ents.Create("prop_physics")
 
 			if weapon == 1 then	
-	
+			
+				self.PIV_WeaponType = 2
 				self.ExtraGunModel1:SetModel("models/props_canal/mattpipe.mdl")
 				self.SoundTbl_MeleeAttack = {"vj_piv/wrenchhit1.wav","vj_piv/wrenchhit2.wav","vj_piv/wrenchhit3.wav","vj_piv/wrenchhit4.wav"}
 
@@ -382,6 +385,7 @@ function ENT:CustomOnPreInitialize()
 
 			if weapon == 2 then
 
+				self.PIV_WeaponType = 1
 				self.ExtraGunModel1:SetModel("models/weapons/w_knife_t.mdl")
 				self.SoundTbl_MeleeAttack = {"vj_piv/knife_hit_01.wav","vj_piv/knife_hit_02.wav","vj_piv/knife_hit_03.wav","vj_piv/knife_hit_04.wav","vj_piv/knife_hit_05.wav","vj_piv/knife_hit_06.wav"}
 				self.SoundTbl_MeleeAttackMiss = {"vj_piv/knife_miss_01.wav","vj_piv/knife_miss_02.wav","vj_piv/knife_miss_03.wav","vj_piv/knife_miss_04.wav"}
@@ -389,7 +393,7 @@ function ENT:CustomOnPreInitialize()
 			end
 
 			if weapon == 3 then
-
+				self.PIV_WeaponType = 2
 				self.ExtraGunModel1:SetModel("models/weapons/w_crowbar.mdl")			
 				self.SoundTbl_MeleeAttack = {"vj_piv/HammerWhack-1.wav","vj_piv/HammerWhack-2.wav","vj_piv/HammerWhack-3.wav"}
 
@@ -397,6 +401,7 @@ function ENT:CustomOnPreInitialize()
 
 			if weapon == 4 then
 
+				self.PIV_WeaponType = 2
 				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_axe.mdl")			
 				self.SoundTbl_MeleeAttack = {"vj_piv/SwordHit-1.wav","vj_piv/SwordHit-2.wav","vj_piv/SwordHit-3.wav","vj_piv/SwordHit-4.wav","vj_piv/SwordHit-5.wav","vj_piv/SwordHit-6.wav","vj_piv/SwordHit-7.wav","vj_piv/SwordHit-8.wav","vj_piv/SwordHit-9.wav"}
 				
@@ -404,12 +409,14 @@ function ENT:CustomOnPreInitialize()
 
 			if weapon == 5 then	
 
+				self.PIV_WeaponType = 2
 				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_shovel.mdl")
 				self.SoundTbl_MeleeAttack = {"vj_piv/ShovelSmack-1.wav","vj_piv/ShovelSmack-2.wav","vj_piv/ShovelSmack-3.wav"}
 			end
 
 			if weapon == 6 then	
-
+			
+				self.PIV_WeaponType = 1
 				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_pan.mdl")		
 				self.SoundTbl_MeleeAttack = {"vj_piv/fryingpan1.wav","vj_piv/fryingpan2.wav","vj_piv/fryingpan3.wav","vj_piv/fryingpan4.wav"}
 
@@ -768,15 +775,30 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 		if self.WeHaveAWeapon == true then
 		
-			self.MeleeAttackDamage = math.random(20,25)
-			self.MeleeAttackDistance = 40
-			self.MeleeAttackDamageDistance = 60
-		
-			self.AnimTbl_MeleeAttack = {
-				"vjges_melee_moving01a",
-				"vjges_melee_moving03a",
-				"vjges_melee_moving06a",
-		}
+			if self.PIV_WeaponType == 1 then
+			
+				self.MeleeAttackDamage = math.random(20,25)
+				self.MeleeAttackDistance = 40
+				self.MeleeAttackDamageDistance = 60
+			
+				self.AnimTbl_MeleeAttack = {
+					"vjges_melee_1h_left",
+					"vjges_melee_1h_right",
+					"vjges_melee_1h_overhead",
+				}
+				
+			elseif self.PIV_WeaponType == 2 then
+			
+				self.MeleeAttackDamage = math.random(20,25)
+				self.MeleeAttackDistance = 40
+				self.MeleeAttackDamageDistance = 60
+			
+				self.AnimTbl_MeleeAttack = {
+					"vjges_melee_2h_left",
+					"vjges_melee_2h_right",
+					"vjges_melee_2h_overhead",
+				}
+			end
 
 		else
 		
@@ -821,15 +843,30 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 		if self.WeHaveAWeapon == true then
 		
-			self.MeleeAttackDamage = math.random(20,25)
-			self.MeleeAttackDistance = 40
-			self.MeleeAttackDamageDistance = 60
-
-			self.AnimTbl_MeleeAttack = {
-				"vjges_melee_moving01a",
-				"vjges_melee_moving03a",
-				"vjges_melee_moving06a",
-			}
+			if self.PIV_WeaponType == 1 then
+			
+				self.MeleeAttackDamage = math.random(20,25)
+				self.MeleeAttackDistance = 40
+				self.MeleeAttackDamageDistance = 60
+			
+				self.AnimTbl_MeleeAttack = {
+					"vjges_melee_1h_left",
+					"vjges_melee_1h_right",
+					"vjges_melee_1h_overhead",
+				}
+				
+			elseif self.PIV_WeaponType == 2 then
+			
+				self.MeleeAttackDamage = math.random(20,25)
+				self.MeleeAttackDistance = 40
+				self.MeleeAttackDamageDistance = 60
+			
+				self.AnimTbl_MeleeAttack = {
+					"vjges_melee_2h_left",
+					"vjges_melee_2h_right",
+					"vjges_melee_2h_overhead",
+				}
+			end
 
 		else
 
