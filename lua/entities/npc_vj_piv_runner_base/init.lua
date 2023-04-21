@@ -867,6 +867,8 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 					"vjges_melee_2h_overhead",
 				}
 			end
+
+		else
 		
 			self.MeleeAttackDamage = math.random(15,20)
 			self.HasMeleeAttackKnockBack = false
