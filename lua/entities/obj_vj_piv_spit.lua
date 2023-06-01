@@ -15,11 +15,10 @@ ENT.Author 			= "Warkin"
 if !SERVER then return end
 
 ENT.Model = {"models/spitball_small.mdl","models/spitball_medium.mdl","models/spitball_medium.mdl"} -- The models it should spawn with | Picks a random one from the table
-ENT.DoesRadiusDamage = true -- Should it do a blast damage when it hits something?
-ENT.RadiusDamageRadius = 10
-ENT.RadiusDamage = math.random(1,3) -- How much damage should it deal? Remember this is a radius damage, therefore it will do less damage the farther away the entity is from its enemy
-ENT.RadiusDamageUseRealisticRadius = true -- Should the damage decrease the farther away the enemy is from the position that the projectile hit?
-ENT.RadiusDamageType = DMG_ACID -- Damage type
+ENT.DoesDirectDamage = true
+ENT.DirectDamage = math.random(5,10)
+ENT.DirectDamageType = DMG_ACID
+
 ENT.DecalTbl_DeathDecals = {"VJ_AcidSlime1"}
 ENT.SoundTbl_Idle = {"vj_acid/acid_idle1.wav"}
 ENT.SoundTbl_OnCollide = {"vj_acid/acid_blood.wav"}
@@ -27,7 +26,7 @@ ENT.OnCollideSoundPitch = VJ_Set(90,120)
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomPhysicsObjectOnInitialize(phys)
 	phys:Wake()
-	//phys:SetMass(1)
+	phys:SetMass(1)
 	phys:SetBuoyancyRatio(0)
 	phys:EnableDrag(false)
 end

@@ -19,8 +19,9 @@ ENT.PrintName		= "Shock"
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomPhysicsObjectOnInitialize(phys)
 	phys:Wake()	
+	phys:SetMass(1)
 	phys:EnableDrag(false)
-        phys:EnableGravity(false)
+    phys:EnableGravity(false)
 	phys:SetBuoyancyRatio(0)
 end
 ------------------------------------------------------------------------------------------

@@ -17,6 +17,7 @@ ENT.OnCollideSoundPitch = VJ_Set(90,120)
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomPhysicsObjectOnInitialize(phys)
 	phys:Wake()
+	phys:SetMass(1)
 	phys:SetBuoyancyRatio(0)
 	phys:EnableDrag(false)
 	self:SetNoDraw(true)

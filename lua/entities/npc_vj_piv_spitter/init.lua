@@ -49,7 +49,6 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:RangeAttackCode_GetShootPos(TheProjectile)
 	return self:CalculateProjectile("Curve", self:GetAttachment(self:LookupAttachment(self.RangeUseAttachmentForPosID)).Pos, self:GetEnemy():GetPos() + self:GetEnemy():OBBCenter(), 1500) + self:GetUp()*math.Rand(-30,30) + self:GetRight()*math.Rand(-40,40)
-	//return (self:GetEnemy():GetPos() - self:GetAttachment(self:LookupAttachment(self.RangeUseAttachmentForPosID)).Pos) + self:GetUp()*math.Rand(300,400) + self:GetRight()*math.Rand(-20,80)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Cripple()

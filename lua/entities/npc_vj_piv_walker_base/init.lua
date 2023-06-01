@@ -24,6 +24,7 @@ ENT.PIV_FuckingCrawlingLittleCunt = false
 ENT.PIV_Jogger = false
 ENT.PIV_Shambler = false
 ENT.PIV_HasArmor = false
+ENT.PIV_Tank = false
 
 ENT.PIV_IsZombine = false
 ENT.PIV_IsMetropolice = false
@@ -448,9 +449,12 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 	if key == "step" then
 		self:FootStepSoundCode()
 		
-	    if self.VJ_IsHugeMonster == true then
+	    if self.VJ_IsHugeMonster == true && self.PIV_Tank == false then
 			util.ScreenShake(self:GetPos(), 1, 5, 1, 1000)
 			VJ_EmitSound(self, "vj_piv/charger_run_left_0"..math.random(1,4)..".wav", 70, 100)
+		elseif self.VJ_IsHugeMonster == true && self.PIV_Tank == true then
+			util.ScreenShake(self:GetPos(), 2, 5, 1, 1000)
+			VJ_EmitSound(self, "vj_piv/tank/step_"..math.random(1,5)..".wav", 70, 100)
 		end
 		
 	    if self.PIV_HasArmor == true && self.VJ_IsHugeMonster == false then

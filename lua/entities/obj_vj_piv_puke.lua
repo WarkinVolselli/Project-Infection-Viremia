@@ -20,13 +20,14 @@ ENT.SoundTbl_Idle = {"vj_acid/acid_idle1.wav"}
 ENT.SoundTbl_OnCollide = {"vj_piv/spewer/projectileimpact.wav","vj_piv/spewer/projectileexplosion.wav"}
 ENT.OnCollideSoundPitch = VJ_Set(90,120) 
 ENT.DoesRadiusDamage = true -- Should it do a blast damage when it hits something?
-ENT.RadiusDamageRadius = 75
-ENT.RadiusDamage = math.random(5,10) -- How much damage should it deal? Remember this is a radius damage, therefore it will do less damage the farther away the entity is from its enemy
+ENT.RadiusDamageRadius = 100
+ENT.RadiusDamage = math.random(10,15) -- How much damage should it deal? Remember this is a radius damage, therefore it will do less damage the farther away the entity is from its enemy
 ENT.RadiusDamageUseRealisticRadius = true -- Should the damage decrease the farther away the enemy is from the position that the projectile hit?
 ENT.RadiusDamageType = DMG_ACID -- Damage type
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomPhysicsObjectOnInitialize(phys)
 	phys:Wake()
+	phys:SetMass(1)
 	phys:SetBuoyancyRatio(0)
 	phys:EnableDrag(false)
 end
