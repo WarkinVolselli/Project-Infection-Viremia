@@ -64,7 +64,7 @@ if VJExists == true then
 	VJ.AddNPC("Walker Base","npc_vj_piv_walker_base",vCat)
 	VJ.AddNPC("Runner Base","npc_vj_piv_runner_base",vCat)
 	
-	local vCat = "Project Infection: Viremia: Citizens"
+	local vCat = "Project Infection: Viremia - Citizens"
 	
 	VJ.AddNPC("Civilian Walker (Female)","npc_vj_piv_walker_civ_f",vCat)
 	VJ.AddNPC("Civilian Walker (Male)","npc_vj_piv_walker_civ_m",vCat)
@@ -81,7 +81,7 @@ if VJExists == true then
 	VJ.AddNPC("Charple Walker","npc_vj_piv_walker_charple",vCat)
 	VJ.AddNPC("Charple Runner","npc_vj_piv_runner_charple",vCat)
 
-	local vCat = "Project Infection: Viremia: Combine"
+	local vCat = "Project Infection: Viremia - Combine"
 	
 	VJ.AddNPC("Civil Protection Walker","npc_vj_piv_walker_metropolice",vCat)
 	VJ.AddNPC("Civil Protection Runner","npc_vj_piv_runner_metropolice",vCat)
@@ -95,7 +95,7 @@ if VJExists == true then
 	VJ.AddNPC("Overwatch Elite Walker","npc_vj_piv_walker_combine_e",vCat)
 	VJ.AddNPC("Overwatch Elite Runner","npc_vj_piv_runner_combine_e",vCat)
 	
-	local vCat = "Project Infection: Viremia: Specials"
+	local vCat = "Project Infection: Viremia - Specials"
 	
 	VJ.AddNPC("Bloated Walker (Male)","npc_vj_piv_fat_walker_m",vCat)
 	VJ.AddNPC("Bloated Runner (Male)","npc_vj_piv_fat_runner_m",vCat)
@@ -124,8 +124,10 @@ if VJExists == true then
 	VJ.AddNPC("Husk (Male)","npc_vj_piv_husk",vCat)
 	VJ.AddNPC("Husk (Female)","npc_vj_piv_husk_f",vCat)
 	VJ.AddNPC("Virulent","npc_vj_piv_virulent",vCat)
+
+	VJ.AddNPC("Tank","npc_vj_piv_tank",vCat)
 	
-	local vCat = "Project Infection: Viremia: Spawners"
+	local vCat = "Project Infection: Viremia - Spawners"
 
 	VJ.AddNPC("Random Zombie","sent_vj_piv_random_zombie",vCat)
 	VJ.AddNPC("Random Walker","sent_vj_piv_random_walker",vCat)
@@ -319,13 +321,14 @@ if VJExists == true then
 	Panel:AddControl("ComboBox", combobox_runnervoice)
 	
 	-- giant voice
-	
+--[[	
 	local combobox_giantvoice = {Options = {}, CVars = {}, Label = "Giant Voice", MenuButton = "0"}
 	combobox_giantvoice.Options["Dying Light Demolisher"] = {vj_piv_giant_voice = 0}
 	combobox_giantvoice.Options["Left 4 Dead 2 Tank"] = {vj_piv_giant_voice = 1}
 	combobox_giantvoice.Options["Left 4 Dead 2 Charger"] = {vj_piv_giant_voice = 2}
 	combobox_giantvoice.Options["Random"] = {vj_piv_giant_voice = 3}
 	Panel:AddControl("ComboBox", combobox_giantvoice)
+--]]
 
 	Panel:AddControl("Checkbox", {Label = "Husks Can Run?", Command = "vj_piv_husk_run"})
 	Panel:AddControl("Checkbox", {Label = "Husks Can Explode?", Command = "vj_piv_husk_explode"})
