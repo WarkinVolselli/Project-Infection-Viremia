@@ -1,0 +1,15 @@
+"VertexLitGeneric"
+{
+$baseTexture "models\vj_piv/specials\hulk/Hulk_01"
+$bumpmap "models\vj_piv/specials\hulk\Hulk_01_normal"
+$phong 1
+$lightwarptexture "models/vj_piv/shared/coach_head_wrp"
+
+
+$phongfresnelranges "[.1 .1 1]"
+$phongtint "[1 .8 .8]"
+$phongboost 1
+$phongexponent 10
+$ambientocclusion 1
+
+}
