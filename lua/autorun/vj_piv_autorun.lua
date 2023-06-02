@@ -176,7 +176,11 @@ if VJExists == true then
 	VJ.AddConVar("vj_piv_leaper_chance", 10, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_charger_chance", 5, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_crawler_chance", 10, {FCVAR_ARCHIVE})
-
+	
+	-- extra stuff -- 
+	
+	VJ.AddConVar("vj_piv_extraclothes", 1, {FCVAR_ARCHIVE})
+	
 	-- sounds --
 
 	VJ.AddConVar("vj_piv_walk_voice", 0, {FCVAR_ARCHIVE})
@@ -253,6 +257,8 @@ if VJExists == true then
 			vj_piv_charger_chance = "5",
 			vj_piv_crawler_chance = "10",
 			
+			vj_piv_extraclothes = "1",
+			
 			vj_piv_walk_voice = "0",
 			vj_piv_run_voice = "0",
 			vj_piv_giant_voice = "0",
@@ -311,6 +317,8 @@ if VJExists == true then
 	Panel:AddControl("Slider", {Label = "Jogger Variant Chance", Command = "vj_piv_jogger_chance", Min = 1, Max = 100})
 	Panel:AddControl("Slider", {Label = "Leaper Variant Chance", Command = "vj_piv_leaper_chance", Min = 1, Max = 100})
 	Panel:AddControl("Slider", {Label = "Charger Variant Chance", Command = "vj_piv_charger_chance", Min = 1, Max = 100})
+	
+	Panel:AddControl("Checkbox", {Label = "Enable Extra Citizen Zombie Clothes?", Command = "vj_piv_extraclothes"})
 	
 	-- walker voice
 	
