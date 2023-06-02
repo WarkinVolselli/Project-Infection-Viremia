@@ -1,0 +1,15 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models/vj_piv/hl2/citizens/prague_civ_rioter_body_col_c"
+	"$bumpmap" "models/vj_piv/hl2/citizens/prague_civ_rioter_body_col_n"
+$nocull 1
+$phong 0
+$phongboost ".1"
+$phongexponent 7
+$phongtint "[.85 .85 1]"
+$phongfresnelranges "[.2 .5 5]"
+$nodecal 1
+$ambientocclusion 1
+$halflambert 0
+$diffuseexp "1.5"
+}
