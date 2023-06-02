@@ -9,10 +9,23 @@ ENT.Model = {"models/vj_piv/hl2/citizens/male_01.mdl","models/vj_piv/hl2/citizen
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
+
 	self:SetSkin(math.random(0,7))
-	self:SetBodygroup(1,math.random(0,1))
 	if math.random(1,5) == 5 then
 	self:SetBodygroup(5,1)
+	end
+	
+	if GetConVar("vj_piv_extraclothes"):GetInt() == 1 then
+		local type = math.random(1,5)
+		
+		if type == 5 then
+			self:SetBodygroup(1,math.random(6,7))
+		else
+			self:SetBodygroup(1,math.random(0,1))
+		end
+		
+	else
+		self:SetBodygroup(1,math.random(0,1))
 	end
 end
 /*-----------------------------------------------
