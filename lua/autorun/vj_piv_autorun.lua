@@ -107,6 +107,7 @@ if VJExists == true then
 	VJ.AddNPC("Spitter","npc_vj_piv_spitter",vCat)
 	VJ.AddNPC("Spewer","npc_vj_piv_spewer",vCat)
 	VJ.AddNPC("Shocker","npc_vj_piv_shocker",vCat)
+	VJ.AddNPC("Remordeo","npc_vj_piv_remordeo",vCat)
 
 	VJ.AddNPC("Cremator","npc_vj_piv_cremator",vCat)
 	VJ.AddNPC("Stoker","npc_vj_piv_stoker",vCat)
@@ -147,7 +148,9 @@ if VJExists == true then
 	-- ConVars --
 	
 	-- general --
-	
+
+	VJ.AddConVar("vj_piv_reducedparticles", 0, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_reducedlights", 0, {FCVAR_ARCHIVE})	
 	VJ.AddConVar("vj_piv_infection", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_infection_type", 0, {FCVAR_ARCHIVE})	
 	VJ.AddConVar("vj_piv_climbing", 1, {FCVAR_ARCHIVE})
@@ -208,6 +211,10 @@ if VJExists == true then
 		Panel:AddControl( "Label", {Text = "Please respawn any existing zombies after changing things in here!"})
 	local vj_resetbutton = {Options = {}, CVars = {}, Label = "Reset Everything:", MenuButton = "0"}
 		vj_resetbutton.Options["#vjbase.menugeneral.default"] = { 
+		
+			vj_piv_reducedparticles = "0",
+			vj_piv_reducedlights = "0",
+			
 			vj_piv_infection = "1",
 			vj_piv_infection_type = "0",
 			
@@ -263,6 +270,9 @@ if VJExists == true then
 			vj_piv_shambler_revive_revenant = "1",
 			vj_piv_shambler_revive_revenant_chance = "4",
 		}
+
+	Panel:AddControl("Checkbox", {Label = "Reduced Particles? [PERFORMANCE]", Command = "vj_piv_reducedparticles"})
+	Panel:AddControl("Checkbox", {Label = "Reduced Lights? [PERFORMANCE]", Command = "vj_piv_reducedlights"})
 	
 	Panel:AddControl("Checkbox", {Label = "Enable Infection System?", Command = "vj_piv_infection"})
 	
