@@ -1,0 +1,17 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\vj_piv\specials\remordeo\c_rus_hazmat_gear_camo_c"
+	"$bumpmap" "models\vj_piv\specials\remordeo\c_rus_hazmat_gear_n"
+$phong 1
+$phongboost "2.5"
+$phongexponent 3
+$phongtint "[.85 .85 1]"
+$halflambert 0
+$phongfresnelranges "[.1 .3 6]"
+$ambientocclusion 1
+
+
+
+$diffuseexp "1.5"
+}
+

@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\vj_piv\specials\remordeo\c_rus_hazmat_mask_c"
+	"$bumpmap" "models\vj_piv\specials\remordeo\c_rus_hazmat_mask_n"
+	"$selfillum" "1"
+}
+
