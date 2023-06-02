@@ -11,6 +11,7 @@ ENT.VJ_IsHugeMonster = true
 ENT.PIV_HasArmor = true
 ENT.Berserk = false
 ENT.PIV_CanMutate = false
+ENT.PIV_Tank = true
 
 ENT.GeneralSoundPitch1 = 50
 ENT.GeneralSoundpitch2 = 50

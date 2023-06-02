@@ -24,6 +24,7 @@ ENT.PIV_FuckingCrawlingLittleCunt = false
 ENT.PIV_Charger = false
 ENT.PIV_Leaper = false
 ENT.PIV_HasArmor = false
+ENT.PIV_Tank = false
 
 ENT.PIV_IsZombine = false
 ENT.PIV_IsMetropolice = false
@@ -328,7 +329,7 @@ function ENT:CustomOnPreInitialize()
 	self.NextEvadeTime = CurTime() 
     self.PIV_LegHP = self.StartHealth / 2
 
-	if GetConVar("vj_piv_subtypes"):GetInt() == 1 && self.WeHaveAWeapon == false && self:GetClass() != "npc_vj_piv_creep" && self:GetClass() != "npc_vj_piv_revenant" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self.PIV_Mutated == false then
+	if GetConVar("vj_piv_subtypes"):GetInt() == 1 && self.WeHaveAWeapon == false && self:GetClass() != "npc_vj_piv_tank" && self:GetClass() != "npc_vj_piv_creep" && self:GetClass() != "npc_vj_piv_revenant" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self.PIV_Mutated == false then
 
 		if math.random(1,GetConVar("vj_piv_charger_chance"):GetInt()) == 1 && !PIV_Crippled && !PIV_FuckingCrawlingLittleCunt then
 			self.AnimTbl_Run = {ACT_RUN_RELAXED}
@@ -359,7 +360,7 @@ function ENT:CustomOnPreInitialize()
 
 		end
 
-		if math.random(1,GetConVar("vj_piv_crawler_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_shocker" then 
+		if math.random(1,GetConVar("vj_piv_crawler_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_shocker" && self:GetClass() != "npc_vj_piv_remordeo" then 
 			self.PIV_CanMutate = false
 			self.PIV_FuckingCrawlingLittleCunt = true
 			self:Cripple()    
@@ -375,7 +376,7 @@ function ENT:CustomOnPreInitialize()
 	self:Dig()
 	
 
-		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_creep" && self:GetClass() != "npc_vj_piv_shocker" && self:GetClass() != "npc_vj_piv_stalker" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self.PIV_FuckingCrawlingLittleCunt == false then
+		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_tank" &&  self:GetClass() != "npc_vj_piv_creep" && self:GetClass() != "npc_vj_piv_shocker" && self:GetClass() != "npc_vj_piv_stalker" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self.PIV_FuckingCrawlingLittleCunt == false then
 
 			self.WeHaveAWeapon = true
 			self.MeleeAttackDamage = math.random(20,25)
@@ -456,9 +457,12 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 	if key == "step" then
 		self:FootStepSoundCode()
 		
-	    if self.VJ_IsHugeMonster == true then
+	    if self.VJ_IsHugeMonster == true && self.PIV_Tank == false then
 			util.ScreenShake(self:GetPos(), 1, 5, 1, 1000)
 			VJ_EmitSound(self, "vj_piv/charger_run_left_0"..math.random(1,4)..".wav", 70, 100)
+		elseif self.VJ_IsHugeMonster == true && self.PIV_Tank == true then
+			util.ScreenShake(self:GetPos(), 2, 5, 1, 1000)
+			VJ_EmitSound(self, "vj_piv/tank/step_"..math.random(1,5)..".wav", 70, 100)
 		end
 		
 	    if self.PIV_HasArmor == true && self.VJ_IsHugeMonster == false then
@@ -605,6 +609,19 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 			end
 		end
 	end	
+
+	if key == "throw" && self:GetClass() == "npc_vj_piv_tank" then 
+		self:SetBodygroup(1,1)
+		self:EmitSound("vj_piv/concrete_break"..math.random(2,3)..".wav",80,100)
+		util.ScreenShake(self:GetPos(), 300, 500, 1.6, 1200)
+		local pos = self:LocalToWorld(Vector(50,0,0))
+		ParticleEffect("strider_impale_ground",pos,Angle(0,0,0),nil)
+		ParticleEffect("strider_cannon_impact",pos,Angle(0,0,0),nil)
+	end
+	if key == "throw_end" && self:GetClass() == "npc_vj_piv_tank"  then
+		self:SetBodygroup(1,0)
+		self:RangeAttackCode()
+	end
 	
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------

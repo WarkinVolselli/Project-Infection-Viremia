@@ -1,0 +1,7 @@
+ENT.Type 			= "anim"
+ENT.Base 			= "obj_vj_projectile_base"
+ENT.PrintName		= "Smoke"
+ENT.Author 			= "Warkin"
+ENT.Contact 		= ""
+ENT.Information		= "Projectiles for my addons"
+ENT.Category		= "Projectiles"
