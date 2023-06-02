@@ -125,6 +125,7 @@ if VJExists == true then
 	VJ.AddNPC("Husk (Male)","npc_vj_piv_husk",vCat)
 	VJ.AddNPC("Husk (Female)","npc_vj_piv_husk_f",vCat)
 	VJ.AddNPC("Virulent","npc_vj_piv_virulent",vCat)
+	VJ.AddNPC("Sickler","npc_vj_piv_sickler",vCat)
 
 	VJ.AddNPC("Tank","npc_vj_piv_tank",vCat)
 	
