@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	// Original shader: VertexLitAlphaTestedTexture
+	"$basetexture" "models/vj_piv/specials/sickler/s_loindropper"
+	"$alphatest" 1
+	
+
+}

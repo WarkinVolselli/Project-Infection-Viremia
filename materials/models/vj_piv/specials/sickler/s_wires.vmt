@@ -1,0 +1,9 @@
+"VertexLitGeneric"
+{
+	// Original shader: VertexLitAlphaTestedTexture
+	"$basetexture" "models/vj_piv/specials/sickler/s_wires"
+	"$alphatest" 1
+	
+
+			   
+}
