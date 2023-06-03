@@ -327,7 +327,7 @@ function ENT:CustomOnPreInitialize()
 
     self.PI_LegHP = self.StartHealth / 2
 
-	if GetConVar("vj_piv_subtypes"):GetInt() == 1 && self.WeHaveAWeapon == false && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_cremator"  && self:GetClass() != "npc_vj_piv_fat_walker_m" && self:GetClass() != "npc_vj_piv_fat_runner_m" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_stoker" && self.PIV_Mutated == false then
+	if GetConVar("vj_piv_subtypes"):GetInt() == 1 && self.WeHaveAWeapon == false && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_cremator"  && self:GetClass() != "npc_vj_piv_fat_walker_m" && self:GetClass() != "npc_vj_piv_fat_runner_m" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_stoker" && self:GetClass() != "npc_vj_piv_exploder" && self.PIV_Mutated == false then
 
 		-- joggers
 		if math.random(1,GetConVar("vj_piv_jogger_chance"):GetInt()) == 1 && !PIV_Crippled && !PI_FuckingCrawlingLittleCunt && self:GetClass() != "npc_vj_piv_shambler" then
@@ -368,7 +368,7 @@ function ENT:CustomOnPreInitialize()
 	self.IsDigging = false
 	self:Dig()
 	
-		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_cremator" && self:GetClass() != "npc_vj_piv_husk"  && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_panzer" && self:GetClass() != "npc_vj_piv_panzer_boss" then
+		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_cremator" && self:GetClass() != "npc_vj_piv_husk"  && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_panzer" && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_exploder" then
 				
 			self.WeHaveAWeapon = true
 			self.MeleeAttackDamage = math.random(20,25)
@@ -568,7 +568,12 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 			ParticleEffect("door_pound_core",door:GetPos(),door:GetAngles(),nil)
 			ParticleEffect("door_explosion_chunks",door:GetPos(),door:GetAngles(),nil)
 			door:Remove()
-			self:VJ_ACT_PLAYACTIVITY(ACT_STEP_BACK,true,1.6)
+			
+			if self.VJ_IsHugeMonster == true or self:GetClass() == "npc_vj_piv_exploder" then
+				self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,1.6)
+			else
+				self:VJ_ACT_PLAYACTIVITY(ACT_STEP_BACK,true,1.6)
+			end
 			
             local doorgib = ents.Create("prop_physics")
             doorgib:SetPos(door:GetPos())
