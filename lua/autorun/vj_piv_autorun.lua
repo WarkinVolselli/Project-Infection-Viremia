@@ -101,6 +101,8 @@ if VJExists == true then
 	VJ.AddNPC("Bloated Runner (Male)","npc_vj_piv_fat_runner_m",vCat)
 	VJ.AddNPC("Bruiser","npc_vj_piv_bruiser",vCat)
 	
+	VJ.AddNPC("Exploder","npc_vj_piv_exploder",vCat)
+	
 	VJ.AddNPC("Stalker","npc_vj_piv_stalker",vCat)
 	VJ.AddNPC("Creep","npc_vj_piv_creep",vCat)
 	
