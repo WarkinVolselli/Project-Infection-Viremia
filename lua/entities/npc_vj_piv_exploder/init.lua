@@ -57,7 +57,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnThink_AIEnabled()
 	if IsValid(self:GetEnemy()) then
-		if self:GetPos():Distance(self:GetEnemy():GetPos()) < 350 then
+		if self:GetPos():Distance(self:GetEnemy():GetPos()) < 400 then
 			self.AnimTbl_Walk = {ACT_WALK}
 			self.AnimTbl_Run = {ACT_WALK}
 		else
