@@ -1,0 +1,12 @@
+VertexLitGeneric
+{
+$basetexture "models\vj_piv\specials\exploder\Tex_0705_3"
+$phong 1
+$halflambert 0
+$diffuseexp 1
+$phongboost 5
+$phongfresnelranges "[1 0.5 5]"
+$phongtint "[1 0.8 0.6]"
+$bumpmap "models\vj_piv\specials\exploder\Tex_0705_4"
+$ambientocclusion 1
+}
