@@ -105,7 +105,7 @@ if VJExists == true then
 	
 	VJ.AddNPC("Stalker","npc_vj_piv_stalker",vCat)
 	VJ.AddNPC("Creep","npc_vj_piv_creep",vCat)
-	
+
 	VJ.AddNPC("Spitter","npc_vj_piv_spitter",vCat)
 	VJ.AddNPC("Spewer","npc_vj_piv_spewer",vCat)
 	VJ.AddNPC("Shocker","npc_vj_piv_shocker",vCat)
@@ -113,7 +113,7 @@ if VJExists == true then
 
 	VJ.AddNPC("Cremator","npc_vj_piv_cremator",vCat)
 	VJ.AddNPC("Stoker","npc_vj_piv_stoker",vCat)
-	
+
 	VJ.AddNPC("Thug (Male)","npc_vj_piv_brawler",vCat)
 	VJ.AddNPC("Thug (Female)","npc_vj_piv_brawler_f",vCat)
 	VJ.AddNPC("Demon","npc_vj_piv_brawler_boss",vCat)
@@ -130,6 +130,9 @@ if VJExists == true then
 	VJ.AddNPC("Sickler","npc_vj_piv_sickler",vCat)
 
 	VJ.AddNPC("Tank","npc_vj_piv_tank",vCat)
+
+	VJ.AddNPC("Drowned","npc_vj_piv_drowned",vCat)
+	VJ.AddNPC("Drowned (Haimatsu)","npc_vj_piv_drowned_suit",vCat)
 	
 	local vCat = "Project Infection: Viremia - Spawners"
 
@@ -408,6 +411,7 @@ end
                     zombie = ents.Create("npc_vj_piv_walker_inf")		
 	elseif attacker.PIV_Infection_IsDrowned == true then
                     zombie = ents.Create("npc_vj_piv_drowned_inf")
+
 end
 			zombie:SetMaterial("hud/killicons/default")
             zombie:SetPos(victim:GetPos())
