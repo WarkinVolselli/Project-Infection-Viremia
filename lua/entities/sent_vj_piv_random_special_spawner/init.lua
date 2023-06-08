@@ -28,6 +28,8 @@ local ent_tbl = {
 	"npc_vj_piv_remordeo",
 	"npc_vj_piv_sickler",
 	"npc_vj_piv_exploder",
+	"npc_vj_piv_drowne",
+	"npc_vj_piv_drowned_suit",
 }
 ENT.EntitiesToSpawn = {
 	{EntityName = "NPC1",SpawnPosition = {vForward=0,vRight=0,vUp=0},Entities = ent_tbl},

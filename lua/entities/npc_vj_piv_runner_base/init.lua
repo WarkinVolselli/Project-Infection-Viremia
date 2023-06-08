@@ -329,7 +329,7 @@ function ENT:CustomOnPreInitialize()
 	self.NextEvadeTime = CurTime() 
     self.PIV_LegHP = self.StartHealth / 2
 
-	if GetConVar("vj_piv_subtypes"):GetInt() == 1 && self.WeHaveAWeapon == false && self:GetClass() != "npc_vj_piv_tank" && self:GetClass() != "npc_vj_piv_creep" && self:GetClass() != "npc_vj_piv_revenant" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_sickler" && self.PIV_Mutated == false then
+	if GetConVar("vj_piv_subtypes"):GetInt() == 1 && self.WeHaveAWeapon == false && self:GetClass() != "npc_vj_piv_tank" && self:GetClass() != "npc_vj_piv_creep" && self:GetClass() != "npc_vj_piv_revenant" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_sickler" && self:GetClass() != "npc_vj_piv_drowned" && self:GetClass() != "npc_vj_piv_drowned_suit" && self:GetClass() != "npc_vj_piv_drowned_inf" && self.PIV_Mutated == false then
 
 		if math.random(1,GetConVar("vj_piv_charger_chance"):GetInt()) == 1 && !PIV_Crippled && !PIV_FuckingCrawlingLittleCunt then
 			self.AnimTbl_Run = {ACT_RUN_RELAXED}
@@ -376,7 +376,7 @@ function ENT:CustomOnPreInitialize()
 	self:Dig()
 	
 
-		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_tank" &&  self:GetClass() != "npc_vj_piv_creep" && self:GetClass() != "npc_vj_piv_shocker" && self:GetClass() != "npc_vj_piv_stalker" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_sickler" && self.PIV_FuckingCrawlingLittleCunt == false then
+		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_tank" &&  self:GetClass() != "npc_vj_piv_creep" && self:GetClass() != "npc_vj_piv_shocker" && self:GetClass() != "npc_vj_piv_stalker" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_sickler" && self:GetClass() != "npc_vj_piv_drowned" && self:GetClass() != "npc_vj_piv_drowned_suit" && self.PIV_FuckingCrawlingLittleCunt == false then
 
 			self.WeHaveAWeapon = true
 			self.MeleeAttackDamage = math.random(20,25)
@@ -456,6 +456,14 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 
 	if key == "step" then
 		self:FootStepSoundCode()
+		
+		if self:GetClass() == "npc_vj_piv_drowned_suit" then
+			if (self:GetActivity() == ACT_WALK or self:GetActivity() == ACT_WALK_RELAXED or self:GetActivity() == ACT_WALK_STIMULATED or self:GetActivity() == ACT_WALK_AGITATED) then 
+				VJ_EmitSound(self, "vj_piv/drowned/suit/deepsea_diver_walk_step_0"..math.random(1,6)..".wav", 70, 100)			
+			else
+				VJ_EmitSound(self, "vj_piv/drowned/suit/deepsea_diver_run_step_0"..math.random(1,6)..".wav", 70, 100)
+			end
+		end
 		
 	    if self.VJ_IsHugeMonster == true && self.PIV_Tank == false then
 			util.ScreenShake(self:GetPos(), 1, 5, 1, 1000)
@@ -541,8 +549,13 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 	    if self.PIV_IsMetropolice == true && self.VJ_IsHugeMonster == false then
 			VJ_EmitSound(self, "npc/metropolice/gear"..math.random(1,6)..".wav", 70, 80)
 		end
-	
-		VJ_EmitSound(self, "physics/body/body_medium_impact_soft"..math.random(1,7)..".wav", 75, 100)
+
+		
+		if self:GetClass() == "npc_vj_piv_drowned_suit" then
+			VJ_EmitSound(self, "vj_piv/drowned/suit/deepsea_diver_run_step_0"..math.random(1,6)..".wav", 70, 90)
+		else
+			VJ_EmitSound(self, "physics/body/body_medium_impact_soft"..math.random(1,7)..".wav", 75, 100)
+		end
 
 		if GetConVar("vj_piv_weapons_dropping_stumble"):GetInt() == 1 then
 
