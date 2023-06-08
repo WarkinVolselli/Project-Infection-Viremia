@@ -1,0 +1,19 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models/vj_piv/specials/drowned/fast_zombie_sheet4"
+	"$alphatest" 1
+	"$bumpmap" "models/vj_piv/specials/drowned/fast_zombie_sheet_normal"
+	"$surfaceprop" "flesh"
+	"$model" "1"
+	"$halflambert" "1"
+	"$phong" "1"
+	"$phongboost" "5"
+	"$phongexponent" 25
+	//"$phongexponenttexture" "Models/vj_piv/specials/drowned/fast_zombie_phong"
+	//"$phongalbedotint" "1"										
+	"$phongfresnelranges"	"[.2 .6 1]"
+
+"$detail" "nature/mudfloor002a"
+"$detailblendmode" 0
+"$detailblendfactor" .8
+}

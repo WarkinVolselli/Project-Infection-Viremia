@@ -1,0 +1,30 @@
+"VertexLitGeneric"
+{
+//Base
+"$BaseTexture"  "models/vj_piv/specials/drowned/power_suit/helmet 1"
+"$BumpMap"  "models/vj_piv/specials/drowned/power_suit/helmet 2"
+
+//Phong
+"$Phong"  "[1]"
+"$PhongBoost"  "[1]"
+"$PhongExponent"  "[20]"
+"$PhongFresnelRanges" "[0.3 0.5 1]"
+"$PhongAlbedoTint"           "[1]"
+"$NormalmapAlphaPhongMask"   "[1]"
+
+//Rimlight
+"$Rimlight"      "[1]"
+"$RimMask"      "[1]"
+"$RimlightExponent"          "[20]"
+"$RimlightBoost"             "[0.25]"
+
+//Other
+"$Model"                     "1"
+"$HalfLambert"      "1"
+"$NoDecal"      "0"
+"$AmbientOcclusion"      "1"
+"$NoCull"      "0"
+"$SurfaceProp"      "glass"
+"$BlendTintByBaseAlpha"      "1"
+"$Color2" "[1 1 1]"//You can change model color here [RGB]
+}

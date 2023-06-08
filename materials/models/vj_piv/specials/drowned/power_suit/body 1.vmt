@@ -1,0 +1,19 @@
+"VertexLitGeneric"
+{
+//Base
+"$BaseTexture"  "models/vj_piv/specials/drowned/power_suit/body 1"
+"$normalmap"  "models/vj_piv/specials/drowned/power_suit/body 2"
+
+//Other
+"$Model"                     "1"
+"$HalfLambert"      "1"
+"$NoDecal"      "0"
+"$AmbientOcclusion"      "1"
+"$NoCull"      "0"
+"$SurfaceProp"      "metal"
+
+$selfillum 1
+$selfillummaskscale 20
+$selfillumtint "[ 100 100 100 ]"
+$selfillummask 	"models/vj_piv/specials/drowned/power_suit/body 3"
+}
