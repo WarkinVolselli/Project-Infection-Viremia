@@ -215,6 +215,8 @@ if VJExists == true then
 	VJ.AddConVar("vj_piv_husk_run", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_husk_explode", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_husk_explode_chance", 4, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_husk_headless", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_husk_headless_chance", 4, {FCVAR_ARCHIVE})
 
 	VJ.AddConVar("vj_piv_virulent_run", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_virulent_explode", 1, {FCVAR_ARCHIVE})
@@ -291,6 +293,8 @@ if VJExists == true then
 			vj_piv_husk_run = "1",
 			vj_piv_husk_explode = "1",
 			vj_piv_husk_explode_chance = "4",
+			vj_piv_husk_headless = "1",
+			vj_piv_husk_headless_chance = "4",
 			
 			vj_piv_virulent_run = "1",
 			vj_piv_virulent_explode = "1",
@@ -387,6 +391,8 @@ if VJExists == true then
 	Panel:AddControl("Checkbox", {Label = "Husks Can Run?", Command = "vj_piv_husk_run"})
 	Panel:AddControl("Checkbox", {Label = "Husks Can Explode?", Command = "vj_piv_husk_explode"})
 	Panel:AddControl("Slider", {Label = "Husk Explosion Chance", Command = "vj_piv_husk_explode_chance", Min = 1, Max = 100})
+	Panel:AddControl("Checkbox", {Label = "Enable Headless Husk Variant?", Command = "vj_piv_husk_headlesse"})
+	Panel:AddControl("Slider", {Label = "Headless Husk Variant Chance", Command = "vj_piv_husk_headless_chance", Min = 1, Max = 100})
 	
 	Panel:AddControl("Checkbox", {Label = "Virulents Can Run?", Command = "vj_piv_virulent_run"})
 	Panel:AddControl("Checkbox", {Label = "Virulents Can Explode?", Command = "vj_piv_virulent_explode"})
