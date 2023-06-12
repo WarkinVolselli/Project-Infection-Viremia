@@ -1,0 +1,14 @@
+"vertexlitgeneric"
+{
+	"$baseTexture"		"models/vj_piv/military/SKIN_GR/gear_04"
+	"$bumpmap"		"models/vj_piv/military/SHARED/gear_04_normal"
+
+ 	"$halflambert"		"1"
+
+	"$phong"			"1"
+	"$phongboost"		"1"
+	"$phongfresnelranges"	"[0.01]"
+	"$phongexponent"		"20"
+	"$phongalbedotint"		"1"
+	
+}

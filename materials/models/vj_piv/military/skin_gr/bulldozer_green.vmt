@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	"$basetexture"         "models/vj_piv/military/SKIN_GR/bulldozer_green"
+	"$bumpmap"             "models/vj_piv/military/SKIN_GR/bulldozer_n"
+
+	"$phong"		"1"
+	"$phongboost"		"0"
+	"$phongexponent"	"1"
+
+	"$phongalbedotint"      "1" 
+	"$phongfresnelranges"   "[0.5 1.5 8.0]"
+
+
+}
