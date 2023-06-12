@@ -6,7 +6,7 @@ include('shared.lua')
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
 ENT.Model = {"models/vj_piv/specials/exploder/exploder.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
-ENT.StartHealth = 500
+ENT.StartHealth = 300
 
 ENT.GeneralSoundPitch1 = 130
 ENT.GeneralSoundpitch2 = 120
