@@ -1,0 +1,10 @@
+"vertexlitgeneric"
+{
+	"$baseTexture"		"models/vj_piv/military/SKIN_05/ghillie"
+	"$bumpmap"		"models/vj_piv/military/SHARED/ghillie_normal"
+
+ 	"$halflambert"		"1"
+
+	"$alphatest"		"1"
+	"$nocull"			"1"
+}

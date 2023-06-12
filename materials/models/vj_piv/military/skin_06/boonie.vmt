@@ -1,0 +1,14 @@
+"vertexlitgeneric"
+{
+	"$baseTexture"		"models/vj_piv/military/SKIN_06/boonie"
+	"$bumpmap"		"models/vj_piv/military/SHARED/boonie_normal"
+
+ 	"$halflambert"		"1"
+
+	"$phong"			"1"
+	"$phongboost"		"1"
+	"$phongfresnelranges"	"[0.01]"
+	"$phongexponent"		"20"
+	"$phongalbedotint"		"1"
+
+}
