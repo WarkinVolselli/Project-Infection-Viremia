@@ -21,6 +21,9 @@ ENT.RangeAttackExtraTimers = {0.7,0.8,0.9,1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,
 ENT.NextRangeAttackTime = 8 -- How much time until it can use a range attack?
 ENT.Immune_AcidPoisonRadiation = true -- Makes the SNPC not get damage from Acid, posion, radiation
 
+ENT.AnimTbl_Walk = {ACT_RUN}
+ENT.AnimTbl_IdleStand = {ACT_IDLE_AIM_STEALTH}
+
 ENT.AlertSoundLevel = 80
 ENT.CombatIdleSoundLevel = 80
 ENT.BeforeMeleeAttackSoundLevel = 80
