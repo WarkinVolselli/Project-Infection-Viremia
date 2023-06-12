@@ -1,0 +1,15 @@
+"vertexlitgeneric"
+{
+	"$baseTexture"		"models/vj_piv/military/SHARED/gasmask_01"
+	"$bumpmap"		"models/vj_piv/military/SHARED/gasmask_01_normal"
+
+ 	"$halflambert"		"1"
+
+	"$phong"			"1"
+	"$phongboost"		"1"
+	"$phongfresnelranges"	"[0.05 0.05 0.05]"
+	"$phongexponent"		"10"
+	"$phongalbedotint"		"1"
+	
+	
+}

@@ -1,0 +1,14 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/vj_piv/military/Hazmat/Gasmask_d"
+	"$bumpmap" "models/vj_piv/military/Hazmat/Gasmask_n"
+		
+$halflambert "1"	
+$phongexponent "40"
+$phongfresnelranges	"[1 8 13]"
+$nocull 1
+$phong 1
+$phongboost .15
+$nodecal 1
+$ambientocclusion 1
+}

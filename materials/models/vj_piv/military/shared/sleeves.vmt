@@ -1,0 +1,15 @@
+"vertexlitgeneric"
+{
+	"$baseTexture"		"models/vj_piv/military/SHARED/sleeves"
+	"$bumpmap"		"models/vj_piv/military/SHARED/sleeves_normal"
+
+ 	"$halflambert"		"1"
+
+	"$phong"			"1"
+	"$phongboost"		"1"
+	"$phongfresnelranges"	"[0.04]"
+	"$phongexponent"		"10"
+	"$phongalbedotint"		"1"
+	
+	
+}
