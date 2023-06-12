@@ -15,7 +15,7 @@ ENT.PIV_MovementAnims = 0
 ENT.PIV_Husk_Explode = false
  
 ENT.PIV_LegHP = 100
-
+ENT.PIV_Husk_Headless = false
 
 ENT.SoundTbl_Idle = {"vj_piv/husk/zed_clot_alpha_vox_chuff_01.ogg","vj_piv/husk/zed_clot_alpha_vox_chuff_02.ogg","vj_piv/husk/zed_clot_alpha_vox_chuff_03.ogg","vj_piv/husk/zed_clot_alpha_vox_chuff_04.ogg","vj_piv/husk/zed_clot_alpha_vox_chuff_05.ogg","vj_piv/husk/zed_clot_alpha_vox_breath_walk_hvy_01.ogg","vj_piv/husk/zed_clot_alpha_vox_breath_walk_hvy_02.ogg","vj_piv/husk/zed_clot_alpha_vox_breath_walk_hvy_03.ogg","vj_piv/husk/zed_clot_alpha_vox_breath_walk_hvy_04.ogg","vj_piv/husk/zed_clot_alpha_vox_breath_walk_hvy_05.ogg","vj_piv/husk/zed_clot_alpha_vox_breath_walk_hvy_06.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_short_01.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_short_02.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_short_03.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_short_04.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_short_05.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_short_06.ogg"}
 ENT.SoundTbl_Alert = {"vj_piv/husk/zed_clot_alpha_vox_taunt_chest_01.ogg","vj_piv/husk/zed_clot_alpha_vox_taunt_chest_02.ogg","vj_piv/husk/zed_clot_alpha_vox_taunt_chest_03.ogg","vj_piv/husk/zed_clot_alpha_vox_roar_light_long_01.ogg","vj_piv/husk/zed_clot_alpha_vox_roar_light_long_02.ogg","vj_piv/husk/zed_clot_alpha_vox_roar_light_long_03.ogg","vj_piv/husk/zed_clot_alpha_vox_roar_light_med_01.ogg","vj_piv/husk/zed_clot_alpha_vox_roar_light_med_02.ogg","vj_piv/husk/zed_clot_alpha_vox_roar_light_med_03.ogg","vj_piv/husk/zed_clot_alpha_vox_roar_light_short_01.ogg","vj_piv/husk/zed_clot_alpha_vox_roar_light_short_02.ogg","vj_piv/husk/zed_clot_alpha_vox_roar_light_short_03.ogg"}
@@ -62,12 +62,25 @@ function ENT:Zombie_CustomOnInitialize()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
+	if GetConVar("vj_piv_husk_headless"):GetInt() == 1 && math.random(1,GetConVar("vj_piv_husk_headless_chance"):GetInt()) == 1 then
+		if self:GetClass() == "npc_vj_piv_husk_f" then
+			self.Model = {"models/vj_piv/specials/husk/zombie_female_beta.mdl"}
+		else
+			self.Model = {"models/vj_piv/specials/husk/zombie_beta.mdl"}
+		end
+		self.PIV_Husk_Headless = true
+	end
+	
 	if GetConVar("vj_piv_husk_explode"):GetInt() == 1 && math.random(1,GetConVar("vj_piv_husk_explode_chance"):GetInt()) == 1 then
 		self.PIV_Husk_Explode = true
 		self.HasDeathAnimation = true
 		self.DeathAnimationChance = 1
 		self.AnimTbl_Death = {"vjseq_releasecrab"}
-		self.DeathCorpseModel = {"models/vj_piv/specials/husk/zombie_legs.mdl"} 
+		if self.PIV_Husk_Headless == true then
+			self.DeathCorpseModel = {"models/vj_piv/specials/husk/zombie_legs_beta.mdl"} 		
+		else
+			self.DeathCorpseModel = {"models/vj_piv/specials/husk/zombie_legs.mdl"} 
+		end
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -272,11 +285,15 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
-	if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 then
+	if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 && self.PIV_Husk_Headless == false then
 		dmginfo:ScaleDamage(GetConVarNumber("vj_piv_headshot_damage_mult"))
+	elseif hitgroup == HITGROUP_HEAD && self.PIV_Husk_Headless == true then
+		dmginfo:ScaleDamage(0.1)
+	elseif	self.PIV_Husk_Headless == true then
+		dmginfo:ScaleDamage(0.8)
 	else
 		dmginfo:ScaleDamage(0.9)
-    end
+	end
 end
 -------------------------------------------------------------------------------------------------------------------
 function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
