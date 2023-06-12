@@ -95,6 +95,20 @@ if VJExists == true then
 	VJ.AddNPC("Overwatch Elite Walker","npc_vj_piv_walker_combine_e",vCat)
 	VJ.AddNPC("Overwatch Elite Runner","npc_vj_piv_runner_combine_e",vCat)
 	
+	local vCat = "Project Infection: Viremia - Military"
+	
+	VJ.AddNPC("Military Walker","npc_vj_piv_walker_mil",vCat)
+	VJ.AddNPC("Military Runner","npc_vj_piv_runner_mil",vCat)
+	
+	VJ.AddNPC("Military Riot Walker","npc_vj_piv_walker_mil_police",vCat)
+	VJ.AddNPC("Military Riot Runner","npc_vj_piv_runner_mil_police",vCat)
+	
+	VJ.AddNPC("Ghillie Walker","npc_vj_piv_walker_mil_ghillie",vCat)
+	VJ.AddNPC("Ghillie Runner","npc_vj_piv_runner_mil_ghillie",vCat)
+
+	VJ.AddNPC("Hazmat Walker","npc_vj_piv_walker_hazmat",vCat)
+	VJ.AddNPC("Hazmat Runner","npc_vj_piv_runner_hazmat",vCat)
+	
 	local vCat = "Project Infection: Viremia - Specials"
 	
 	VJ.AddNPC("Bloated Walker (Male)","npc_vj_piv_fat_walker_m",vCat)
@@ -118,6 +132,7 @@ if VJExists == true then
 	VJ.AddNPC("Thug (Female)","npc_vj_piv_brawler_f",vCat)
 	VJ.AddNPC("Demon","npc_vj_piv_brawler_boss",vCat)
 	
+	VJ.AddNPC("Grenadier","npc_vj_piv_grenadier",vCat)
 	VJ.AddNPC("Panzer","npc_vj_piv_panzer",vCat)
 	VJ.AddNPC("Megapanzer","npc_vj_piv_panzer_boss",vCat)
 	
@@ -147,12 +162,12 @@ if VJExists == true then
 	VJ.AddNPC("Random Special","sent_vj_piv_random_special",vCat)
 	VJ.AddNPC("Random Special Spawner","sent_vj_piv_random_special_spawner",vCat)
 	
-	VJ.AddNPC("Undead Spawner","sent_vj_piv_undead_spawner",vCat)	
-	VJ.AddNPC("Undead Spawner (Corpses)","sent_vj_piv_undead_spawner_corpses",vCat)
-	VJ.AddNPC("Undead Spawner Multi (Corpses)","sent_vj_piv_undead_spawner_multi_corpses",vCat)
+	VJ.AddNPC("Husk Spawner","sent_vj_piv_undead_spawner",vCat)	
+	VJ.AddNPC("Husk Spawner (Corpses)","sent_vj_piv_undead_spawner_corpses",vCat)
+	VJ.AddNPC("Husk Spawner Multi (Corpses)","sent_vj_piv_undead_spawner_multi_corpses",vCat)
 	
 	-- ConVars --
-	
+
 	-- general --
 
 	VJ.AddConVar("vj_piv_reducedparticles", 0, {FCVAR_ARCHIVE})
@@ -177,6 +192,7 @@ if VJExists == true then
 	VJ.AddConVar("vj_piv_subtypes", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_weapons_dropping", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_weapons_dropping_stumble", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_weapons_dropping_chance", 3, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_shambler_chance", 10, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_jogger_chance", 5, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_leaper_chance", 10, {FCVAR_ARCHIVE})
@@ -186,6 +202,7 @@ if VJExists == true then
 	-- extra stuff -- 
 	
 	VJ.AddConVar("vj_piv_extraclothes", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_militaryskin", 0, {FCVAR_ARCHIVE})
 	
 	-- sounds --
 
@@ -256,6 +273,7 @@ if VJExists == true then
 			
 			vj_piv_weapons_dropping = "1",
 			vj_piv_weapons_dropping_stumble = "1",
+			vj_piv_weapons_dropping_chance = "3",
 			
 			vj_piv_shambler_chance = "10", 
 			vj_piv_jogger_chance = "5",
@@ -264,6 +282,7 @@ if VJExists == true then
 			vj_piv_crawler_chance = "10",
 			
 			vj_piv_extraclothes = "1",
+			vj_piv_militaryskin = "0",
 			
 			vj_piv_walk_voice = "0",
 			vj_piv_run_voice = "0",
@@ -315,6 +334,7 @@ if VJExists == true then
 	Panel:AddControl("Checkbox", {Label = "Enable Zombie Weapons?", Command = "vj_piv_weapons"})
 	Panel:AddControl("Checkbox", {Label = "Enable Weapon Dropping?", Command = "vj_piv_weapons_dropping"})
 	Panel:AddControl("Checkbox", {Label = "Zombies Drop Weapons on Stumble?", Command = "vj_piv_weapons_dropping_stumble"})
+	Panel:AddControl("Slider", {Label = "Drop Weapon On Stumble Chance", Command = "vj_piv_weapons_dropping_chance", Min = 1, Max = 100})
 	Panel:AddControl("Slider", {Label = "Zombie Weapon Chance", Command = "vj_piv_weapons_chance", Min = 1, Max = 100})
 
 	Panel:AddControl("Checkbox", {Label = "Allow Variants?", Command = "vj_piv_subtypes"})
@@ -324,7 +344,17 @@ if VJExists == true then
 	Panel:AddControl("Slider", {Label = "Leaper Variant Chance", Command = "vj_piv_leaper_chance", Min = 1, Max = 100})
 	Panel:AddControl("Slider", {Label = "Charger Variant Chance", Command = "vj_piv_charger_chance", Min = 1, Max = 100})
 	
-	Panel:AddControl("Checkbox", {Label = "Enable Extra Citizen Zombie Clothes?", Command = "vj_piv_extraclothes"})
+	Panel:AddControl("Checkbox", {Label = "Enable Extra Citizen Clothes?", Command = "vj_piv_extraclothes"})
+	
+	-- military skin
+	
+	local combobox_militaryskin = {Options = {}, CVars = {}, Label = "Military Skin", MenuButton = "0"}
+	combobox_militaryskin.Options["National Guard (UCP)"] = {vj_piv_militaryskin = 0}
+	combobox_militaryskin.Options["Woodland (M81)"] = {vj_piv_militaryskin = 1}
+	combobox_militaryskin.Options["Desert (MARPAT)"] = {vj_piv_militaryskin = 2}
+	combobox_militaryskin.Options["Snow (M81)"] = {vj_piv_militaryskin = 3}
+	combobox_militaryskin.Options["Random"] = {vj_piv_militaryskin = 4}
+	Panel:AddControl("ComboBox", combobox_militaryskin)
 	
 	-- walker voice
 	
