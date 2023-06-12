@@ -13,7 +13,7 @@ ENT.Running = false
 ENT.RunT = 0
 ENT.PIV_MovementAnims = 0
 ENT.PIV_Husk_Explode = false
-
+ 
 ENT.PIV_LegHP = 100
 
 
@@ -139,7 +139,7 @@ function ENT:CustomOnKilled(dmginfo,hitgroup)
 			util.ScreenShake(self:GetPos(),44,600,1.5,2000)
 		end
 	end
-	
+
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnPriorToKilled(dmginfo,hitgroup)
 	if self.PIV_Husk_Explode == true then

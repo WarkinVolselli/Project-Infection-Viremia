@@ -7,6 +7,7 @@ include('shared.lua')
 -----------------------------------------------*/
 ENT.Model = {"models/vj_piv/hl2/combine/Combine_Soldier.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.PIV_IsZombine = true
+ENT.StartHealth = 150
 
 ENT.SoundTbl_Breath = {"ambient/levels/prison/radio_random1.wav","ambient/levels/prison/radio_random2.wav","ambient/levels/prison/radio_random3.wav","ambient/levels/prison/radio_random4.wav","ambient/levels/prison/radio_random5.wav","ambient/levels/prison/radio_random6.wav","ambient/levels/prison/radio_random7.wav","ambient/levels/prison/radio_random8.wav","ambient/levels/prison/radio_random9.wav","ambient/levels/prison/radio_random10.wav","ambient/levels/prison/radio_random11.wav","ambient/levels/prison/radio_random12.wav","ambient/levels/prison/radio_random13.wav","ambient/levels/prison/radio_random14.wav"}
 ENT.SoundTbl_Idle = {"vj_piv/combinezombie/zombine_idle1.wav","vj_piv/combinezombie/zombine_idle2.wav","vj_piv/combinezombie/zombine_idle3.wav","vj_piv/combinezombie/zombine_idle4.wav","vj_piv/combinezombie/zombine_idle5.wav","vj_piv/combinezombie/zombine_idle6.wav"}

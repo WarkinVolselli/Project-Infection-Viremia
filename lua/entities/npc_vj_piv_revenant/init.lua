@@ -18,7 +18,9 @@ ENT.SoundTbl_BeforeMeleeAttack = {"vj_piv/revenant/crimhead_frenzy.wav"}
 ENT.SoundTbl_Pain = {"vj_piv/revenant/crimhead_pain.wav"}
 ENT.SoundTbl_Death = {"vj_piv/revenant/crimhead_die.wav"}
 	
-ENT.AnimTbl_Walk = {ACT_WALK_RELAXED}
+ENT.AnimTbl_IdleStand = {ACT_IDLE_AIM_STEALTH}
+
+ENT.AnimTbl_Walk = {ACT_RUN}
 ENT.AnimTbl_Run = {ACT_RUN_RELAXED}
 
 ENT.PIV_LegHP = 100 

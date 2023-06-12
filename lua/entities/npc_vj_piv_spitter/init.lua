@@ -12,8 +12,6 @@ ENT.PIV_Infection = true
 ENT.PIV_Infection_IsWalker = true
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.BloodColor = "Red" -- The blood type, this will determine what it should use (decal, particle, etc.)
- 
-ENT.PI_LegHP = 10000
 
 ENT.HasRangeAttack = true -- Should the SNPC have a range attack?
 ENT.RangeUseAttachmentForPos = true -- Should the projectile spawn on a attachment?
@@ -42,7 +40,7 @@ ENT.SoundTbl_Death = {"vj_piv/spitter/death1.mp3","vj_piv/spitter/death2.mp3","v
 ENT.SoundTbl_BeforeMeleeAttack = {"vj_piv/spitter/super_puker_70.wav","vj_piv/spitter/super_puker_71.wav","vj_piv/spitter/super_puker_72.wav","vj_piv/spitter/super_puker_73.wav"}
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnInitialize()	
+function ENT:Zombie_CustomOnInitialize()	
 	self:SetModelScale(1.1)
 	self:SetSkin(math.random(0,3))
 end	

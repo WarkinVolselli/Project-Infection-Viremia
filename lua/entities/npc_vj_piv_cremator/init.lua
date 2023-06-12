@@ -16,6 +16,7 @@ ENT.MeleeAttackDistance = 150 -- How close does it have to be until it attacks?
 ENT.MeleeAttackDamageDistance = 200 -- How far does the damage go?
 ENT.MeleeAttackDamageAngleRadius = 180 -- What is the damage angle radius? | 100 = In front of the SNPC | 180 = All around the SNPC
 
+ENT.AnimTbl_IdleStand = {ACT_IDLE_HURT}
 ENT.AnimTbl_Walk = {ACT_WALK_AIM}
 ENT.AnimTbl_Run = {ACT_WALK_AIM}
 
