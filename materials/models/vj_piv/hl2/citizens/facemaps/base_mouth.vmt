@@ -1,0 +1,8 @@
+"Teeth"
+{
+	"$baseTexture" "models\vj_piv\hl2\citizens\facemaps\base_m_d"
+	"$bumpmap" "models\vj_piv\hl2\citizens\facemaps\base_m_n"
+	"$model" 1
+	"$clientshader" "MouthShader"
+	"$halflambert" 1
+}
