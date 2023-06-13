@@ -10,7 +10,7 @@ ENT.Model = {"models/vj_piv/hl2/citizens/female_01.mdl","models/vj_piv/hl2/citiz
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
 
-	self:SetSkin(math.random(0,7))
+	self:SetSkin(math.random(0,12))
 	if math.random(1,5) == 5 then
 	self:SetBodygroup(4,1)
 	end
@@ -20,6 +20,7 @@ function ENT:Zombie_CustomOnInitialize()
 		
 		if type == 5 then
 			self:SetBodygroup(1,6)
+			self:SetSkin(math.random(0,2))
 		else
 			self:SetBodygroup(1,math.random(0,1))
 		end
