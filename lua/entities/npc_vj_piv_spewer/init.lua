@@ -18,13 +18,14 @@ ENT.PI_LegHP = 10000
 ENT.HasRangeAttack = true -- Should the SNPC have a range attack?
 ENT.RangeUseAttachmentForPos = true -- Should the projectile spawn on a attachment?
 ENT.RangeUseAttachmentForPosID = "Mouth" -- The attachment used on the range attack if RangeUseAttachmentForPos is set to true
-ENT.AnimTbl_RangeAttack = {"vjseq_stand_threaten_0"} -- Range Attack Animations
+ENT.AnimTbl_RangeAttack = {"vjseq_stand_threaten_0","vjseq_stand_threaten_0","vjseq_stand_threaten_0"} -- Range Attack Animations
 ENT.RangeAttackEntityToSpawn = "obj_vj_piv_puke" -- The entity that is spawned when range attacking
 ENT.RangeDistance = 500 -- This is how far away it can shoot
 ENT.RangeToMeleeDistance = 100 -- How close does it have to be until it uses melee?
 ENT.TimeUntilRangeAttackProjectileRelease = 0.65 -- How much time until the projectile code is ran?
 ENT.RangeAttackExtraTimers = {0.65, 0.65} -- Extra range attack timers | it will run the projectile code after the given amount of seconds
-ENT.NextRangeAttackTime = 5 -- How much time until it can use a range attack?
+ENT.NextRangeAttackTime = 5
+ENT.NextRangeAttackTime_DoRand = 10
 ENT.Immune_AcidPoisonRadiation = true -- Makes the SNPC not get damage from Acid, posion, radiation
 
 
@@ -88,7 +89,7 @@ self.PIV_LegHP = self.PIV_LegHP *2
 if GetConVar("vj_piv_lights"):GetInt() == 1 then 
 
 self.Light2 = ents.Create("light_dynamic")
-self.Light2:SetKeyValue("brightness", "7")
+self.Light2:SetKeyValue("brightness", "1")
 self.Light2:SetKeyValue("distance", "50")
 self.Light2:SetLocalPos(self:GetPos())
 self.Light2:SetLocalAngles(self:GetAngles())

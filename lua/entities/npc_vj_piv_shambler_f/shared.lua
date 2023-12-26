@@ -1,6 +1,6 @@
-ENT.Base 			= "npc_vj_piv_husk"
+ENT.Base 			= "npc_vj_piv_shambler"
 ENT.Type 			= "ai"
-ENT.PrintName 		= "Husk (Female)"
+ENT.PrintName 		= "Shambler (Female)"
 ENT.Author 			= "Warkin"
 ENT.Purpose 		= "Spawn it and fight with it!"
 ENT.Instructions 	= "Click on the spawnicon to spawn it."

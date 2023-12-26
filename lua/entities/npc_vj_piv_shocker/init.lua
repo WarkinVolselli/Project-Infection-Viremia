@@ -62,7 +62,7 @@ ENT.AnimTbl_Death = {"vjseq_nz_death_elec_1","vjseq_nz_death_elec_2","vjseq_nz_d
 ENT.MaxJumpLegalDistance = VJ_Set(50, 200) -- The max distance the NPC can jump (Usually from one node to another) | ( UP, DOWN )
 
 ENT.HasRangeAttack = true -- Should the SNPC have a range attack?
-ENT.AnimTbl_RangeAttack = {"vjseq_nz_sonic_attack_2"} -- Range Attack Animations
+ENT.AnimTbl_RangeAttack = {"vjseq_nz_sonic_attack_2","vjseq_nz_sonic_attack_2","vjseq_nz_sonic_attack_2"} -- Range Attack Animations
 ENT.RangeAttackEntityToSpawn = "obj_vj_piv_shock" -- The entity that is spawned when range attacking
 ENT.RangeDistance = 1000 -- This is how far away it can shoot
 ENT.RangeToMeleeDistance = 100 -- How close does it have to be until it uses melee?
@@ -71,7 +71,8 @@ ENT.RangeAttackAnimationFaceEnemy = true -- Should it face the enemy while playi
 ENT.TimeUntilRangeAttackProjectileRelease = 1
 ENT.RangeUseAttachmentForPosID = "mouth" -- The attachment used on the range attack if RangeUseAttachmentForPos is set to true
 ENT.RangeUseAttachmentForPos = true -- Should the projectile spawn on a attachment?
-ENT.NextRangeAttackTime = 10 -- How much time until it can use a range attack?
+ENT.NextRangeAttackTime = 8
+ENT.NextRangeAttackTime_DoRand = 16
 
 ENT.PIV_LegHP = 10000
 

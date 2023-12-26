@@ -48,13 +48,17 @@ VJ_EmitSound(self,{"ambient/energy/spark1.wav","ambient/energy/spark2.wav","ambi
 end)
 	
 if self.DeathAnimationCodeRan == false then
-	ParticleEffectAttach("electrical_arc_01_parent",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("eyes"))
-	ParticleEffectAttach("electrical_arc_01_parent",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("chest"))
-	self:SetMaterial("")
-	self:DrawShadow(true)
-	self:SetRenderFX(kRenderFxNone)
+	local pos = self:LocalToWorld(Vector(0,0,60))
+	ParticleEffect("electrical_arc_01_parent",pos,Angle(0,0,0),nil)
+	VJ_EmitSound(self,{"ambient/energy/zap1.wav","ambient/energy/zap2.wav","ambient/energy/zap3.wav","ambient/energy/zap5.wav","ambient/energy/zap6.wav","ambient/energy/zap7.wav","ambient/energy/zap8.wav","ambient/energy/zap9.wav"},100,math.random(100,95))
 end
 
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo, hitgroup, corpseEnt)
+	corpseEnt:SetMaterial("")
+	corpseEnt:DrawShadow(true)
+	corpseEnt:SetRenderFX(kRenderFxNone)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_AfterStartTimer()

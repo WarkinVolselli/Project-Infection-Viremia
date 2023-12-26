@@ -8,6 +8,7 @@ include('shared.lua')
 ENT.Model = {"models/vj_piv/specials/shikari/Fast.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.StartHealth = 100
 
+ENT.AnimTbl_IdleStand = {ACT_IDLE}
 ENT.AnimTbl_Walk = {ACT_WALK} -- Set the walking animations | Put multiple to let the base pick a random animation when it moves
 ENT.AnimTbl_Run = {ACT_RUN} -- Set the running animations | Put multiple to let the base pick a random animation when it moves
 
@@ -96,11 +97,11 @@ self.PIV_LegHP = self.PIV_LegHP *3
 if GetConVar("vj_piv_lights"):GetInt() == 1 then 
 
 self.Light2 = ents.Create("light_dynamic")
-self.Light2:SetKeyValue("brightness", "7")
+self.Light2:SetKeyValue("brightness", "2")
 self.Light2:SetKeyValue("distance", "30")
 self.Light2:SetLocalPos(self:GetPos())
 self.Light2:SetLocalAngles(self:GetAngles())
-self.Light2:Fire("Color", "255 0 0 255")
+self.Light2:Fire("Color", "255 93 0 255")
 self.Light2:SetParent(self)
 self.Light2:Spawn()
 self.Light2:Activate()

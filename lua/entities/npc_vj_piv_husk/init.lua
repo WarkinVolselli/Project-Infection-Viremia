@@ -5,7 +5,7 @@ include('shared.lua')
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
-ENT.Model = {"models/vj_piv/specials/husk/zombie1.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
+ENT.Model = {"models/vj_piv/specials/husk/zombie.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.StartHealth = 200
 
 ENT.NextRunT = 0
@@ -289,7 +289,7 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 		dmginfo:ScaleDamage(GetConVarNumber("vj_piv_headshot_damage_mult"))
 	elseif hitgroup == HITGROUP_HEAD && self.PIV_Husk_Headless == true then
 		dmginfo:ScaleDamage(0.1)
-	elseif	self.PIV_Husk_Headless == true then
+	elseif self.PIV_Husk_Headless == true then
 		dmginfo:ScaleDamage(0.8)
 	else
 		dmginfo:ScaleDamage(0.9)
@@ -452,9 +452,6 @@ end
 function ENT:PIV_CustomMutate()
 self.AnimTbl_Walk = {ACT_WALK}
 self.AnimTbl_Run = {ACT_RUN}
-
-self.StartHealth = self.StartHealth *2
-self:SetHealth(self.StartHealth)
 		
 local mymaxhealth = self:Health()
 self:SetMaxHealth(mymaxhealth)
@@ -466,15 +463,19 @@ self.SoundTbl_CombatIdle = {"vj_piv/husk/zed_clot_alpha_vox_scream_crazy_01.ogg"
 if GetConVar("vj_piv_lights"):GetInt() == 1 then 
 
 self.Light2 = ents.Create("light_dynamic")
-self.Light2:SetKeyValue("brightness", "7")
+self.Light2:SetKeyValue("brightness", "2")
 self.Light2:SetKeyValue("distance", "50")
 self.Light2:SetLocalPos(self:GetPos())
 self.Light2:SetLocalAngles(self:GetAngles())
-self.Light2:Fire("Color", "216 255 0 255")
+self.Light2:Fire("Color", "255 93 0 255")
 self.Light2:SetParent(self)
 self.Light2:Spawn()
 self.Light2:Activate()
-self.Light2:Fire("SetParentAttachment","eyes")
+if self:GetClass() == "npc_vj_piv_husk_f" then
+self.Light2:Fire("SetParentAttachment","head")
+else
+self.Light2:Fire("SetParentAttachment","headcrab")
+end
 self.Light2:Fire("TurnOn", "", 0)
 self:DeleteOnRemove(self.Light2)
 

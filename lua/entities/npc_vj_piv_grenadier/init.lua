@@ -11,21 +11,13 @@ ENT.HullType = HULL_HUMAN
 
 ENT.PIV_HasArmor = true
 
-ENT.TimeUntilRangeAttackProjectileRelease = 0.5 -- How much time until the projectile code is ran?
-ENT.NextRangeAttackTime = 7 -- How much time until it can use a range attack?
+ENT.HasRangeAttack = true
+ENT.RangeDistance = 1250
+ENT.RangeToMeleeDistance = 300
+ENT.NextRangeAttackTime = 6
+ENT.NextRangeAttackTime_DoRand = 16 
 
-ENT.RangeDistance = 1250 -- This is how far away it can shoot
-ENT.RangeToMeleeDistance = 300 -- How close does it have to be until it uses melee?
-ENT.RangeAttackAngleRadius = 100 -- What is the attack angle radius? | 100 = In front of the SNPC | 180 = All around the SNPC
-
-ENT.RangeUseAttachmentForPos = true -- Should the projectile spawn on a attachment?
-ENT.RangeUseAttachmentForPosID = "anim_attachment_RH" -- The attachment used on the range attack if RangeUseAttachmentForPos is set to true
-
-ENT.HasRangeAttack = true -- Should the SNPC have a range attack?
---ENT.TimeUntilMeleeAttackDamage = 1
-ENT.AnimTbl_RangeAttack = {"vjges_melee_moving01a","vjges_melee_moving03a","vjges_melee_moving06a"} -- Range Attack Animations
-ENT.RangeAttackEntityToSpawn = "obj_vj_grenade" -- The entity that is spawned when range attacking
-ENT.RangeAttackAnimationStopMovement = false -- Should it stop moving when performing a range attack?
+ENT.RangeAttackEntityToSpawn = "obj_vj_grenade"
 
 ENT.HasBreathSound = true
 
@@ -114,8 +106,7 @@ function ENT:Cripple()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
-	if (dmginfo:IsBulletDamage()) then
-		dmginfo:ScaleDamage(0.50)
+	if (dmginfo:IsBulletDamage() or dmginfo:IsExplosionDamage()) then
 		local attacker = dmginfo:GetAttacker()
 		self.DamageSpark1 = ents.Create("env_spark")
 		self.DamageSpark1:SetKeyValue("Magnitude","1")
@@ -130,7 +121,9 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 		self.DamageSpark1:Fire("StopSpark", "", 0.001)
 		self:DeleteOnRemove(self.DamageSpark1)
 	end
-	if self.HasSounds == true && self.HasImpactSounds == true then VJ_EmitSound(self,"vj_impact_metal/bullet_metal/metalsolid"..math.random(1,10)..".wav",70) end
+	if self.HasSounds == true && self.HasImpactSounds == true then VJ_EmitSound(self,"vj_impact_metal/bullet_metal/metalsolid"..math.random(1,10)..".wav",70)
+		dmginfo:ScaleDamage(0.50)
+    end
 end
 /*-----------------------------------------------
 	*** Copyright (c) 2012-2017 by DrVrej, All rights reserved. ***

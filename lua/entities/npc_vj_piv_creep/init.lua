@@ -41,7 +41,7 @@ ENT.LeapAttackJumpSoundLevel = 85
 
 ENT.NextRunT = 0
 ENT.RunT = 0
-ENT.Running = false
+ENT.PIV_GoblinMode = false
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
 self:SetSkin(math.random(2,3))
@@ -69,14 +69,14 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
     if
         self.NextRunT < CurTime() &&
-        self.Running == false &&
+        self.PIV_GoblinMode == false &&
         self:GetEnemy() != nil &&
-        !self.PIV_Crippled &&
+        self.PIV_Crippled == false &&
         !self.Dead &&
         !self:IsBusy()
     then
 
-        self.Running = true
+        self.PIV_GoblinMode = true
 		self.HasLeapAttack = false 
         self.RunT = CurTime() + math.random(6,12)
 
@@ -90,18 +90,18 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
     end
 
     if
-        self.Running &&
+        self.PIV_GoblinMode &&
         self.RunT < CurTime() &&
         !self.Dead &&
-        !self.PIV_Crippled && 
+        self.PIV_Crippled == false && 
 		self.PIV_Mutated == false
     then
 
-        self.Running = false
+        self.PIV_GoblinMode = false
 		self.HasLeapAttack = true 
         self.NextRunT = CurTime() + math.random(6,12)
 		
-		self.AnimTbl_IdleStand = {ACT_IDLE}
+		self.AnimTbl_IdleStand = {ACT_IDLE_HURT}
         self.AnimTbl_Walk = {ACT_WALK}
 		self.AnimTbl_Run = {ACT_RUN_AIM}
 

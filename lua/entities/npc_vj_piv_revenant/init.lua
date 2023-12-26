@@ -47,7 +47,7 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:PIV_CustomMutate()
-self.AnimTbl_Walk = {ACT_WALK}
+self.AnimTbl_Walk = {ACT_RUN}
 self.AnimTbl_Run = {ACT_RUN_RELAXED}
 
 self.StartHealth = self.StartHealth *2
@@ -61,11 +61,11 @@ self.PIV_LegHP = self.PIV_LegHP *2
 if GetConVar("vj_piv_lights"):GetInt() == 1 then 
 
 self.Light2 = ents.Create("light_dynamic")
-self.Light2:SetKeyValue("brightness", "7")
+self.Light2:SetKeyValue("brightness", "2")
 self.Light2:SetKeyValue("distance", "30")
 self.Light2:SetLocalPos(self:GetPos())
 self.Light2:SetLocalAngles(self:GetAngles())
-self.Light2:Fire("Color", "255 0 0 255")
+self.Light2:Fire("Color", "255 93 0 255")
 self.Light2:SetParent(self)
 self.Light2:Spawn()
 self.Light2:Activate()

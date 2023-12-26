@@ -7,7 +7,7 @@ include("shared.lua")
 -----------------------------------------------*/
 ENT.Model = {"models/props_debris/concrete_chunk01a.mdl","models/props_debris/concrete_chunk01b.mdl","models/props_debris/concrete_chunk01c.mdl","models/props_debris/concrete_chunk06d.mdl","models/props_debris/concrete_chunk06c.mdl"} -- The models it should spawn with | Picks a random one from the table
 ENT.DoesDirectDamage = true
-ENT.DirectDamage = math.random(40,50)
+ENT.DirectDamage = math.random(45,50)
 ENT.DirectDamageType = DMG_CRUSH
 
 ENT.ShakeWorldOnDeath = true

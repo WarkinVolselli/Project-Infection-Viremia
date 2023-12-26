@@ -11,6 +11,7 @@ ENT.IsRevived = false
 ENT.CanRevive = true
 ENT.ReviveRevenant = false
 
+ENT.AnimTbl_IdleStand = {ACT_IDLE_AIM_RELAXED}
 ENT.AnimTbl_Walk = {ACT_WALK_RELAXED}
 ENT.AnimTbl_Run = {ACT_WALK_RELAXED}
 
@@ -122,11 +123,11 @@ self.PIV_LegHP = self.PIV_LegHP *2
 if GetConVar("vj_piv_lights"):GetInt() == 1 then 
 
 self.Light2 = ents.Create("light_dynamic")
-self.Light2:SetKeyValue("brightness", "7")
+self.Light2:SetKeyValue("brightness", "2")
 self.Light2:SetKeyValue("distance", "50")
 self.Light2:SetLocalPos(self:GetPos())
 self.Light2:SetLocalAngles(self:GetAngles())
-self.Light2:Fire("Color", "216 255 0 255")
+self.Light2:Fire("Color", "255 93 0 255")
 self.Light2:SetParent(self)
 self.Light2:Spawn()
 self.Light2:Activate()

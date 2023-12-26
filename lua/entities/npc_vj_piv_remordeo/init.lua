@@ -6,7 +6,7 @@ include('shared.lua')
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
 ENT.Model = {"models/vj_piv/specials/remordeo/remordeo.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
-ENT.StartHealth = 350
+ENT.StartHealth = 200
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.HasRangeAttack = true -- Should the SNPC have a range attack?
@@ -32,9 +32,11 @@ ENT.PainSoundLevel = 80
 ENT.DeathSoundLevel = 80
 
 ENT.PIV_LegHP = 10000
+
 	-- ====== Sound File Paths ====== --
 -- Leave blank if you don't want any sounds to play
 
+ENT.SoundTbl_Breath = {"ambient/levels/prison/radio_random1.wav","ambient/levels/prison/radio_random2.wav","ambient/levels/prison/radio_random3.wav","ambient/levels/prison/radio_random4.wav","ambient/levels/prison/radio_random5.wav","ambient/levels/prison/radio_random6.wav","ambient/levels/prison/radio_random7.wav","ambient/levels/prison/radio_random8.wav","ambient/levels/prison/radio_random9.wav","ambient/levels/prison/radio_random10.wav","ambient/levels/prison/radio_random11.wav","ambient/levels/prison/radio_random12.wav","ambient/levels/prison/radio_random13.wav","ambient/levels/prison/radio_random14.wav"}
 ENT.SoundTbl_BeforeRangeAttack = {"vj_piv/remordeo/gas_can_explode.wav"}
 ENT.SoundTbl_Idle = {"vj_piv/mil_zomb/gasmask/runner/idle1.wav","vj_piv/mil_zomb/gasmask/runner/idle2.wav","vj_piv/mil_zomb/gasmask/runner/idle3.wav","vj_piv/mil_zomb/gasmask/runner/idle4.wav","vj_piv/mil_zomb/gasmask/runner/idle5.wav","vj_piv/mil_zomb/gasmask/runner/idle6.wav","vj_piv/mil_zomb/gasmask/runner/idle7.wav","vj_piv/mil_zomb/gasmask/runner/idle8.wav","vj_piv/mil_zomb/gasmask/runner/idle9.wav"}
 ENT.SoundTbl_Alert = {"vj_piv/mil_zomb/gasmask/runner/alert1.wav"}
@@ -48,6 +50,7 @@ ENT.GeneralSoundPitch2 = 90
 ENT.BeforeRangeAttackPitch = VJ_Set(90, 100)
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()	
+self.NextSoundTime_Breath = VJ_Set(7,20)
 self:SetModelScale(1.1)
     self.PIV_LegHP = self.StartHealth * 2
 	if GetConVarNumber("vj_npc_noidleparticle") == 0 then
@@ -66,6 +69,37 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnThink_AIEnabled() 
     util.VJ_SphereDamage(self,self,self:GetPos(),100,1,DMG_RADIATION,true,true)
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:PIV_CustomMutate()
+self.AnimTbl_Walk = {ACT_RUN}
+self.AnimTbl_Run = {ACT_RUN_RELAXED}
+
+self.StartHealth = self.StartHealth *2
+self:SetHealth(self.StartHealth)
+		
+local mymaxhealth = self:Health()
+self:SetMaxHealth(mymaxhealth)
+
+self.PIV_LegHP = self.PIV_LegHP *2
+
+if GetConVar("vj_piv_lights"):GetInt() == 1 then 
+
+self.Light2 = ents.Create("light_dynamic")
+self.Light2:SetKeyValue("brightness", "1")
+self.Light2:SetKeyValue("distance", "50")
+self.Light2:SetLocalPos(self:GetPos())
+self.Light2:SetLocalAngles(self:GetAngles())
+self.Light2:Fire("Color", "255 0 0 255")
+self.Light2:SetParent(self)
+self.Light2:Spawn()
+self.Light2:Activate()
+self.Light2:Fire("SetParentAttachment","eyes")
+self.Light2:Fire("TurnOn", "", 0)
+self:DeleteOnRemove(self.Light2)
+
+end
+
 end
 /*-----------------------------------------------
 	*** Copyright (c) 2012-2017 by DrVrej, All rights reserved. ***

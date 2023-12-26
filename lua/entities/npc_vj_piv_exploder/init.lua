@@ -126,6 +126,44 @@ function ENT:SetUpGibesOnDeath(dmginfo,hitgroup)
 	self:CreateGibEntity("obj_vj_gib","models/Gibs/HGIBS_rib.mdl",{Pos=self:LocalToWorld(Vector(0,0,30))})
 	self:CreateGibEntity("obj_vj_gib","models/Gibs/HGIBS.mdl",{Pos=self:LocalToWorld(Vector(0,0,60))})
 end
+----------------------------------------------------------------------------
+function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
+	if self.CanDoTheFunny == false then return end
+	
+	local stumble = VJ_PICK({"vjseq_shoved_backward","vjseq_shoved_rightward","vjseq_shoved_leftward","vjseq_shoved_forward",})
+	
+	if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SNIPER) then
+		if hitgroup == HITGROUP_HEAD or hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH then
+			if self.PIVNextStumbleT < CurTime() then
+				if dmginfo:GetDamage() > 40 or dmginfo:GetDamageForce():Length() > 10000 then
+					if math.random (1,2) == 1 then
+						self:VJ_ACT_PLAYACTIVITY("vjseq_shoved_backward",true,false,false)
+						self.PIVNextStumbleT = CurTime() + 5
+					end
+				end
+			end
+		end
+	end
+
+	if dmginfo:IsDamageType(DMG_CLUB) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_GENERIC) then
+		if dmginfo:GetDamage() > 20 or dmginfo:GetDamageForce():Length() > 10000 then
+			if self.PIV_NextShoveT < CurTime() then
+				self:VJ_ACT_PLAYACTIVITY("vjseq_shoved_backward",true,false,false)
+				self.PIV_NextShoveT = CurTime() + math.random(5,8)
+			end
+		end
+    return !self.PIVCrippled && !self.PIVFuckingCrawlingLittleCunt  && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
+	end
+
+	if dmginfo:IsExplosionDamage() then
+		if self.NextSplodeStumbleT < CurTime() then
+			self:VJ_ACT_PLAYACTIVITY(stumble,true,VJ_GetSequenceDuration(self,tbl),false)
+			self.NextSplodeStumbleT = CurTime() + 5
+		end
+	return !self.PIVCrippled && !self.PIVFuckingCrawlingLittleCunt  && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
+	end
+	
+end
 /*-----------------------------------------------
 	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,

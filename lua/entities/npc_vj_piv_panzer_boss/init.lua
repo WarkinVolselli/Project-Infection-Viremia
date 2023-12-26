@@ -12,6 +12,9 @@ ENT.PIV_HasArmor = true
 ENT.Berserk = false
 ENT.PIV_CanMutate = false
 ENT.PIV_Tank = true
+ENT.PIV_IsBoss = true
+
+ENT.AnimTbl_Run = {ACT_RUN_PROTECTED}	
 
 ENT.GeneralSoundPitch1 = 50
 ENT.GeneralSoundpitch2 = 50
@@ -22,31 +25,32 @@ ENT.SoundTbl_SoundTrack = {"vj_piv/music/yakuzads_that_man.mp3"}
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
+	self.NextSoundTime_Breath = VJ_Set(7,20)
 	self:SetSkin(math.random(0,1))
 	self:SetModelScale(1.4)
 
-if GetConVar("vj_piv_lights"):GetInt() == 1 then 
+	if GetConVar("vj_piv_lights"):GetInt() == 1 then 
 
-self.Light2 = ents.Create("light_dynamic")
-self.Light2:SetKeyValue("brightness", "7")
-self.Light2:SetKeyValue("distance", "50")
-self.Light2:SetLocalPos(self:GetPos())
-self.Light2:SetLocalAngles(self:GetAngles())
-self.Light2:Fire("Color", "216 255 0 255")
-self.Light2:SetParent(self)
-self.Light2:Spawn()
-self.Light2:Activate()
-self.Light2:Fire("SetParentAttachment","eyes")
-self.Light2:Fire("TurnOn", "", 0)
-self:DeleteOnRemove(self.Light2)
+		self.Light2 = ents.Create("light_dynamic")
+		self.Light2:SetKeyValue("brightness", "4")
+		self.Light2:SetKeyValue("distance", "75")
+		self.Light2:SetLocalPos(self:GetPos())
+		self.Light2:SetLocalAngles(self:GetAngles())
+		self.Light2:Fire("Color", "216 255 0 255")
+		self.Light2:SetParent(self)
+		self.Light2:Spawn()
+		self.Light2:Activate()
+		self.Light2:Fire("SetParentAttachment","eyes")
+		self.Light2:Fire("TurnOn", "", 0)
+		self:DeleteOnRemove(self.Light2)
 
-end
+	end
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 
-	if self.Berserk == false && (self:Health() <= (self:GetMaxHealth() / 2)) then
+	if self.Berserk == false && (self:Health() <= (self:GetMaxHealth() / 3)) then
 		self.Berserk = true
 		self.AnimTbl_Run = {ACT_RUN_RELAXED}
         self:PlaySoundSystem("Alert")	
@@ -54,9 +58,8 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 		self:VJ_ACT_PLAYACTIVITY(tbl,true,VJ_GetSequenceDuration(self,tbl),false)		
 	end   
 
-	if hitgroup == HITGROUP_HEAD then return end
 		if (dmginfo:IsBulletDamage()) then
-			dmginfo:ScaleDamage(0.75)
+			dmginfo:ScaleDamage(0.5)
 			local attacker = dmginfo:GetAttacker()
 			self.DamageSpark1 = ents.Create("env_spark")
 			self.DamageSpark1:SetKeyValue("Magnitude","1")

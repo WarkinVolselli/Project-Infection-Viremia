@@ -1,6 +1,6 @@
 ENT.Base 			= "npc_vj_piv_walker_base"
 ENT.Type 			= "ai"
-ENT.PrintName 		= "Bloated Walker (Male)"
+ENT.PrintName 		= "Fat Walker"
 ENT.Author 			= "Warkin"
 ENT.Purpose 		= "Spawn it and fight with it!"
 ENT.Instructions 	= "Click on the spawnicon to spawn it."

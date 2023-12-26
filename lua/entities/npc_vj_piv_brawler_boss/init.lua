@@ -8,6 +8,7 @@ include('shared.lua')
 ENT.Model = {"models/vj_piv/specials/brawler/male_01.mdl","models/vj_piv/specials/brawler/male_02.mdl","models/vj_piv/specials/brawler/male_03.mdl","models/vj_piv/specials/brawler/male_04.mdl","models/vj_piv/specials/brawler/male_05.mdl","models/vj_piv/specials/brawler/male_07.mdl","models/vj_piv/specials/brawler/male_09.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.StartHealth = 2000
 ENT.VJ_IsHugeMonster = true
+ENT.PIV_IsBoss = true
 ENT.AnimTbl_IdleStand = {ACT_IDLE}
 ENT.AnimTbl_Walk = {ACT_WALK}
 ENT.AnimTbl_Run = {ACT_RUN}
@@ -28,12 +29,14 @@ ENT.SoundTbl_SoundTrack = {"vj_piv/music/yakuzads_majima_theme.mp3"}
 ENT.PIV_SpawnCoolDownT = 0
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
+
+self.PIV_SpawnCoolDownT = CurTime() + 10
  
 if GetConVar("vj_piv_lights"):GetInt() == 1 then 
 
 self.Light2 = ents.Create("light_dynamic")
-self.Light2:SetKeyValue("brightness", "7")
-self.Light2:SetKeyValue("distance", "50")
+self.Light2:SetKeyValue("brightness", "1")
+self.Light2:SetKeyValue("distance", "75")
 self.Light2:SetLocalPos(self:GetPos())
 self.Light2:SetLocalAngles(self:GetAngles())
 self.Light2:Fire("Color", "255 0 0 255")
@@ -195,7 +198,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
         self.PIV_NextStrafeT = CurTime() + math.random(3,6)
 	end
 
-	if self.PIV_SpawnCoolDownT < CurTime() then
+	if IsValid(self:GetEnemy()) && self.PIV_SpawnCoolDownT < CurTime() then
 
 		self:PIV_SummonHelp_Spawn()
 		

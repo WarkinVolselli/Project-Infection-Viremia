@@ -9,12 +9,13 @@ ENT.Model = {"models/vj_piv/hl2/charple.mdl"} -- The game will pick a random mod
 
 ENT.StartHealth = 400
 
+ENT.DeathCorpseSkin = 7
+
 ENT.MeleeAttackDamage = 0
 
 ENT.MeleeAttackDamageType = DMG_BURN
 ENT.MeleeAttackDistance = 150 -- How close does it have to be until it attacks?
 ENT.MeleeAttackDamageDistance = 200 -- How far does the damage go?
-ENT.MeleeAttackDamageAngleRadius = 180 -- What is the damage angle radius? | 100 = In front of the SNPC | 180 = All around the SNPC
 
 ENT.AnimTbl_IdleStand = {ACT_IDLE_HURT}
 ENT.AnimTbl_Walk = {ACT_WALK_AIM}
@@ -36,11 +37,10 @@ ENT.MeleeAttackSetEnemyOnFire = true
 ENT.MeleeAttackSetEnemyOnFireTime = math.random(3,6)
 ENT.SetCorpseOnFire = true
 
-ENT.PIV_LegHP = 10000
-
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
-self:SetSkin(math.random(0,5))
+self:SetSkin(8)
+	self:SetModelScale(1.1)
 self.HasBreathSound = true
 if self:IsDirt(self:GetPos()) then -- digout breaks particles, this respawns them with a slight delay if over dirt
    timer.Simple(0.2,function() if IsValid(self) then

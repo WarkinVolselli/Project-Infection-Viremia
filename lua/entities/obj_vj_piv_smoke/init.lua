@@ -17,7 +17,7 @@ ENT.RadiusDamageType = DMG_RADIATION -- Damage type
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomPhysicsObjectOnInitialize(phys)
 	phys:Wake()
-	phys:SetMass(0)
+	phys:SetMass(1)
 	phys:SetBuoyancyRatio(0)
 	phys:EnableDrag(false)
 	--phys:EnableGravity(false)

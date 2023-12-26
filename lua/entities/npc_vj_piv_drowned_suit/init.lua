@@ -96,7 +96,6 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 
-	if hitgroup == HITGROUP_HEAD then return end
 		if (dmginfo:IsBulletDamage()) then
 			dmginfo:ScaleDamage(0.75)
 			local attacker = dmginfo:GetAttacker()
@@ -114,10 +113,37 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 		end
 		if self.HasSounds == true && self.HasImpactSounds == true then VJ_EmitSound(self,"vj_impact_metal/bullet_metal/metalsolid"..math.random(1,10)..".wav",70) 
 	end	
-	
-	if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 then
-		dmginfo:ScaleDamage(GetConVarNumber("vj_piv_headshot_damage_mult"))
-    end
+
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:PIV_CustomMutate()
+self.AnimTbl_Walk = {ACT_WALK}
+self.AnimTbl_Run = {ACT_RUN_RELAXED}
+
+self.StartHealth = self.StartHealth *2
+self:SetHealth(self.StartHealth)
+		
+local mymaxhealth = self:Health()
+self:SetMaxHealth(mymaxhealth)
+
+self.PIV_LegHP = self.PIV_LegHP *2
+
+if GetConVar("vj_piv_lights"):GetInt() == 1 then 
+
+self.Light2 = ents.Create("light_dynamic")
+self.Light2:SetKeyValue("brightness", "1")
+self.Light2:SetKeyValue("distance", "50")
+self.Light2:SetLocalPos(self:GetPos())
+self.Light2:SetLocalAngles(self:GetAngles())
+self.Light2:Fire("Color", "0 161 255 255")
+self.Light2:SetParent(self)
+self.Light2:Spawn()
+self.Light2:Activate()
+self.Light2:Fire("SetParentAttachment","eyes")
+self.Light2:Fire("TurnOn", "", 0)
+self:DeleteOnRemove(self.Light2)
+
+end
 
 end
 /*-----------------------------------------------

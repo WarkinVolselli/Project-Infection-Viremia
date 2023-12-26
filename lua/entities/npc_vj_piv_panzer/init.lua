@@ -7,13 +7,19 @@ include('shared.lua')
 -----------------------------------------------*/
 ENT.Model = {"models/vj_piv/specials/military/juggernaut.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.StartHealth = 1000
+
+ENT.AnimTbl_IdleStand = {ACT_IDLE_AIM_STIMULATED}
+ENT.AnimTbl_Walk = {ACT_WALK_SCARED}
+ENT.AnimTbl_Run = {ACT_WALK_SCARED}
+
 ENT.PIV_HasArmor = true
 
 ENT.GeneralSoundPitch1 = 70
 ENT.GeneralSoundpitch2 = 70
 
-ENT.PIV_LegHP = 500
-
+	-- ====== Sound File Paths ====== --
+-- Leave blank if you don't want any sounds to play
+ENT.SoundTbl_Breath = {"ambient/levels/prison/radio_random1.wav","ambient/levels/prison/radio_random2.wav","ambient/levels/prison/radio_random3.wav","ambient/levels/prison/radio_random4.wav","ambient/levels/prison/radio_random5.wav","ambient/levels/prison/radio_random6.wav","ambient/levels/prison/radio_random7.wav","ambient/levels/prison/radio_random8.wav","ambient/levels/prison/radio_random9.wav","ambient/levels/prison/radio_random10.wav","ambient/levels/prison/radio_random11.wav","ambient/levels/prison/radio_random12.wav","ambient/levels/prison/radio_random13.wav","ambient/levels/prison/radio_random14.wav"}
 ENT.SoundTbl_Idle = {
 	"vj_piv/mil_zomb/radio/idle_1.wav",
 	"vj_piv/mil_zomb/radio/idle_2.wav",
@@ -62,16 +68,14 @@ ENT.SoundTbl_Pain = {
 	"vj_piv/mil_zomb/radio/pain_4.wav"
 }
 ENT.SoundTbl_Death = {
-	"vj_piv/mil_zomb/radio/pain_1.wav",
-	"vj_piv/mil_zomb/radio/pain_2.wav",
-	"vj_piv/mil_zomb/radio/pain_3.wav",
-	"vj_piv/mil_zomb/radio/pain_4.wav"
+	"vj_piv/mil_zomb/radio/death_1.wav",
+	"vj_piv/mil_zomb/radio/death_2.wav"
 }
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
+	self.NextSoundTime_Breath = VJ_Set(7,20)
 	self:SetSkin(math.random(0,1))
 	self:SetModelScale(1.2)
-	self.PIV_LegHP = self.PIV_LegHP *2
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
@@ -168,11 +172,8 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 
-
-	if hitgroup == HITGROUP_HEAD then return end
 		if (dmginfo:IsBulletDamage()) then
 			dmginfo:ScaleDamage(0.5)
 			local attacker = dmginfo:GetAttacker()
@@ -190,16 +191,11 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 		end
 		if self.HasSounds == true && self.HasImpactSounds == true then VJ_EmitSound(self,"vj_impact_metal/bullet_metal/metalsolid"..math.random(1,10)..".wav",70) 
 	end	
-	
-	if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 then
-		dmginfo:ScaleDamage(GetConVarNumber("vj_piv_headshot_damage_mult"))
-    end
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:PIV_CustomMutate()
-self.AnimTbl_Walk = {ACT_WALK}
-self.AnimTbl_Run = {ACT_RUN_RELAXED}
+self.AnimTbl_Run = {ACT_SPRINT}
 
 self.StartHealth = self.StartHealth *1.5
 self:SetHealth(self.StartHealth)
@@ -212,7 +208,7 @@ self.PIV_LegHP = self.PIV_LegHP *2
 if GetConVar("vj_piv_lights"):GetInt() == 1 then 
 
 self.Light2 = ents.Create("light_dynamic")
-self.Light2:SetKeyValue("brightness", "7")
+self.Light2:SetKeyValue("brightness", "3")
 self.Light2:SetKeyValue("distance", "50")
 self.Light2:SetLocalPos(self:GetPos())
 self.Light2:SetLocalAngles(self:GetAngles())
