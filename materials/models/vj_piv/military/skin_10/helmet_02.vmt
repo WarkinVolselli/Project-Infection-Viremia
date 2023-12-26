@@ -1,6 +1,6 @@
 "vertexlitgeneric"
 {
-	"$baseTexture"		"models/vj_piv/military/SKIN_10/helmet_02"
+	"$baseTexture"		"models/vj_piv/military/SHARED/helmet_02"
 	"$bumpmap"		"models/vj_piv/military/SHARED/helmet_02_normal"
 
  	"$halflambert"		"1"
