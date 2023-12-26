@@ -1,7 +1,7 @@
 "VertexlitGeneric"
 {
 	"$basetexture" "models\vj_piv\specials\juggernaut\jager_met2"
-	"$bumpmap" "models\vj_piv\specials\juggernaut\jager_met_n2"
+	"$bumpmap" "models\vj_piv\specials\juggernaut\jager_met_n"
  	"$phong" "1"
 	"$phongexponent" "94.8"
 	"$phongboost"	"0.35"
