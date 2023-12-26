@@ -16,4 +16,8 @@ $ambientocclusion 1
 $ambientboost 0
 $color2 "[1.5 1.5 1.5]"
 
+"$detail" "nature/dirtfloor005c"
+"$detailblendmode" 0
+"$detailblendfactor" .8
+
 }
