@@ -1,8 +1,8 @@
 "VertexLitGeneric"
 {
 	// Original shader: VertexLitTexture
-	"$basetexture" "models/vj_piv/specials/shambler/eric_facemap"
-	"$bumpmap"    "models/vj_piv/specials/shambler/eric_facemap_normal"
+	"$basetexture" "models/vj_piv/specials/shambler/kanisha_cylmap2"
+	"$bumpmap"    "models/vj_piv/specials/shambler/kanisha_cylmap_n"
     "$phong" "1"
 	"$phongexponent" "10"
 	"$phongboost" "0.5"	
