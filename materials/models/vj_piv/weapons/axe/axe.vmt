@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "Models/vj_piv/weapons/axe/axe"
+	"$envmap" "env_cubemap"
+	"$envmapmask" "Models/vj_piv/weapons/axe/axe_ref"
+}

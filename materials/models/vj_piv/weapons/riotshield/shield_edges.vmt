@@ -1,0 +1,8 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/vj_piv/weapons/riotshield/shield_edges"
+	"$bumpmap" "models/vj_piv/weapons/riotshield/riot_metal_bump"
+	"$envmap"	"env_cubemap"
+	"$envmaptint"	"[ .4 .4 .4 ]"
+	"$normalmapalphaenvmapmask" "1"
+}

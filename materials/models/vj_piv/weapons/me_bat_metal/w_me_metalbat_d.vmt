@@ -1,0 +1,21 @@
+VertexLitGeneric
+{
+
+	$baseTexture "models\vj_piv/weapons\me_bat_metal\w_me_metalbat_d"
+	$bumpmap "models\vj_piv/weapons\me_bat_metal\w_me_metalbat_n"
+
+	$surfaceprop "metal"
+	"keywords" "metalbat"
+
+	$halflambert "1"
+	$selfillum "1"
+	$phong "1"
+	$phongtint "[.12 .15 .1]"
+	$phongboost "5"
+	$phongexponent "20"
+	$phongfresnelranges "[1 10 8]"
+
+	$envmap "env_cubemap"
+	$envmaptint "[.12 .15 .1]"
+	$normalmapalphaenvmapmask "1"
+}

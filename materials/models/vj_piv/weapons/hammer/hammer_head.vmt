@@ -1,0 +1,13 @@
+"VertexLitGeneric"
+{
+	"$basetexture"			"models\vj_piv/weapons\hammer/hammer_tex"
+	//"$bumpmap"			"models\vj_piv/weapons\hammer/hammer_tex_normal"
+	
+	"$envmap"			"env_cubemap"
+	"$envmapmask"			"models\vj_piv/weapons/hammer\hammer_tex_phong"
+	
+	"$phong"			0
+	"$phongexponenttexture"	"models\vj_piv/weapons/hammer\hammer_tex_phong"
+	"$phongboost"			50
+	//"$phongfresnelranges"		"[0.5 0.5 1]"
+}

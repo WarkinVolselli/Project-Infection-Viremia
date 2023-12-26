@@ -1,0 +1,9 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "Models/vj_piv/weapons/pan/PotsPans001a"
+	//"$envmap" "env_cubemap"
+	//"$basealphaenvmapmask" 1
+	
+}
+
+

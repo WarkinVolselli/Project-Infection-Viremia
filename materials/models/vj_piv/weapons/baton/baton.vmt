@@ -1,0 +1,19 @@
+VertexLitGeneric
+{
+	$basetexture "models/vj_piv/weapons/baton/baton"
+	$bumpmap "models/vj_piv/weapons/baton/baton_nm"
+	$surfaceprop Metal
+
+	$envmap "env_cubemap"
+	$envmaptint "[0.03 0.03 0.03]"
+	$envmapsaturation 0.83
+
+	$phong 1
+	$phongfresnelranges "[10 0.9 5]"
+	$phongexponent 8
+	$phongboost 0.05
+
+	$nodecal 1
+
+	$model 1
+}
