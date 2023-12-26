@@ -1,0 +1,14 @@
+"Vertexlitgeneric"
+{
+	"$basetexture" "models/vj_piv/specials/phorid/trypo_diffuse"
+	"$bumpmap" "models/vj_piv/specials/phorid/trypo_n"
+	"$model" "1"
+	"$phong" "1"
+	"$phongboost" "3"					
+	"$phongfresnelranges"	"[0.1 .5  1]"
+	"$phongexponent" 15
+
+	$rimlight               "1"
+	$rimlightexponent       "2"
+	$rimlightboost          ".2"
+}
