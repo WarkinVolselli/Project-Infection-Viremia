@@ -9,6 +9,7 @@ $phongtint "[.85 .85 1]"
 $halflambert 0
 $phongfresnelranges "[.1 .3 6]"
 $ambientocclusion 1
+$nocull 1
 
 
 
