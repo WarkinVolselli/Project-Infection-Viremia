@@ -1,0 +1,21 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/vj_piv/specials/slammer/hat_fire"
+	"$bumpmap" "models/vj_piv/specials/slammer/hat_fire_normal"
+	"$halflambert" "1"
+
+	"$phong"			"1"
+	"$nodecal"		"1"
+	"$phongboost"		"2"
+	"$phongfresnelranges"	"[.25 .25 .25]"
+	"$model" 			"1"
+	"$phongexponent" 		"205"
+	"$halflambert" 		"1"
+	"$rimlight" 		"100"
+
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[.05 .05 .05]"
+	"$envmapFresnel" "1"
+
+
+}

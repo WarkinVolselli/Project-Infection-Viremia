@@ -1,0 +1,21 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/vj_piv/specials/slammer/gas_fire"
+	"$bumpmap" "models/vj_piv/specials/slammer/gas_fire_normal"  
+	"$alphatest" "1"
+//	"$translucent" "1"
+//	"$nocull" "1"
+
+	"$phong"			"1"
+	"$nodecal"		"1"
+	"$phongboost"		"0"
+	"$phongfresnelranges"	"[.1 .1 .1]"
+	"$model" 			"1"
+	"$phongexponent" 		"205"
+	"$halflambert" 		"1"
+	"$rimlight" 		"100"
+
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[.05 .05 .05]"
+	"$envmapFresnel" "1"
+}
