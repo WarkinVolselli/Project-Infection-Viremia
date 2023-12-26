@@ -2,7 +2,7 @@
 {
 	"$baseTexture" "models\vj_piv\hl2\citizens\facemaps\cheaple_face"
 
-                "$bumpmap"     "models\vj_piv\hl2\citizens\facemaps\eric_facemap_n"
+                "$bumpmap"     "models\vj_piv\hl2\citizens\facemaps\cheaple_face_n"
 
 
                 "$phong" "1"
