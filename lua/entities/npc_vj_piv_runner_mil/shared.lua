@@ -1,4 +1,4 @@
-ENT.Base 			= "npc_vj_piv_runner_base"
+ENT.Base 			= "npc_vj_piv_runner_base_m"
 ENT.Type 			= "ai"
 ENT.PrintName 		= "Military Runner"
 ENT.Author 			= "Warkin"

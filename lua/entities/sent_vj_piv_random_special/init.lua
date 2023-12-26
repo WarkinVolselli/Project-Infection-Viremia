@@ -10,7 +10,9 @@ ENT.SingleSpawner = true
 ENT.Model = {"models/hunter/plates/plate.mdl"} -- The models it should spawn with | Picks a random one from the table
 local ent_tbl = {
 	"npc_vj_piv_shambler",
+	"npc_vj_piv_shambler_f",
 	"npc_vj_piv_revenant",
+	"npc_vj_piv_revenant_f",
 	"npc_vj_piv_husk",
 	"npc_vj_piv_husk_f",
 	"npc_vj_piv_brawler",
@@ -20,8 +22,6 @@ local ent_tbl = {
 	"npc_vj_piv_stoker",
 	"npc_vj_piv_virulent",
 	"npc_vj_piv_shikari",
-	"npc_vj_piv_fat_walker_m",
-	"npc_vj_piv_fat_runner_m",
 	"npc_vj_piv_shocker",
 	"npc_vj_piv_stalker",
 	"npc_vj_piv_spewer",
@@ -33,6 +33,8 @@ local ent_tbl = {
 	"npc_vj_piv_drowned",
 	"npc_vj_piv_drowned_suit",
 	"npc_vj_piv_grenadier",
+	"npc_vj_piv_blood_bomber",
+	"npc_vj_piv_slammer",
 }
 ENT.EntitiesToSpawn = {
 	{EntityName = "NPC1",SpawnPosition = {vForward=0,vRight=0,vUp=0},Entities = ent_tbl},

@@ -29,7 +29,7 @@ function ENT:Zombie_CustomOnInitialize()
 		
         self.EyeGlow = ents.Create("env_sprite")
         self.EyeGlow:SetKeyValue("model","sprites/glow1.vmt")
-        self.EyeGlow:SetKeyValue("scale","0.05")
+        self.EyeGlow:SetKeyValue("scale","0.25")
         self.EyeGlow:SetKeyValue("rendermode","5")
         self.EyeGlow:SetKeyValue("rendercolor","255 0 0 255")
         self.EyeGlow:SetKeyValue("spawnflags","1") 

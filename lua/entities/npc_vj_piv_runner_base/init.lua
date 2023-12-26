@@ -18,17 +18,35 @@ ENT.VJC_Data = {
 
 ENT.MeleeAttackDamageType = DMG_CLUB -- Type of Damage
 
+ENT.HasRangeAttack = false
+ENT.AnimTbl_RangeAttack = {"vjges_melee_moving01a","vjges_melee_moving03a","vjges_melee_moving06a"}
+ENT.RangeAttackEntityToSpawn = "obj_vj_piv_trash"
+ENT.RangeAttackAnimationStopMovement = false
+ENT.TimeUntilRangeAttackProjectileRelease = 0.7
+ENT.NextRangeAttackTime = 5
+ENT.NextRangeAttackTime_DoRand = 20
+ENT.RangeDistance = 600
+ENT.RangeToMeleeDistance = 200
+ENT.RangeUseAttachmentForPos = true
+ENT.RangeUseAttachmentForPosID = "anim_attachment_RH"
+
 ENT.PIV_Infection = true
 ENT.PIV_Infection_IsWalker = false
 ENT.PIV_FuckingCrawlingLittleCunt = false 
-ENT.PIV_Charger = false
+ENT.PIV_Rusher = false
 ENT.PIV_Leaper = false
 ENT.PIV_HasArmor = false
 ENT.PIV_Tank = false
+ENT.PIV_IsBoss = false
+
+ENT.PIV_Blazing = false
+ENT.PIV_Electra = false
+ENT.PIV_Toxic = false
 
 ENT.PIV_IsZombine = false
 ENT.PIV_IsMetropolice = false
 ENT.PIV_IsMilitary = false
+ENT.PIV_HasShield = false
 
 ENT.PIV_CanMutate = false
 ENT.PIV_Mutated = false
@@ -43,11 +61,21 @@ ENT.PIV_NextClimbT = 0
 
 ENT.PIV_WeHaveAWeapon = false
 ENT.PIV_WeaponType = 0
+
+ENT.PIV_Thrower = false
+ENT.PIV_ThrowCount = 0
+
+ENT.PIV_CanRest = false
+ENT.PIV_NextRestT = 0
+ENT.PIV_Resting = 0
+	-- 0 = Not Resting
+	-- 1 = Sitting
+	-- 2 = Lying
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.VJ_NPC_Class = {"CLASS_ZOMBIE"} -- NPCs with the same class with be allied to each other
 ENT.BloodColor = "Red" -- The blood type, this will determine what it should use (decal, particle, etc.)
 ENT.HasMeleeAttack = true -- Should the SNPC have a melee attack?
-ENT.AnimTbl_IdleStand = {ACT_IDLE} -- The idle animation when AI is enabled
+ENT.AnimTbl_IdleStand = {ACT_IDLE_AIM_STIMULATED} -- The idle animation when AI is enabled
 ENT.AnimTbl_Walk = {ACT_WALK} -- Set the walking animations | Put multiple to let the base pick a random animation when it moves
 ENT.AnimTbl_Run = {ACT_SPRINT} -- Set the running animations | Put multiple to let the base pick a random animation when it moves
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -55,7 +83,6 @@ ENT.HasMeleeAttack = true
 ENT.MeleeAttackDistance = 40
 ENT.MeleeAttackDamageDistance = 60
 ENT.TimeUntilMeleeAttackDamage = false
-ENT.HasExtraMeleeAttackSounds = true
 ENT.HasMeleeAttackSlowPlayerSound = false
 ENT.MeleeAttackDamage = math.random(15,20)
 
@@ -65,12 +92,14 @@ ENT.PropAP_MaxSize = 0.6 -- This is a scale number for the max size it can attac
 
 ENT.HasBreathSound = true
 
-ENT.MaxJumpLegalDistance = VJ_Set(50, 200) -- The max distance the NPC can jump (Usually from one node to another) | ( UP, DOWN )
+ENT.JumpVars = {
+	MaxRise = 128, -- How high it can jump up ((S -> A) AND (S -> E))
+	MaxDrop = 512, -- How low it can jump down (E -> S)
+	MaxDistance = 512, -- Maximum distance between Start and End
+}
 
 ENT.DisableFootStepSoundTimer = true
--- ENT.FootStepTimeRun = 1 -- Next foot step sound when it is running
--- ENT.FootStepTimeWalk = 1 -- Next foot step sound when it is walking
-ENT.HasExtraMeleeAttackSounds = true -- Set to true to use the extra melee attack sounds
+ENT.HasExtraMeleeAttackSounds = false -- Set to true to use the extra melee attack sounds
 ENT.GeneralSoundPitch1 = 100
 ENT.GeneralSoundpitch2 = 90
 
@@ -83,8 +112,6 @@ ENT.PIVAllowedToStumble = true
 ENT.PIV_NextShoveT = 0
 ENT.PIV_LegHP = 50
 
-ENT.HasDeathAnimation = true
-ENT.DeathAnimationChance = GetConVarNumber("vj_piv_deathanim_chance")
 ENT.AnimTbl_Death = {"vjseq_witch_death","vjseq_nz_death_1","vjseq_nz_death_2","vjseq_nz_death_3","vjseq_death02","vjseq_death_01","vjseq_death_02a","vjseq_death_02c","vjseq_death_03","vjseq_death_05","vjseq_death_06","vjseq_death_07","vjseq_death_08","vjseq_death_08b","vjseq_death_09","vjseq_death_10ab","vjseq_death_10b","vjseq_death_10c","vjseq_death_11_01a","vjseq_death_11_01b","vjseq_death_11_02a","vjseq_death_11_02b","vjseq_death_11_02c","vjseq_death_11_02d","vjseq_death_11_03a","vjseq_death_11_03b","vjseq_death_11_03c"} 
 	-- ====== Flinching Code ====== --
 ENT.CanFlinch = 1
@@ -305,36 +332,43 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnPreInitialize()
 
-    if GetConVar("vj_piv_rebirth"):GetInt() == 1 && GetConVar("vj_piv_rebirthall"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_brawler_boss" then
+    if GetConVar("vj_piv_rebirth"):GetInt() == 1 && GetConVar("vj_piv_rebirthall"):GetInt() == 1 && self.PIV_IsBoss == false then
 		self.PIV_CanMutate = false
 		self.PIV_Mutated = true
 		self:PIV_CustomMutate()
 	end
 
-    if GetConVar("vj_piv_rebirth"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_brawler_boss" then 
+    if GetConVar("vj_piv_rebirth"):GetInt() == 1 && self.PIV_IsBoss == false then 
 		self.PIV_CanMutate = true
 	end
 
-    if GetConVar("vj_piv_doorbreaking"):GetInt() == 1 then
-	   self.CanOpenDoors = false -- Can it open doors?
+    if GetConVar("vj_piv_door_breaking"):GetInt() == 1 then
+	    self.CanOpenDoors = false -- Can it open doors?
 	end
 
-    if GetConVar("vj_piv_climbing"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_shikari" then
-	   self.PIV_CanClimb = true
+    if GetConVar("vj_piv_jumping"):GetInt() == 1 or GetConVar("vj_piv_jumping"):GetInt() == 2 then
+	    self.AllowMovementJumping = true
+	else
+		self.AllowMovementJumping = false
+	end
+
+    if (GetConVar("vj_piv_climbing"):GetInt() == 1 or GetConVar("vj_piv_climbing"):GetInt() == 2) && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_sickler" then
+	    self.PIV_CanClimb = true
 	end
 
     if GetConVar("vj_piv_deathanim"):GetInt() == 1 then 
-       self.HasDeathAnimation = true
+        self.HasDeathAnimation = true
+	    self.DeathAnimationChance = GetConVarNumber("vj_piv_deathanim_chance")
     end
 
 	self.NextEvadeTime = CurTime() 
     self.PIV_LegHP = self.StartHealth / 2
 
-	if GetConVar("vj_piv_subtypes"):GetInt() == 1 && self.PIV_WeHaveAWeapon == false && self:GetClass() != "npc_vj_piv_tank" && self:GetClass() != "npc_vj_piv_creep" && self:GetClass() != "npc_vj_piv_revenant" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_sickler" && self:GetClass() != "npc_vj_piv_drowned" && self:GetClass() != "npc_vj_piv_drowned_suit" && self:GetClass() != "npc_vj_piv_drowned_inf" && self.PIV_Mutated == false then
+	if GetConVar("vj_piv_subclasses"):GetInt() == 1 && self.PIV_WeHaveAWeapon == false && self:GetClass() != "npc_vj_piv_tank" && self:GetClass() != "npc_vj_piv_creep" && self:GetClass() != "npc_vj_piv_revenant" && self:GetClass() != "npc_vj_piv_revenant_f" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_sickler" && self:GetClass() != "npc_vj_piv_drowned" && self:GetClass() != "npc_vj_piv_drowned_suit" && self:GetClass() != "npc_vj_piv_drowned_inf" && self.PIV_Mutated == false then
 
-		if math.random(1,GetConVar("vj_piv_charger_chance"):GetInt()) == 1 && !PIV_Crippled && !PIV_FuckingCrawlingLittleCunt then
+		if math.random(1,GetConVar("vj_piv_rusher_chance"):GetInt()) == 1 && !PIV_Crippled && !PIV_FuckingCrawlingLittleCunt then
 			self.AnimTbl_Run = {ACT_RUN_RELAXED}
-			self.PIV_Charger = true
+			self.PIV_Rusher = true
 		end
 
 		if math.random(1,GetConVar("vj_piv_leaper_chance"):GetInt()) == 1 && !PIV_Crippled && !PIV_FuckingCrawlingLittleCunt then
@@ -373,39 +407,50 @@ function ENT:CustomOnPreInitialize()
 
 	end
 
+    if GetConVar("vj_piv_alt_idle_walk"):GetInt() == 1 && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false && self:GetClass() != "npc_vj_piv_revenant" && self:GetClass() != "npc_vj_piv_revenant_f" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_shocker" && self:GetClass() != "npc_vj_piv_remordeo" && self:GetClass() != "npc_vj_piv_tank" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_sickler" then
+		self.AnimTbl_Walk = {ACT_WALK_AIM_STEALTH}
+	end
+	
+    if GetConVar("vj_piv_alt_runner_anims"):GetInt() == 1 && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false && self:GetClass() != "npc_vj_piv_revenant" && self:GetClass() != "npc_vj_piv_revenant_f" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_shocker" && self:GetClass() != "npc_vj_piv_remordeo" && self:GetClass() != "npc_vj_piv_tank" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_sickler" then
+		self.AnimTbl_IdleStand = {ACT_IDLE_ON_FIRE}
+		self.AnimTbl_Walk = {ACT_WALK_ON_FIRE}
+	end
+
 	self.IsDigging = false
 	self:Dig()
 	
 
-		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self.PIV_Charger == false && self.PIV_Leaper == false && self:GetClass() != "npc_vj_piv_tank" &&  self:GetClass() != "npc_vj_piv_creep" && self:GetClass() != "npc_vj_piv_shocker" && self:GetClass() != "npc_vj_piv_stalker" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_sickler" && self:GetClass() != "npc_vj_piv_drowned" && self:GetClass() != "npc_vj_piv_drowned_suit" && self.PIV_FuckingCrawlingLittleCunt == false then
+		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self.PIV_Thrower == false &&  self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Rusher == false && self.PIV_Leaper == false && self:GetClass() != "npc_vj_piv_tank" &&  self:GetClass() != "npc_vj_piv_creep" && self:GetClass() != "npc_vj_piv_shocker" && self:GetClass() != "npc_vj_piv_stalker" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_sickler" && self:GetClass() != "npc_vj_piv_drowned" && self:GetClass() != "npc_vj_piv_drowned_suit" && self:GetClass() != "npc_vj_piv_revenant" && self:GetClass() != "npc_vj_piv_revenant_f" && self.PIV_FuckingCrawlingLittleCunt == false then
 
 			self.PIV_WeHaveAWeapon = true
 			self.MeleeAttackDamage = math.random(20,25)
 
-			local weapon = math.random(1,6)
+			local weapon = math.random(1,12)
 			self.ExtraGunModel1 = ents.Create("prop_physics")
 
 			if weapon == 1 then	
 			
 				self.PIV_WeaponType = 2
-				self.ExtraGunModel1:SetModel("models/props_canal/mattpipe.mdl")
+				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/mattpipe.mdl")
 				self.SoundTbl_MeleeAttack = {"vj_piv/wrenchhit1.wav","vj_piv/wrenchhit2.wav","vj_piv/wrenchhit3.wav","vj_piv/wrenchhit4.wav"}
+				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_blunt_01.wav","vj_piv/swing_heavy_blunt_02.wav","vj_piv/swing_heavy_blunt_03.wav"}
 
 			end
 
 			if weapon == 2 then
 
 				self.PIV_WeaponType = 1
-				self.ExtraGunModel1:SetModel("models/weapons/w_knife_t.mdl")
+				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_knife_t.mdl")
 				self.SoundTbl_MeleeAttack = {"vj_piv/knife_hit_01.wav","vj_piv/knife_hit_02.wav","vj_piv/knife_hit_03.wav","vj_piv/knife_hit_04.wav","vj_piv/knife_hit_05.wav","vj_piv/knife_hit_06.wav"}
-				self.SoundTbl_MeleeAttackMiss = {"vj_piv/knife_miss_01.wav","vj_piv/knife_miss_02.wav","vj_piv/knife_miss_03.wav","vj_piv/knife_miss_04.wav"}
+				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_light_sharp_01.wav","vj_piv/swing_light_sharp_02.wav","vj_piv/swing_light_sharp_03.wav"}
 
 			end
 
 			if weapon == 3 then
 				self.PIV_WeaponType = 2
-				self.ExtraGunModel1:SetModel("models/weapons/w_crowbar.mdl")			
+				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_crowbar.mdl")			
 				self.SoundTbl_MeleeAttack = {"vj_piv/HammerWhack-1.wav","vj_piv/HammerWhack-2.wav","vj_piv/HammerWhack-3.wav"}
+				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_blunt_01.wav","vj_piv/swing_heavy_blunt_02.wav","vj_piv/swing_heavy_blunt_03.wav"}
 
 			end
 
@@ -413,7 +458,8 @@ function ENT:CustomOnPreInitialize()
 
 				self.PIV_WeaponType = 2
 				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_axe.mdl")			
-				self.SoundTbl_MeleeAttack = {"vj_piv/SwordHit-1.wav","vj_piv/SwordHit-2.wav","vj_piv/SwordHit-3.wav","vj_piv/SwordHit-4.wav","vj_piv/SwordHit-5.wav","vj_piv/SwordHit-6.wav","vj_piv/SwordHit-7.wav","vj_piv/SwordHit-8.wav","vj_piv/SwordHit-9.wav"}
+				self.SoundTbl_MeleeAttack = {"vj_piv/HatchetIn-1.wav","vj_piv/HatchetIn-2.wav","vj_piv/HatchetIn-3.wav"}
+				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_sharp_01.wav","vj_piv/swing_heavy_sharp_02.wav","vj_piv/swing_heavy_sharp_03.wav"}
 				
 			end
 
@@ -422,6 +468,7 @@ function ENT:CustomOnPreInitialize()
 				self.PIV_WeaponType = 2
 				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_shovel.mdl")
 				self.SoundTbl_MeleeAttack = {"vj_piv/ShovelSmack-1.wav","vj_piv/ShovelSmack-2.wav","vj_piv/ShovelSmack-3.wav"}
+				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_blunt_01.wav","vj_piv/swing_heavy_blunt_02.wav","vj_piv/swing_heavy_blunt_03.wav"}
 			end
 
 			if weapon == 6 then	
@@ -429,7 +476,61 @@ function ENT:CustomOnPreInitialize()
 				self.PIV_WeaponType = 1
 				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_pan.mdl")		
 				self.SoundTbl_MeleeAttack = {"vj_piv/fryingpan1.wav","vj_piv/fryingpan2.wav","vj_piv/fryingpan3.wav","vj_piv/fryingpan4.wav"}
+				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_light_blunt_01.wav","vj_piv/swing_light_blunt_02.wav","vj_piv/swing_light_blunt_03.wav"}
 
+			end
+			
+			if weapon == 7 then	
+
+				self.PIV_WeaponType = 2
+				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_me_bat_metal.mdl")
+				self.SoundTbl_MeleeAttack = {"vj_piv/MetalBat1.wav","vj_piv/MetalBat2.wav","vj_piv/MetalBat3.wav","vj_piv/MetalBat4.wav"}
+				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_blunt_01.wav","vj_piv/swing_heavy_blunt_02.wav","vj_piv/swing_heavy_blunt_03.wav"}
+			end
+			
+			if weapon == 8 then	
+
+				self.PIV_WeaponType = 2
+				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_me_machete.mdl")
+				self.SoundTbl_MeleeAttack = {"vj_piv/SwordHit-1.wav","vj_piv/SwordHit-2.wav","vj_piv/SwordHit-3.wav","vj_piv/SwordHit-4.wav","vj_piv/SwordHit-5.wav","vj_piv/SwordHit-6.wav","vj_piv/SwordHit-7.wav","vj_piv/SwordHit-8.wav","vj_piv/SwordHit-9.wav"}
+				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_sharp_01.wav","vj_piv/swing_heavy_sharp_02.wav","vj_piv/swing_heavy_sharp_03.wav"}
+				
+			end
+			
+			if weapon == 9 then	
+
+				self.PIV_WeaponType = 1
+				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_me_wrench.mdl")
+				self.SoundTbl_MeleeAttack = {"vj_piv/wrenchhit1.wav","vj_piv/wrenchhit2.wav","vj_piv/wrenchhit3.wav","vj_piv/wrenchhit4.wav"}
+				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_light_blunt_01.wav","vj_piv/swing_light_blunt_02.wav","vj_piv/swing_light_blunt_03.wav"}
+				
+			end
+			
+			if weapon == 10 then	
+
+				self.PIV_WeaponType = 2
+				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_me_fubar.mdl")
+				self.SoundTbl_MeleeAttack = {"vj_piv/HammerSkullPenetrate.wav"}
+				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_blunt_01.wav","vj_piv/swing_heavy_blunt_02.wav","vj_piv/swing_heavy_blunt_03.wav"}
+				
+			end
+			
+			if weapon == 11 then	
+
+				self.PIV_WeaponType = 2
+				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_me_sledge.mdl")
+				self.SoundTbl_MeleeAttack = {"vj_piv/HammerSkullPenetrate.wav"}
+				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_blunt_01.wav","vj_piv/swing_heavy_blunt_02.wav","vj_piv/swing_heavy_blunt_03.wav"}
+				
+			end
+			
+			if weapon == 12 then	
+
+				self.PIV_WeaponType = 1
+				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_hammer.mdl")
+				self.SoundTbl_MeleeAttack = {"vj_piv/HammerWhack-1.wav","vj_piv/HammerWhack-2.wav","vj_piv/HammerWhack-3.wav"}
+				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_light_blunt_01.wav","vj_piv/swing_light_blunt_02.wav","vj_piv/swing_light_blunt_03.wav"}
+				
 			end
 
 			self.ExtraGunModel1:SetOwner(self)
@@ -450,6 +551,17 @@ function ENT:CustomOnPreInitialize()
 				self.AnimTbl_Run = {ACT_HL2MP_RUN_MELEE}
 			end
 		end
+		
+	if GetConVar("vj_piv_throwing"):GetInt() == 1 && math.random(1,GetConVar("vj_piv_throwing_chance"):GetInt()) == 1 && self.PIV_WeHaveAWeapon == false && self.PIV_FuckingCrawlingLittleCunt == false && self:GetClass() != "npc_vj_piv_tank" &&  self:GetClass() != "npc_vj_piv_creep" && self:GetClass() != "npc_vj_piv_shocker" && self:GetClass() != "npc_vj_piv_stalker" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_sickler" && self:GetClass() != "npc_vj_piv_drowned" && self:GetClass() != "npc_vj_piv_drowned_suit" && self:GetClass() != "npc_vj_piv_revenant" && self:GetClass() != "npc_vj_piv_revenant_f" && self.PIV_FuckingCrawlingLittleCunt == false then
+		self.PIV_Thrower = true
+		self.PIV_ThrowCount = math.random(GetConVar("vj_piv_throwing_min"):GetInt(),GetConVar("vj_piv_throwing_max"):GetInt())
+		self.HasRangeAttack = true
+	end
+
+	if GetConVar("vj_piv_resting"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_tank" && self:GetClass() != "npc_vj_piv_sickler" && self:GetClass() != "npc_vj_piv_shocker" then
+		self.PIV_CanRest = true
+		self.PIV_NextRestT = CurTime() + math.Rand(10, 120)
+	end
 
 	self:Zombie_CustomOnPreInitialize()
 
@@ -534,7 +646,6 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 		self:VJ_ACT_PLAYACTIVITY("vjseq_crouch_to_stand",true,1.6)
     end
 
-	
 	if key == "death" then
 
 		if self.VJ_IsHugeMonster == true then
@@ -544,7 +655,7 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 
 	    if self.PIV_HasArmor == true && self.VJ_IsHugeMonster == false then
 			VJ_EmitSound(self, "vj_piv/mil_zomb/step_"..math.random(1,4)..".mp3", 70, 80)
-		elseif self.VJ_IsHugeMonster == true then
+		elseif self.PIV_HasArmor == true && self.VJ_IsHugeMonster == true then
 			VJ_EmitSound(self, "vj_piv/demolisher/step/step_"..math.random(1,4)..".mp3", 70, 80)
 		end
 		
@@ -563,16 +674,12 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 			VJ_EmitSound(self, "physics/body/body_medium_impact_soft"..math.random(1,7)..".wav", 75, 100)
 		end
 
-		if GetConVar("vj_piv_weapons_dropping_stumble"):GetInt() == 1 then
+		if GetConVar("vj_piv_weapons_dropping_stumble"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_brawler_boss" then
 			if math.random(1,GetConVar("vj_piv_weapons_dropping_chance"):GetInt()) == 1 then
 				self:DropTheFuckignWeaponGoddamn()
+				self:DropTheShield()
 			end
 		end
-		
-		if self.PIV_HasShield == true then
-			self:DropTheShield()
-		end
-
     end	
 	
 	if key == "break_door" then
@@ -673,7 +780,7 @@ function ENT:CustomOnThink()
 
 	-- don't run this if the door breaking convar is off, we're a crawler, we're crippled, flinching, stumbling, spawning, or rising
 	if
-		GetConVar("vj_piv_doorbreaking"):GetInt() == 0 or
+		GetConVar("vj_piv_door_breaking"):GetInt() == 0 or
 		self.PIV_FuckingCrawlingLittleCunt or
 		self.PIV_Crippled or
 		self.Dead or
@@ -795,11 +902,144 @@ function ENT:CustomOnThink_AIEnabled()
 		end
 	end
 	
+	if self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_WeHaveAWeapon == false && self.PIV_HasShield == false && !self.VJ_IsBeingControlled && self.PIV_CanRest == true then
+		if
+			!self.Alerted &&
+			!IsValid(self:GetEnemy()) &&
+			!self:IsMoving() &&
+			CurTime() > self.PIV_NextRestT &&
+			self.PIV_Resting != 1 &&
+			self.PIV_Resting != 2 &&
+			!self:IsBusy()
+		then
+			local sleept = math.Rand(15, 120) -- How long it should sleep
+			if math.random(1,2) == 1 then
+				self.PIV_Resting = 1
+				self.AnimTbl_IdleStand = {ACT_BUSY_SIT_GROUND}
+				self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_SIT_GROUND_ENTRY, true, false, false)
+			else
+				self.PIV_Resting = 2
+				self.AnimTbl_IdleStand = {ACT_BUSY_LEAN_BACK}
+				self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_LEAN_BACK_ENTRY, true, false, false)
+			end
+			self.MovementType = VJ_MOVETYPE_STATIONARY
+			self.DisableWandering = true
+			self.CanTurnWhileStationary = false
+			-- self:SetState(VJ_STATE_ONLY_ANIMATION, sleept)
+
+			timer.Simple(sleept, function() -- Reset after sleept seconds
+
+				if IsValid(self) && (self.PIV_Resting == 1 or self.PIV_Resting == 2)then
+					if math.random(1,2) == 1 then
+						if self.PIV_Resting == 1 then
+							self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_LEAN_LEFT_EXIT, true, false, false)
+							self.AnimTbl_IdleStand = {ACT_BUSY_LEAN_BACK}
+							self.PIV_Resting = 2
+						elseif self.PIV_Resting == 2 then
+							self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_LEAN_LEFT_ENTRY, true, false, false)
+							self.AnimTbl_IdleStand = {ACT_BUSY_SIT_GROUND}
+							self.PIV_Resting = 1
+						end
+						local sleept2 = math.random(15,30)
+						timer.Simple(sleept2, function()
+							if IsValid(self) then
+								if self.PIV_Resting == 1 then
+									self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_SIT_GROUND_EXIT, true, false, false)
+								elseif self.PIV_Resting == 2 then
+									self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_LEAN_BACK_EXIT, true, false, false)
+								end
+								self.PIV_Resting = 0
+								self.PIV_NextRestT = CurTime() + math.Rand(30, 180)
+								self.MovementType = VJ_MOVETYPE_GROUND 
+								if GetConVar("vj_npc_nowandering"):GetInt() != 1 then
+									self.DisableWandering = false
+								end
+								self.CanTurnWhileStationary = true
+								if self:GetClass() == "npc_vj_piv_creep" then
+									self.AnimTbl_IdleStand = {ACT_IDLE_HURT}
+								elseif self:GetClass() == "npc_vj_piv_revenant" or self:GetClass() == "npc_vj_piv_revenant_f" or self:GetClass() == "npc_vj_piv_remordeo" then
+									self.AnimTbl_IdleStand = {ACT_IDLE_AIM_STEALTH}	
+								elseif self:GetClass() == "npc_vj_piv_shikari" or self:GetClass() == "npc_vj_piv_brawler"  or self:GetClass() == "npc_vj_piv_brawler_f"  then
+									self.AnimTbl_IdleStand = {ACT_IDLE}									
+								else
+									if GetConVar("vj_piv_alt_runner_anims"):GetInt() == 1 then
+										self.AnimTbl_IdleStand = {ACT_IDLE_ON_FIRE}
+									else
+										self.AnimTbl_IdleStand = {ACT_IDLE_AIM_STIMULATED}
+									end
+								end
+							end
+						end)
+					else
+						if self.PIV_Resting == 1 then
+							self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_SIT_GROUND_EXIT, true, false, false)
+						elseif self.PIV_Resting == 2 then
+							self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_LEAN_BACK_EXIT, true, false, false)
+						end
+						self.PIV_Resting = 0
+						self.PIV_NextRestT = CurTime() + math.Rand(30, 180)
+						self.MovementType = VJ_MOVETYPE_GROUND 
+						if GetConVar("vj_npc_nowandering"):GetInt() != 1 then
+							self.DisableWandering = false
+						end
+						self.CanTurnWhileStationary = true
+						if self:GetClass() == "npc_vj_piv_creep" then
+							self.AnimTbl_IdleStand = {ACT_IDLE_HURT}
+						elseif self:GetClass() == "npc_vj_piv_revenant" or self:GetClass() == "npc_vj_piv_revenant_f" or self:GetClass() == "npc_vj_piv_remordeo" then
+							self.AnimTbl_IdleStand = {ACT_IDLE_AIM_STEALTH}
+						elseif self:GetClass() == "npc_vj_piv_shikari" or self:GetClass() == "npc_vj_piv_brawler"  or self:GetClass() == "npc_vj_piv_brawler_f"  then
+							self.AnimTbl_IdleStand = {ACT_IDLE}				
+						else
+							if GetConVar("vj_piv_alt_runner_anims"):GetInt() == 1 then
+								self.AnimTbl_IdleStand = {ACT_IDLE_ON_FIRE}
+							else
+								self.AnimTbl_IdleStand = {ACT_IDLE_AIM_STIMULATED}
+							end
+						end
+					end
+				end
+			end)
+		end
+	end
+
 	self:Zombie_CustomOnThink_AIEnabled()
 	
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnThink_AIEnabled()
+
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnAlert(ent)
+	if self.PIV_Resting != 0 then
+		if self.PIV_Resting == 1 then
+			self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_QUEUE, true, false, false)
+		elseif self.PIV_Resting == 2 then
+			self:VJ_ACT_PLAYACTIVITY(ACT_BUSY_STAND, true, false, false)
+		end
+		self.PIV_Resting = 0
+		self.PIV_NextRestT = CurTime() + math.Rand(30, 180)
+		self.CanTurnWhileStationary = true
+		self.MovementType = VJ_MOVETYPE_GROUND 
+		if GetConVar("vj_npc_nowandering"):GetInt() != 1 then
+			self.DisableWandering = false
+		end
+		if self:GetClass() == "npc_vj_piv_creep" then
+			self.AnimTbl_IdleStand = {ACT_IDLE_HURT}
+		elseif self:GetClass() == "npc_vj_piv_revenant" or self:GetClass() == "npc_vj_piv_revenant_f" or self:GetClass() == "npc_vj_piv_remordeo" then
+			self.AnimTbl_IdleStand = {ACT_IDLE_AIM_STEALTH}
+		elseif self:GetClass() == "npc_vj_piv_shikari" or self:GetClass() == "npc_vj_piv_brawler"  or self:GetClass() == "npc_vj_piv_brawler_f" then
+			self.AnimTbl_IdleStand = {ACT_IDLE}				
+		else
+			self.AnimTbl_IdleStand = {ACT_IDLE_AIM_STIMULATED}
+		end
+	end
+	
+	self:Zombie_CustomOnAlert()
+	
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Zombie_CustomOnAlert()
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -817,7 +1057,6 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		self.SoundTbl_MeleeAttackMiss = {"vj_piv/z-swipe-1.wav","vj_piv/z-swipe-2.wav","vj_piv/z-swipe-3.wav","vj_piv/z-swipe-4.wav","vj_piv/z-swipe-5.wav","vj_piv/z-swipe-6.wav"}	
 		
 		self.AnimTbl_MeleeAttack = {
-			"vjseq_crawl_attack",
 			"vjseq_crawl_attack2"
 		}
 	return end
@@ -862,19 +1101,29 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 			}
 		else
 		
-			self.MeleeAttackDamage = math.random(15,20)
 			self.HasMeleeAttackKnockBack = false
 			self.MeleeAttackDistance = 40
             self.MeleeAttackDamageDistance = 60
 			self.SoundTbl_MeleeAttack = {"vj_piv/z_hit-01.wav","vj_piv/z_hit-02.wav","vj_piv/z_hit-03.wav","vj_piv/z_hit-04.wav","vj_piv/z_hit-05.wav","vj_piv/z_hit-06.wav"}
 			self.SoundTbl_MeleeAttackMiss = {"vj_piv/z-swipe-1.wav","vj_piv/z-swipe-2.wav","vj_piv/z-swipe-3.wav","vj_piv/z-swipe-4.wav","vj_piv/z-swipe-5.wav","vj_piv/z-swipe-6.wav"}	
-				
-			self.AnimTbl_MeleeAttack = {
-				"vjseq_nz_attack_stand_ad_1",
-				"vjseq_nz_attack_stand_ad_2-2",
-				"vjseq_nz_attack_stand_ad_2-3",
-				"vjseq_nz_attack_stand_ad_2-4",
-			}
+			
+			if GetConVar("vj_piv_aggressive_runner_attacks"):GetInt() == 1 then
+				self.MeleeAttackDamage = math.random(6,12)
+				self.AnimTbl_MeleeAttack = {
+					"vjseq_standing_melee_1",
+					"vjseq_standing_melee_2",
+					"vjseq_standing_melee_3",
+					"vjseq_standing_melee_4",
+				}			
+			else
+				self.MeleeAttackDamage = math.random(15,20)
+				self.AnimTbl_MeleeAttack = {
+					"vjseq_nz_attack_stand_ad_1",
+					"vjseq_nz_attack_stand_ad_2-2",
+					"vjseq_nz_attack_stand_ad_2-3",
+					"vjseq_nz_attack_stand_ad_2-4",
+				}
+			end
 	        
 			if math.random(1,4) == 1 then 
 				
@@ -916,7 +1165,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 				
 			elseif self.PIV_WeaponType == 2 then
 			
-				self.MeleeAttackDamage = math.random(20,25)
+				self.MeleeAttackDamage = math.random(25,30)
 				self.MeleeAttackDistance = 40
 				self.MeleeAttackDamageDistance = 60
 			
@@ -992,12 +1241,27 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 	end
 
 end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnMeleeAttack_Miss()
+    if !self:IsMoving() && !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt && !self.PIV_WeHaveAWeapon &&
+	    (
+        self:GetSequence() == self:LookupSequence("standing_melee_1") or
+        self:GetSequence() == self:LookupSequence("standing_melee_2") or
+        self:GetSequence() == self:LookupSequence("standing_melee_3") or
+        self:GetSequence() == self:LookupSequence("standing_melee_4")
+		) 
+	then
+        self.PlayingAttackAnimation = false
+        self:StopAttacks(false)
+        self.vACT_StopAttacks = false    
+		
+        self:VJ_ACT_PLAYACTIVITY("vjseq_choke_miss",true,false,true)
+    end
+end
 -------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
 	self:DropTheFuckignWeaponGoddamn()
-	if self.PIV_HasShield then
-		self:DropTheShield()
-	end
+	self:DropTheShield()
 end
 -------------------------------------------------------------------------------------------------------------------
 function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
@@ -1152,19 +1416,6 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 
-	if
-		!self.Flinching &&
-		self:IsMoving() &&
-		!self.PIV_Crippled &&
-		!self.PIV_FuckingCrawlingLittleCunt &&
-		self.PIVNextStumbleT > CurTime() &&
-		math.random(1,16) == 1
-	then
-		local anim = {"run_stumble_01","run_stumble1","run_stumble2","run_stumble3","run_stumble4","run_stumble5","run_stumble6"} -- falling animations
-		self:VJ_ACT_PLAYACTIVITY(anim,true,false,false) -- play a fall animation 
-		self.PIVNextStumbleT = CurTime() + 10 
-	end
-
 	if self.CanDoTheFunny == false or self.PIV_Crippled or self.PIV_FuckingCrawlingLittleCunt  then return end
 
 	if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SNIPER) then
@@ -1190,7 +1441,8 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 		elseif hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then		 
 			if self.PIVNextStumbleT < CurTime() then
 				if math.random (1,5) == 1 then
-					self:VJ_ACT_PLAYACTIVITY(ACT_STEP_FORE,true,1.6)
+					local anim = {"run_stumble_01","run_stumble1","run_stumble2","run_stumble3","run_stumble4","run_stumble5","run_stumble6"} -- falling animations
+					self:VJ_ACT_PLAYACTIVITY(anim,true,false,false) -- play a fall animation 
 					self.PIVNextStumbleT = CurTime() + 10
 				end
 			end
@@ -1225,7 +1477,7 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 	return !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt  && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
 	end
 
-	if GetConVarNumber("vj_piv_cripple") == 1 then  -- if the convars not on don't run this
+	if GetConVarNumber("vj_piv_cripple") == 1 && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_sickler" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_shocker" then  -- if the convars not on don't run this
 		if hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then -- are we hitting the leg?
 			self.PIV_LegHP = self.PIV_LegHP -dmginfo:GetDamage() -- take away leg hp
 		end
@@ -1241,7 +1493,7 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
-	if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 then
+	if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 && self.PIV_IsBoss == false then
 	dmginfo:ScaleDamage(GetConVarNumber("vj_piv_headshot_damage_mult"))
     end
 end
@@ -1270,9 +1522,48 @@ function ENT:CustomOnFlinch_BeforeFlinch(dmginfo,hitgroup)
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:RangeAttackCode_GetShootPos(TheProjectile)
+	return self:CalculateProjectile("Curve", self:GetAttachment(self:LookupAttachment(self.RangeUseAttachmentForPosID)).Pos, self:GetEnemy():GetPos() + self:GetEnemy():OBBCenter(), 1000) + self:GetUp()*math.Rand(-30,30) + self:GetRight()*math.Rand(-40,40)
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnRangeAttack_AfterStartTimer(seed)
+	if self.PIV_Thrower == true then
+		self.PIV_ThrowCount = self.PIV_ThrowCount -1
+		if self.PIV_ThrowCount <= 0 then
+			self.HasRangeAttack = false
+		end
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:DropTheFuckignWeaponGoddamn()
 
-	if GetConVar("vj_piv_weapons_dropping"):GetInt() == 0 then return end
+	if GetConVar("vj_piv_weapons_dropping"):GetInt() == 0 or self.PIV_WeHaveAWeapon == false then return end
+	
+	if self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Crippled == false then
+		if GetConVar("vj_piv_alt_idle_walk"):GetInt() == 1 then
+			self.AnimTbl_Walk = {ACT_WALK_AIM_STEALTH}
+		else
+			self.AnimTbl_Walk = {ACT_WALK}
+		end
+		self.AnimTbl_Run = {ACT_SPRINT}
+		self.AnimTbl_IdleStand = {ACT_IDLE_AIM_STIMULATED}
+		if self.PIV_Rusher == true then
+			self.AnimTbl_Run = {ACT_RUN_RELAXED}
+		end
+		if self.PIV_Leaper == true then
+			self.AnimTbl_Run = {ACT_RUN_AIM}
+			self.HasLeapAttack = true
+		end
+		if GetConVar("vj_piv_alt_runner_anims"):GetInt() == 1 then
+			self.AnimTbl_Walk = {ACT_WALK_ON_FIRE}
+			self.AnimTbl_Walk = {ACT_IDLE_ON_FIRE}
+		end
+		if self.PIV_FuckingCrawlingLittleCunt == true or self.PIV_Crippled == true then
+			self.AnimTbl_IdleStand = {ACT_IDLE_AGITATED}
+			self.AnimTbl_Walk = {ACT_WALK_AGITATED}
+			self.AnimTbl_Run = {ACT_WALK_AGITATED}
+		end
+	end
 	
 	if IsValid(self.ExtraGunModel1) then
 		self.MeleeAttackDamageType = DMG_CLUB
@@ -1286,13 +1577,52 @@ function ENT:DropTheFuckignWeaponGoddamn()
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:DropTheShield()
+
+	if GetConVar("vj_piv_weapons_dropping"):GetInt() == 0 or self.PIV_HasShield == false then return end
+
+	if IsValid(self.ZombieShield) then
+		if GetConVar("vj_piv_alt_idle_walk"):GetInt() == 1 then
+			self.AnimTbl_Walk = {ACT_WALK_AIM_STEALTH}
+		else
+			self.AnimTbl_Walk = {ACT_WALK}
+		end
+		self.AnimTbl_Run = {ACT_SPRINT}
+		self.AnimTbl_IdleStand = {ACT_IDLE_AIM_STIMULATED}
+		if self.PIV_Rusher == true then
+			self.AnimTbl_Run = {ACT_RUN_RELAXED}
+		end
+		if self.PIV_Leaper == true then
+			self.AnimTbl_Run = {ACT_RUN_AIM}
+			self.HasLeapAttack = true
+		end
+		if GetConVar("vj_piv_alt_runner_anims"):GetInt() == 1 then
+			self.AnimTbl_Walk = {ACT_WALK_ON_FIRE}
+			self.AnimTbl_Walk = {ACT_IDLE_ON_FIRE}
+		end
+		if self.PIV_FuckingCrawlingLittleCunt == true or self.PIV_Crippled == true then
+			self.AnimTbl_IdleStand = {ACT_IDLE_AGITATED}
+			self.AnimTbl_Walk = {ACT_WALK_AGITATED}
+			self.AnimTbl_Run = {ACT_WALK_AGITATED}
+		end
+		self.PIV_HasShield = false
+		self:CreateGibEntity("prop_physics",self.ZombieShield:GetModel(),{Pos=self:GetAttachment(self:LookupAttachment("shield")).Pos,Ang=self:GetAngles()}) self.ZombieShield:SetMaterial("nodraw") self.ZombieShield:DrawShadow(false)
+		self.ZombieShield:Remove()
+    local ShieldPlacement = self:LookupBone("ValveBiped.Bip01_L_Forearm")
+        self:ManipulateBoneAngles(ShieldPlacement, Angle(0,0,0))	
+	if GetConVar("vj_piv_climbing"):GetInt() == 1 && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Crippled == false then
+		self.PIV_CanClimb = true
+	end
+
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Cripple()
 	self.PIV_CanMutate = false
 	self:DropTheFuckignWeaponGoddamn()
-	if self.PIV_HasShield then
-		self:DropTheShield()
-	end
-	self.AnimTbl_IdleStand = {ACT_IDLE_STIMULATED}
+	self:DropTheShield()
+
+	self.AnimTbl_IdleStand = {ACT_IDLE_AGITATED}
 	self.AnimTbl_Walk = {ACT_WALK_AGITATED}
 	self.AnimTbl_Run = {ACT_WALK_AGITATED}
 	
@@ -1430,7 +1760,7 @@ self.PIV_LegHP = self.PIV_LegHP *3
 if GetConVar("vj_piv_lights"):GetInt() == 1 then 
 
 self.Light2 = ents.Create("light_dynamic")
-self.Light2:SetKeyValue("brightness", "7")
+self.Light2:SetKeyValue("brightness", "1")
 self.Light2:SetKeyValue("distance", "30")
 self.Light2:SetLocalPos(self:GetPos())
 self.Light2:SetLocalAngles(self:GetAngles())
