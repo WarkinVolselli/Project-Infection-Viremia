@@ -1,0 +1,20 @@
+vertexlitgeneric
+
+{
+$baseTexture "models\vj_piv\specials\slammer\hunter_01"
+$bumpmap "models\vj_piv\specials\slammer\hunter_normal"
+$phongexponenttexture "models\vj_piv\specials\slammer\hunter_exponent"
+$halflambert 0
+$phong 1
+$phongboost 3
+
+
+$phongfresnelranges "[.2 .5 5]"
+$allowdiffusemodulation 0
+$lightwarptexture "models\vj_piv\shared\coach_head_wrp"
+
+"$detail" "nature/dirtfloor005c"
+"$detailblendmode" 0
+"$detailblendfactor" .8
+
+$ambientocclusion 1

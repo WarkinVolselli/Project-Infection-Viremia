@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/vj_piv/specials/slammer/lowe_fire"
+	"$bumpmap" "models/vj_piv/specials/slammer/lowe_fire_normal"
+	"$halflambert" "1"
+
+	"$phong" "1"
+	"$phongexponent" "10"
+	"$phongalbedotint" "1"
+	"$phongboost" ".005"
+	"$phongfresnelranges"	"[1 1 3]"
+//	$nocull 1
+
+}
