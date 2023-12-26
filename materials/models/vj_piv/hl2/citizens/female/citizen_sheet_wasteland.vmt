@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	// Original shader: VertexLitTexture
+	"$basetexture" "models\vj_piv\hl2\citizens\female\citizen_sheet_wasteland"
+    	"$bumpmap" "models\vj_piv\hl2\citizens\female\citizen_sheet_wasteland_normal"
+	"$halflambert" 1
+	"$nocull" 1
+
+	"$phong" "1"
+	"$phongexponent" "20"
+	"$phongboost" "0.1"
+	"$phongfresnelranges" "[0.1 0.4 0.6]"
+  
+}

@@ -1,0 +1,14 @@
+"VertexLitGeneric"
+{
+	// Original shader: VertexLitTexture
+	"$basetexture" "models\vj_piv\hl2\citizens\female\clothing7"
+    "$bumpmap" "models\vj_piv\hl2\citizens\female\clothing7_n"
+	"$halflambert" 1
+	"$nocull" 1
+
+	"$phong" "1"
+	"$phongexponent" "20"
+	"$phongboost" "0.05"
+	"$phongfresnelranges" "[0.1 0.2 0.5]"
+
+}
