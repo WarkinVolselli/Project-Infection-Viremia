@@ -58,6 +58,10 @@ if VJExists == true then
 	VJ.AddConVar("vj_dum_dummy_d",20) -- Example 2
 	
 	*/  -- Comment box end
+	
+	-- Precache Models --
+	util.PrecacheModel("models/vj_piv/hl2/charple.mdl")
+	util.PrecacheModel("models/vj_piv/hl2/corpse1.mdl")
 
 	local vCat = "Project Infection: Viremia"
 
@@ -80,6 +84,9 @@ if VJExists == true then
 	VJ.AddNPC("Corpse Runner","npc_vj_piv_runner_corpse",vCat)
 	VJ.AddNPC("Charple Walker","npc_vj_piv_walker_charple",vCat)
 	VJ.AddNPC("Charple Runner","npc_vj_piv_runner_charple",vCat)
+	
+	VJ.AddNPC("Fat Walker (Male)","npc_vj_piv_fat_walker_m",vCat)
+	VJ.AddNPC("Fat Runner (Male)","npc_vj_piv_fat_runner_m",vCat)
 
 	local vCat = "Project Infection: Viremia - Combine"
 	
@@ -110,10 +117,9 @@ if VJExists == true then
 	VJ.AddNPC("Hazmat Runner","npc_vj_piv_runner_hazmat",vCat)
 	
 	local vCat = "Project Infection: Viremia - Specials"
-	
-	VJ.AddNPC("Bloated Walker (Male)","npc_vj_piv_fat_walker_m",vCat)
-	VJ.AddNPC("Bloated Runner (Male)","npc_vj_piv_fat_runner_m",vCat)
+
 	VJ.AddNPC("Bruiser","npc_vj_piv_bruiser",vCat)
+	VJ.AddNPC("Slammer","npc_vj_piv_slammer",vCat)
 	
 	VJ.AddNPC("Exploder","npc_vj_piv_exploder",vCat)
 	
@@ -124,6 +130,7 @@ if VJExists == true then
 	VJ.AddNPC("Spewer","npc_vj_piv_spewer",vCat)
 	VJ.AddNPC("Shocker","npc_vj_piv_shocker",vCat)
 	VJ.AddNPC("Remordeo","npc_vj_piv_remordeo",vCat)
+	VJ.AddNPC("Blood Bomber","npc_vj_piv_blood_bomber",vCat)
 
 	VJ.AddNPC("Cremator","npc_vj_piv_cremator",vCat)
 	VJ.AddNPC("Stoker","npc_vj_piv_stoker",vCat)
@@ -135,14 +142,18 @@ if VJExists == true then
 	VJ.AddNPC("Grenadier","npc_vj_piv_grenadier",vCat)
 	VJ.AddNPC("Panzer","npc_vj_piv_panzer",vCat)
 	VJ.AddNPC("Megapanzer","npc_vj_piv_panzer_boss",vCat)
+
+	VJ.AddNPC("Sickler","npc_vj_piv_sickler",vCat)
 	
-	VJ.AddNPC("Shikari","npc_vj_piv_shikari",vCat)
 	VJ.AddNPC("Shambler (Male)","npc_vj_piv_shambler",vCat)
 	VJ.AddNPC("Revenant (Male)","npc_vj_piv_revenant",vCat)
+	VJ.AddNPC("Shambler (Female)","npc_vj_piv_shambler_f",vCat)
+	VJ.AddNPC("Revenant (Female)","npc_vj_piv_revenant_f",vCat)
 	VJ.AddNPC("Husk (Male)","npc_vj_piv_husk",vCat)
 	VJ.AddNPC("Husk (Female)","npc_vj_piv_husk_f",vCat)
+	VJ.AddNPC("Shikari","npc_vj_piv_shikari",vCat)
 	VJ.AddNPC("Virulent","npc_vj_piv_virulent",vCat)
-	VJ.AddNPC("Sickler","npc_vj_piv_sickler",vCat)
+	VJ.AddNPC("Phorid","npc_vj_piv_phorid",vCat)
 
 	VJ.AddNPC("Tank","npc_vj_piv_tank",vCat)
 
@@ -166,7 +177,7 @@ if VJExists == true then
 	VJ.AddNPC("Husk Spawner (Corpses)","sent_vj_piv_undead_spawner_corpses",vCat)
 	VJ.AddNPC("Husk Spawner Multi (Corpses)","sent_vj_piv_undead_spawner_multi_corpses",vCat)
 	
-	-- ConVars --
+  --== ConVars ==--
 
 	-- general --
 
@@ -174,7 +185,8 @@ if VJExists == true then
 	VJ.AddConVar("vj_piv_reducedlights", 0, {FCVAR_ARCHIVE})	
 	VJ.AddConVar("vj_piv_infection", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_infection_type", 0, {FCVAR_ARCHIVE})	
-	VJ.AddConVar("vj_piv_climbing", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_jumping", 2, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_climbing", 0, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_cripple", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_firerunners", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_firerunners_chance", 4, {FCVAR_ARCHIVE})
@@ -183,25 +195,52 @@ if VJExists == true then
 	VJ.AddConVar("vj_piv_spawnanim", 0, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_deathanim", 1, {FCVAR_ARCHIVE}) 
 	VJ.AddConVar("vj_piv_deathanim_chance", 4, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_resting", 1, {FCVAR_ARCHIVE}) 
+	VJ.AddConVar("vj_piv_alt_idle_walk", 1, {FCVAR_ARCHIVE}) 
+	VJ.AddConVar("vj_piv_alt_runner_anims", 1, {FCVAR_ARCHIVE}) 
 	VJ.AddConVar("vj_piv_lights", 1, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_rebirth", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_rebirth", 0, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_rebirthall", 0, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_door_breaking", 1, {FCVAR_ARCHIVE})
+	
+	VJ.AddConVar("vj_piv_aggressive_runner_attacks", 1, {FCVAR_ARCHIVE}) 
+	
+	-- weapons
+	
 	VJ.AddConVar("vj_piv_weapons", 1, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_weapons_chance", 5, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_doorbreaking", 1, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_subtypes", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_weapons_chance", 4, {FCVAR_ARCHIVE})
+	
 	VJ.AddConVar("vj_piv_weapons_dropping", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_weapons_dropping_stumble", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_weapons_dropping_chance", 3, {FCVAR_ARCHIVE})
+	
+	VJ.AddConVar("vj_piv_throwing", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_throwing_chance", 6, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_throwing_min", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_throwing_max", 3, {FCVAR_ARCHIVE})
+	
+	-- subclass 
+	
+	VJ.AddConVar("vj_piv_subclasses", 1, {FCVAR_ARCHIVE})
+	
 	VJ.AddConVar("vj_piv_shambler_chance", 10, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_jogger_chance", 5, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_brute_chance", 10, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_leaper_chance", 10, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_charger_chance", 5, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_rusher_chance", 5, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_crawler_chance", 10, {FCVAR_ARCHIVE})
 	
-	-- extra stuff -- 
+	VJ.AddConVar("vj_piv_advanced_mutations", 1, {FCVAR_ARCHIVE})
+
+	VJ.AddConVar("vj_piv_blazing_chance", 10, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_electra_chance", 10, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_toxic_chance", 10, {FCVAR_ARCHIVE})
 	
+	-- models/skins -- 
+	
+	VJ.AddConVar("vj_piv_extramodels", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_extraclothes", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_hl2skins", 0, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_militaryskin", 0, {FCVAR_ARCHIVE})
 	
 	-- sounds --
@@ -210,7 +249,26 @@ if VJExists == true then
 	VJ.AddConVar("vj_piv_run_voice", 0, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_giant_voice", 0, {FCVAR_ARCHIVE})
 	
-    -- specific --
+    -- specific npcs --
+	
+	-- military 
+	
+	VJ.AddConVar("vj_piv_mil_flakarmor", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_mil_flakarmor_chance", 4, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_mil_gasmask", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_mil_gasmask_chance", 3, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_mil_shield", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_mil_shield_chance", 5, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_mil_ghillie_stealth", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_mil_ghillie_stealth_chance", 3, {FCVAR_ARCHIVE})
+	
+	-- heavy
+	
+	VJ.AddConVar("vj_piv_bruiser_charge", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_tank_charge", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_tank_run", 0, {FCVAR_ARCHIVE})
+	
+	-- husk strain
 	
 	VJ.AddConVar("vj_piv_husk_run", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_husk_explode", 1, {FCVAR_ARCHIVE})
@@ -247,8 +305,10 @@ if VJExists == true then
 			vj_piv_infection = "1",
 			vj_piv_infection_type = "0",
 			
-			vj_piv_climbing = "1",
-			
+			vj_piv_jumping = "2",
+
+			vj_piv_climbing = "0",
+		
 			vj_piv_cripple = "1",
 			
 			vj_piv_firerunners = "1",
@@ -261,34 +321,66 @@ if VJExists == true then
 			vj_piv_deathanim = "1",
 			vj_piv_deathanim_chance = "4",
 			
+			vj_piv_alt_idle_walk = "1",
+			vj_piv_resting = "1",
+			vj_piv_alt_runner_anims = "1",
+		
+			vj_piv_aggressive_runner_attacks = "1",
+			
 			vj_piv_lights = "1",
 			
-			vj_piv_rebirth = "1",
+			vj_piv_rebirth = "0",
 			vj_piv_rebirthall = "0",
 			
 			vj_piv_weapons = "1",
-			vj_piv_weapons_chance = "5",
+			vj_piv_weapons_chance = "4",
 			
-			vj_piv_doorbreaking = "1",
+			vj_piv_door_breaking = "1",
 			
-			vj_piv_subtypes = "1",
+			vj_piv_subclasses = "1",
+			vj_piv_advanced_mutations = "1",
 			
 			vj_piv_weapons_dropping = "1",
 			vj_piv_weapons_dropping_stumble = "1",
 			vj_piv_weapons_dropping_chance = "3",
 			
+			vj_piv_throwing = "1",
+			vj_piv_throwing_chance = "6",
+			vj_piv_throwing_min = "1",
+			vj_piv_throwing_max = "3",			
+
 			vj_piv_shambler_chance = "10", 
 			vj_piv_jogger_chance = "5",
+			vj_piv_brute_chance = "10",
 			vj_piv_leaper_chance = "10",
-			vj_piv_charger_chance = "5",
+			vj_piv_rusher_chance = "5",
 			vj_piv_crawler_chance = "10",
 			
+			vj_piv_blazing_chance = "10",
+			vj_piv_electra_chance = "10",
+			vj_piv_toxic_chance = "10",
+
+			vj_piv_extramodels = "1",	
 			vj_piv_extraclothes = "1",
+			vj_piv_hl2skins = "0",
 			vj_piv_militaryskin = "0",
-			
+
 			vj_piv_walk_voice = "0",
 			vj_piv_run_voice = "0",
 			vj_piv_giant_voice = "0",
+			
+			vj_piv_mil_flakarmor = "1",
+			vj_piv_mil_flakarmor_chance = "4",
+			vj_piv_mil_gasmask = "1",
+			vj_piv_mil_gasmask_chance = "3",
+			vj_piv_mil_shield = "1",
+			vj_piv_mil_shield_chance = "5",
+			vj_piv_mil_ghillie_stealth = "1",
+			vj_piv_mil_ghillie_stealth_chance = "3",
+	
+			vj_piv_bruiser_charge = "1",
+			vj_piv_tank_charge = "1",
+			vj_piv_tank_run = "0",
 						
 			vj_piv_husk_run = "1",
 			vj_piv_husk_explode = "1",
@@ -306,59 +398,108 @@ if VJExists == true then
 			vj_piv_shambler_revive_revenant_chance = "4",
 		}
 
-	Panel:AddControl("Checkbox", {Label = "Reduced Particles? [PERFORMANCE]", Command = "vj_piv_reducedparticles"})
-	Panel:AddControl("Checkbox", {Label = "Reduced Lights? [PERFORMANCE]", Command = "vj_piv_reducedlights"})
+	-- general options --
 	
-	Panel:AddControl("Checkbox", {Label = "Enable Infection System?", Command = "vj_piv_infection"})
+	Panel:AddControl("Checkbox", {Label = "Reduced Particles? [PERFORMANCE]", Command = "vj_piv_reducedparticles"})
+	Panel:ControlHelp("Reduces the amount of particles used by some NPCs.")
+	
+	Panel:AddControl("Checkbox", {Label = "Reduced Lights? [PERFORMANCE]", Command = "vj_piv_reducedlights"})
+	Panel:ControlHelp("Reduces the amount of lights used by some NPCs.")
+	
+	Panel:AddControl("Checkbox", {Label = "Enable Infection?", Command = "vj_piv_infection"})
+	Panel:ControlHelp("When enabled, players and NPCs will turn into a zombie when killed by one. Only works on ValveBiped models.")
 	
 	Panel:AddControl("Checkbox", {Label = "Enable Infection By Type?", Command = "vj_piv_infection_type"})
+	Panel:ControlHelp("When enabled, infected players/NPCs will turn into a different strain depending on what zombie kills them.")
 
-	Panel:AddControl("Checkbox", {Label = "Enable Climbing System? [EXPERIMENTAL]", Command = "vj_piv_climbing"})
-	
-	Panel:AddControl("Checkbox", {Label = "Enable Crippling System?", Command = "vj_piv_cripple"})
+
+	local combobox_jumping = {Options = {}, CVars = {}, Label = "Enable Jumping?", MenuButton = "0"}
+	combobox_jumping.Options["Disabled"] = {vj_piv_jumping = 0}
+	combobox_jumping.Options["Runners only"] = {vj_piv_jumping = 1}
+	combobox_jumping.Options["All zombies"] = {vj_piv_jumping = 2}
+	Panel:AddControl("ComboBox", combobox_jumping)
+	Panel:ControlHelp("Makes it so zombies can jump.")
+
+	local combobox_climbing = {Options = {}, CVars = {}, Label = "Enable Climbing? [EXPERIMENTAL]", MenuButton = "0"}
+	combobox_climbing.Options["Disabled"] = {vj_piv_climbing = 0}
+	combobox_climbing.Options["Runners only"] = {vj_piv_climbing = 1}
+	combobox_climbing.Options["All zombies"] = {vj_piv_climbing = 2}
+	Panel:AddControl("ComboBox", combobox_climbing)
+	Panel:ControlHelp("Makes it so zombies can climb over props and other things. (Disabled by default due to bugs.)")
+
+	Panel:AddControl("Checkbox", {Label = "Enable Crippling?", Command = "vj_piv_cripple"})
+	Panel:ControlHelp("When enabled, zombies can be crippled by taking damage to the legs.")
 
 	Panel:AddControl("Checkbox", {Label = "Enable Spawn Animations?", Command = "vj_piv_spawnanim"})
+	Panel:ControlHelp("When enabled, zombies will play a 'digout' animation when spawned on a soft surface such as dirt.")
 
-	Panel:AddControl("Checkbox", {Label = "Enable Door Breaking?", Command = "vj_piv_doorbreaking"})
+	Panel:AddControl("Checkbox", {Label = "Enable Door Breaking?", Command = "vj_piv_door_breaking"})
+	Panel:ControlHelp("When enabled, zombies will be able to attack and break down doors.")
 	
 	Panel:AddControl("Checkbox", {Label = "Enable Fire Runners?", Command = "vj_piv_firerunners"})
+	Panel:ControlHelp("When enabled, Walkers may sometimes start running when set on fire.")
 	Panel:AddControl("Slider", {Label = "Fire Runner Chance", Command = "vj_piv_firerunners_chance", Min = 1, Max = 100})
 
 	Panel:AddControl("Checkbox", {Label = "Enable Death Animations?", Command = "vj_piv_deathanim"})
+	Panel:ControlHelp("When enabled, zombies will sometimes play death animations based on how they were killed.")
 	Panel:AddControl("Slider", {Label = "Death Animation Chance", Command = "vj_piv_deathanim_chance", Min = 1, Max = 100})
+	
+	Panel:AddControl("Checkbox", {Label = "Enable Alternate Idle Walk?", Command = "vj_piv_alt_idle_walk"})
+	Panel:ControlHelp("When enabled, zombies will have a more passive walk animation when idle.")
+	Panel:AddControl("Checkbox", {Label = "Enable Alternate Runner Animations?", Command = "vj_piv_alt_runner_anims"})
+	Panel:ControlHelp("When enabled, Runners will use more aggressive walking and idle animations.")
+	Panel:AddControl("Checkbox", {Label = "Enable Resting?", Command = "vj_piv_resting"})
+	Panel:ControlHelp("When enabled, zombies will sometimes sit or lay down when idle.")
 
 	Panel:AddControl("Checkbox", {Label = "Enable Headshot Damage Multiplier?", Command = "vj_piv_headshot_damage"})
+	Panel:ControlHelp("When enabled, zombies will take increased damage from headshots. (Certain enemies are exempt.)	")
 	Panel:AddControl("Slider", {Label = "Headshot Damage Multiplier", Command = "vj_piv_headshot_damage_mult", Min = 1, Max = 100})
 	
-	Panel:AddControl("Checkbox", {Label = "Enable Eyeglow?", Command = "vj_piv_lights"})
+	Panel:AddControl("Checkbox", {Label = "Enable Boss Eyeglow?", Command = "vj_piv_lights"})
+	Panel:ControlHelp("When enabled, bosses will have glowing eyes based on strain.")
 
-	Panel:AddControl("Checkbox", {Label = "Allow Zombie Rebirth? [EXPERIMENTAL]", Command = "vj_piv_rebirth"})
+	Panel:AddControl("Checkbox", {Label = "Enable Zombie Rebirth? [EXPERIMENTAL]", Command = "vj_piv_rebirth"})
+	Panel:ControlHelp("When enabled, player controlled zombies will be able to mutate into a stronger version. (Disabled by default due to bugs.)")
 	Panel:AddControl("Checkbox", {Label = "All Zombies spawned Rebirthed? [EXPERIMENTAL]", Command = "vj_piv_rebirthall"})
+	Panel:ControlHelp("When enabled, all zombies spawned will be rebirthed. (Requires Enable Zombie Rebirth.)")
 
 	Panel:AddControl("Checkbox", {Label = "Enable Zombie Weapons?", Command = "vj_piv_weapons"})
+	Panel:ControlHelp("When enabled, zombies can sometimes spawn with melee weapons.")
+	Panel:AddControl("Slider", {Label = "Weapon Chance", Command = "vj_piv_weapons_chance", Min = 1, Max = 100})
 	Panel:AddControl("Checkbox", {Label = "Enable Weapon Dropping?", Command = "vj_piv_weapons_dropping"})
+	Panel:ControlHelp("When enabled, zombies will drop their weapons when killed or crippled.")
 	Panel:AddControl("Checkbox", {Label = "Zombies Drop Weapons on Stumble?", Command = "vj_piv_weapons_dropping_stumble"})
+	Panel:ControlHelp("When enabled, zombies will sometimes drop their weapons when stumbling or etc. (Requires Enable Weapon Dropping,.)")
 	Panel:AddControl("Slider", {Label = "Drop Weapon On Stumble Chance", Command = "vj_piv_weapons_dropping_chance", Min = 1, Max = 100})
-	Panel:AddControl("Slider", {Label = "Zombie Weapon Chance", Command = "vj_piv_weapons_chance", Min = 1, Max = 100})
+	
+	Panel:AddControl("Checkbox", {Label = "Enable Thrower Zombies?", Command = "vj_piv_throwing"})
+	Panel:ControlHelp("When enabled, zombies can sometimes spawn with throwing items.")
+	Panel:AddControl("Slider", {Label = "Thrower Chance", Command = "vj_piv_throwing_chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Min Throwing Items", Command = "vj_piv_throwing_min", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Max Throwing Items", Command = "vj_piv_throwing_max", Min = 1, Max = 100})
 
-	Panel:AddControl("Checkbox", {Label = "Allow Variants?", Command = "vj_piv_subtypes"})
+	Panel:AddControl("Checkbox", {Label = "Enable Subclasses?", Command = "vj_piv_subclasses"})
+	Panel:ControlHelp("When enabled, common zombies will sometimes spawn as stronger variants.")
 
-	Panel:AddControl("Slider", {Label = "Shambler Variant Chance", Command = "vj_piv_shambler_chance", Min = 1, Max = 100})
-	Panel:AddControl("Slider", {Label = "Jogger Variant Chance", Command = "vj_piv_jogger_chance", Min = 1, Max = 100})
-	Panel:AddControl("Slider", {Label = "Leaper Variant Chance", Command = "vj_piv_leaper_chance", Min = 1, Max = 100})
-	Panel:AddControl("Slider", {Label = "Charger Variant Chance", Command = "vj_piv_charger_chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Crawler Subclass Chance", Command = "vj_piv_crawler_chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Shambler Subclass Chance", Command = "vj_piv_shambler_chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Jogger Subclass Chance", Command = "vj_piv_jogger_chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Brute Subclass Chance", Command = "vj_piv_brute_chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Leaper Subclass Chance", Command = "vj_piv_leaper_chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Rusher Subclass Chance", Command = "vj_piv_rusher_chance", Min = 1, Max = 100})
+
+	Panel:AddControl("Checkbox", {Label = "Enable Advanced Mutations?", Command = "vj_piv_advanced_mutations"})
+	Panel:ControlHelp("When enabled, certain specials will sometimes spawn as stronger variants with elemental effects. (Requires Enable Subclasses.)")
 	
-	Panel:AddControl("Checkbox", {Label = "Enable Extra Citizen Clothes?", Command = "vj_piv_extraclothes"})
-	
-	-- military skin
-	
-	local combobox_militaryskin = {Options = {}, CVars = {}, Label = "Military Skin", MenuButton = "0"}
-	combobox_militaryskin.Options["National Guard (UCP)"] = {vj_piv_militaryskin = 0}
-	combobox_militaryskin.Options["Woodland (M81)"] = {vj_piv_militaryskin = 1}
-	combobox_militaryskin.Options["Desert (MARPAT)"] = {vj_piv_militaryskin = 2}
-	combobox_militaryskin.Options["Snow (M81)"] = {vj_piv_militaryskin = 3}
-	combobox_militaryskin.Options["Random"] = {vj_piv_militaryskin = 4}
-	Panel:AddControl("ComboBox", combobox_militaryskin)
+	Panel:AddControl("Slider", {Label = "Blazing Mutation Chance", Command = "vj_piv_blazing_chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Electra Mutation Chance", Command = "vj_piv_electra_chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Toxic Mutation Chance", Command = "vj_piv_toxic_chance", Min = 1, Max = 100})
+
+	Panel:AddControl("Checkbox", {Label = "HL2 Skins Only?", Command = "vj_piv_hl2skins"})
+	Panel:ControlHelp("When enabled, Citizen zombies will only use HL2 skins.")
+	Panel:AddControl("Checkbox", {Label = "Enable Extra Citizen Models?", Command = "vj_piv_extramodels"})
+	Panel:ControlHelp("When enabled, Citizen zombies will have more models instead of just the default ones.")
+	--Panel:AddControl("Checkbox", {Label = "Enable Extra Citizen Clothes?", Command = "vj_piv_extraclothes"})
 	
 	-- walker voice
 	
@@ -366,8 +507,10 @@ if VJExists == true then
 	combobox_walkervoice.Options["No More Room In Hell"] = {vj_piv_walk_voice = 0}
 	combobox_walkervoice.Options["Dying Light"] = {vj_piv_walk_voice = 1}
 	combobox_walkervoice.Options["Left 4 Dead 2"] = {vj_piv_walk_voice = 2}
-	combobox_walkervoice.Options["Random"] = {vj_piv_walk_voice = 3}
+	combobox_walkervoice.Options["Contagion"] = {vj_piv_walk_voice = 3}
+	combobox_walkervoice.Options["Random"] = {vj_piv_walk_voice = 4}
 	Panel:AddControl("ComboBox", combobox_walkervoice)
+	Panel:ControlHelp("Changes the sounds of Walkers.")
 	
 	-- runner voice
 	
@@ -375,8 +518,10 @@ if VJExists == true then
 	combobox_runnervoice.Options["No More Room In Hell"] = {vj_piv_run_voice = 0}
 	combobox_runnervoice.Options["Dying Light"] = {vj_piv_run_voice = 1}
 	combobox_runnervoice.Options["Left 4 Dead 2"] = {vj_piv_run_voice = 2}
-	combobox_runnervoice.Options["Random"] = {vj_piv_run_voice = 3}
+	combobox_runnervoice.Options["Contagion"] = {vj_piv_run_voice = 3}
+	combobox_runnervoice.Options["Random"] = {vj_piv_run_voice = 4}
 	Panel:AddControl("ComboBox", combobox_runnervoice)
+	Panel:ControlHelp("Changes the sounds of Runners.")
 	
 	-- giant voice
 --[[	
@@ -388,19 +533,62 @@ if VJExists == true then
 	Panel:AddControl("ComboBox", combobox_giantvoice)
 --]]
 
+	-- specific zombie options
+	
+	-- military 
+	
+	-- military skin
+	
+	local combobox_militaryskin = {Options = {}, CVars = {}, Label = "Military Skin", MenuButton = "0"}
+	combobox_militaryskin.Options["National Guard"] = {vj_piv_militaryskin = 0}
+	combobox_militaryskin.Options["Woodland"] = {vj_piv_militaryskin = 1}
+	combobox_militaryskin.Options["Desert"] = {vj_piv_militaryskin = 2}
+	combobox_militaryskin.Options["Snow"] = {vj_piv_militaryskin = 3}
+	combobox_militaryskin.Options["Random"] = {vj_piv_militaryskin = 4}
+	Panel:AddControl("ComboBox", combobox_militaryskin)
+	Panel:ControlHelp("Changes the skin of Military zombies.")
+
+	Panel:AddControl("Checkbox", {Label = "Military Zombies Can Have Flak Armor?", Command = "vj_piv_mil_flakarmor"})
+	Panel:ControlHelp("When enabled, Military zombies can spawn with flak armor that lowers bullet and explosive damage.")
+	Panel:AddControl("Slider", {Label = "Flak Armor Chance", Command = "vj_piv_mil_flakarmor_chance", Min = 1, Max = 100})
+	
+	Panel:AddControl("Checkbox", {Label = "Military Zombies Can Have A Gasmask?", Command = "vj_piv_mil_gasmask"})
+	Panel:ControlHelp("When enabled, Military zombies can spawn with gasmasks that give them chemical and radiation immunity.")
+	Panel:AddControl("Slider", {Label = "Gasmask Chance", Command = "vj_piv_mil_gasmask_chance", Min = 1, Max = 100})
+	
+	Panel:AddControl("Checkbox", {Label = "Riot Soldier Zombies Can Have A Shield?", Command = "vj_piv_mil_shield"})
+	Panel:ControlHelp("When enabled, Riot Soldier zombies can spawn with a bulletproof shield.")
+	Panel:AddControl("Slider", {Label = "Shield Chance", Command = "vj_piv_mil_shield_chance", Min = 1, Max = 100})
+	
+	Panel:AddControl("Checkbox", {Label = "Ghillie Zombies Can Be Stealthy?", Command = "vj_piv_mil_ghillie_stealth"})
+	Panel:ControlHelp("When enabled, Ghillie zombies can go silent and crawl.")
+	Panel:AddControl("Slider", {Label = "Ghille Stealth Chance", Command = "vj_piv_mil_ghillie_stealth_chance", Min = 1, Max = 100})
+	
+	-- husks
+
 	Panel:AddControl("Checkbox", {Label = "Husks Can Run?", Command = "vj_piv_husk_run"})
+	Panel:ControlHelp("When enabled, Husks will sometimes charge for a few seconds.")
+	
 	Panel:AddControl("Checkbox", {Label = "Husks Can Explode?", Command = "vj_piv_husk_explode"})
+	Panel:ControlHelp("When enabled, Husks will sometimes explode on death.")
 	Panel:AddControl("Slider", {Label = "Husk Explosion Chance", Command = "vj_piv_husk_explode_chance", Min = 1, Max = 100})
-	Panel:AddControl("Checkbox", {Label = "Enable Headless Husk Variant?", Command = "vj_piv_husk_headlesse"})
+	
+	Panel:AddControl("Checkbox", {Label = "Enable Headless Husk Variant?", Command = "vj_piv_husk_headless"})
+	Panel:ControlHelp("When enabled, Husks will sometimes spawn as a headless variant, unable to be headshot.")
 	Panel:AddControl("Slider", {Label = "Headless Husk Variant Chance", Command = "vj_piv_husk_headless_chance", Min = 1, Max = 100})
 	
 	Panel:AddControl("Checkbox", {Label = "Virulents Can Run?", Command = "vj_piv_virulent_run"})
+	Panel:ControlHelp("When enabled, Virulents will sometimes charge for a few seconds.")
+	
 	Panel:AddControl("Checkbox", {Label = "Virulents Can Explode?", Command = "vj_piv_virulent_explode"})
+	Panel:ControlHelp("When enabled, Virulents will sometimes explode on death.")
 	Panel:AddControl("Slider", {Label = "Virulent Explosion Chance", Command = "vj_piv_virulent_explode_chance", Min = 1, Max = 100})
 	
 	Panel:AddControl("Checkbox", {Label = "Shamblers Can Revive?", Command = "vj_piv_shambler_revive"})
+	Panel:ControlHelp("When enabled, Shamblers will sometimes revive a few seconds after death.")
 	Panel:AddControl("Slider", {Label = "Shambler Revive Chance", Command = "vj_piv_shambler_revive_chance", Min = 1, Max = 100})
 	Panel:AddControl("Checkbox", {Label = "Shamblers Can Revive As Revenants?", Command = "vj_piv_shambler_revive_revenant"})
+	Panel:ControlHelp("When enabled, Shamblers will sometimes mutate into a Revenant when reviving.")
 	Panel:AddControl("Slider", {Label = "Shambler Revive As Revenant Chance", Command = "vj_piv_shambler_revive_revenant_chance", Min = 1, Max = 100})
 
 	end
