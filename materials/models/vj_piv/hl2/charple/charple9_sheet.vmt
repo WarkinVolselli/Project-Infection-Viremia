@@ -1,0 +1,16 @@
+VertexLitGeneric
+{
+	$baseTexture Models/vj_piv/hl2/Charple/Charple8_sheet
+	$bumpmap Models/vj_piv/hl2/Charple/Charple8_normal
+	$envmapcontrast 1
+	$phong 1
+	$phongboost 0.2
+	$phongexponent 6
+	$phongtint [1 1 1]
+	$phongfresnelranges [1 1 5]
+	
+    $detail Models/vj_piv/hl2/Charple/Charple8_e
+    $detailscale 1        //scales the detail texture to same size as diffuse.
+    $detailblendfactor 1  //lower values make the texture less visible. 0.0 - 1.0
+    $detailblendmode 5    //6 also works.
+}
