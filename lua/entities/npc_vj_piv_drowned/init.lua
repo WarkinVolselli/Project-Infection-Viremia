@@ -35,9 +35,9 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		self.PIV_CanRest = false
 		else
 		self.MovementType = VJ_MOVETYPE_GROUND
-		self.AnimTbl_IdleStand = {ACT_IDLE}
-		if GetConVar("vj_piv_idleactivity"):GetInt() == 1 then
-		self.PIV_CanRest = true
+		self.AnimTbl_IdleStand = {ACT_IDLE_ON_FIRE}
+		if GetConVar("vj_piv_resting"):GetInt() == 1 then
+			self.PIV_CanRest = true
 		end
 	end
 end
