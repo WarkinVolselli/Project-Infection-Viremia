@@ -28,7 +28,7 @@ local ent_tbl = {
 	"npc_vj_piv_remordeo",
 	"npc_vj_piv_sickler",
 	"npc_vj_piv_exploder",
-	"npc_vj_piv_drowne",
+	"npc_vj_piv_drowned",
 	"npc_vj_piv_drowned_suit",
 	"npc_vj_piv_grenadier",
 	"npc_vj_piv_blood_bomber",
