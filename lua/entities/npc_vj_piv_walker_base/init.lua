@@ -366,10 +366,10 @@ function ENT:CustomOnPreInitialize()
 
     self.PIV_LegHP = self.StartHealth / 2
 
-	if GetConVar("vj_piv_subclasses"):GetInt() == 1 && self.PIV_WeHaveAWeapon == false && self:GetClass() != "npc_vj_piv_slammer" && self:GetClass() != "npc_vj_piv_blood_bomber" && self:GetClass() != "npc_vj_piv_phorid" && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_cremator" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_stoker" && self:GetClass() != "npc_vj_piv_exploder" && self:GetClass() != "npc_vj_piv_cremator" && self.PIV_Mutated == false then
+	if GetConVar("vj_piv_subclasses"):GetInt() == 1 && !self.PIV_WeHaveAWeapon && self:GetClass() != "npc_vj_piv_slammer" && self:GetClass() != "npc_vj_piv_blood_bomber" && self:GetClass() != "npc_vj_piv_phorid" && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_cremator" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_stoker" && self:GetClass() != "npc_vj_piv_exploder" && self:GetClass() != "npc_vj_piv_cremator" && self.PIV_Mutated == false then
 
 		-- joggers
-		if math.random(1,GetConVar("vj_piv_jogger_chance"):GetInt()) == 1 && !PIV_Crippled && !PIV_FuckingCrawlingLittleCunt && self:GetClass() != "npc_vj_piv_slammer" && self:GetClass() != "npc_vj_piv_shambler" && self:GetClass() != "npc_vj_piv_shambler_f" then
+		if math.random(1,GetConVar("vj_piv_jogger_chance"):GetInt()) == 1 && !PIV_Crippled && !PIV_FuckingCrawlingLittleCunt && self:GetClass() != "npc_vj_piv_shambler" && self:GetClass() != "npc_vj_piv_shambler_f" then
 			self.AnimTbl_Run = {ACT_RUN}
 			self.PIV_Jogger = true
 			if self:GetClass() == "npc_vj_piv_panzer" then
@@ -389,15 +389,18 @@ function ENT:CustomOnPreInitialize()
 				ParticleEffectAttach("smoke_exhaust_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("origin"))
 			end
 			--]]
-			self.StartHealth = self.StartHealth * 1.25 
+			self.StartHealth = self.StartHealth * 1.25
 		end
 		
-		if math.random(1,GetConVar("vj_piv_brute_chance"):GetInt()) == 1 && !self.PIV_Shambler && !PIV_Crippled && !PIV_FuckingCrawlingLittleCunt && self:GetClass() != "npc_vj_piv_spewer" && self:GetClass() != "npc_vj_piv_spitter" && self:GetClass() != "npc_vj_piv_grenadier" && self:GetClass() != "npc_vj_piv_shambler" && self:GetClass() != "npc_vj_piv_shambler_f" && self:GetClass() != "npc_vj_piv_panzer" then
+		if math.random(1,GetConVar("vj_piv_brute_chance"):GetInt()) == 1 && !self.PIV_Shambler && !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt && self:GetClass() != "npc_vj_piv_panzer" then
 			self.PIV_Brute = true
 			self.StartHealth = self.StartHealth * 1.5
 			self.GeneralSoundPitch1 = self.GeneralSoundPitch1 - 10
 			self.GeneralSoundPitch2 = self.GeneralSoundPitch2 - 10
 			self:SetModelScale(1.1)
+			if self:GetClass() == "npc_vj_piv_spewer" or self:GetClass() == "npc_vj_piv_spitter" then
+				self:SetModelScale(1.2)
+			end
 		end
 
 		if math.random(1,GetConVar("vj_piv_crawler_chance"):GetInt()) == 1 && self:GetClass() != "npc_vj_piv_spewer" && self:GetClass() != "npc_vj_piv_spitter" && self:GetClass() != "npc_vj_piv_grenadier" then 
@@ -408,6 +411,10 @@ function ENT:CustomOnPreInitialize()
 			self:CapabilitiesRemove(bit.bor(CAP_MOVE_JUMP))
 			self:CapabilitiesRemove(bit.bor(CAP_MOVE_CLIMB))
 			self.HasLeapAttack = false
+		end
+		
+		if math.random(1,GetConVar("vj_piv_biter_chance"):GetInt()) == 1 && !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt && !self.PIV_WeHaveAWeapon then
+			self.PIV_Biter = true
 		end
 
 	end
@@ -571,7 +578,7 @@ function ENT:CustomOnPreInitialize()
 		self.PIV_CanRest = true
 		self.PIV_NextRestT = CurTime() + math.Rand(10, 120)
 	end
-	
+
 	self:Zombie_CustomOnPreInitialize()
 
 end
@@ -1132,7 +1139,17 @@ function ENT:CustomOnAlert(ent)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnAlert()
-
+	if GetConVar("vj_piv_alert_anim"):GetInt() == 1 && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Resting == 0 && self:GetSequence() != self:LookupSequence(ACT_OPEN_DOOR)
+	&& self:GetClass() == "npc_vj_piv_slammer"
+	&& self:GetClass() == "npc_vj_piv_bruiser"
+	&& self:GetClass() == "npc_vj_piv_exploder"
+	&& self:GetClass() == "npc_vj_piv_phorid"
+	then
+		if math.random(1,GetConVar("vj_piv_alert_anim_chance"):GetInt()) == 1 then
+			local tbl = VJ_PICK({"vjseq_nz_taunt_1","vjseq_nz_taunt_2","vjseq_nz_taunt_3","vjseq_nz_taunt_4","vjseq_nz_taunt_5","vjseq_nz_taunt_6","vjseq_nz_taunt_7","vjseq_nz_taunt_8","vjseq_nz_taunt_9","vjseq_stand_threaten_0"})
+			self:VJ_ACT_PLAYACTIVITY(tbl,true,false,true)
+		end
+	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
@@ -1146,6 +1163,8 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 			self.MeleeAttackDamage = math.random(20,25)
 		end
 		self.HasMeleeAttackKnockBack = false
+		self.SlowPlayerOnMeleeAttack = false
+		self.MeleeAttackAnimationDecreaseLengthAmount = 0
 		self.MeleeAttackDistance = 40
         self.MeleeAttackDamageDistance = 60
 		self.SoundTbl_MeleeAttack = {"vj_piv/z_hit-01.wav","vj_piv/z_hit-02.wav","vj_piv/z_hit-03.wav","vj_piv/z_hit-04.wav","vj_piv/z_hit-05.wav","vj_piv/z_hit-06.wav"}
@@ -1172,6 +1191,9 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 				end
 				self.MeleeAttackDistance = 40
 				self.MeleeAttackDamageDistance = 60
+				self.HasMeleeAttackKnockBack = false
+				self.SlowPlayerOnMeleeAttack = false
+				self.MeleeAttackAnimationDecreaseLengthAmount = 0
 			
 				self.AnimTbl_MeleeAttack = {
 					"vjges_melee_1h_left",
@@ -1187,6 +1209,9 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 				end
 				self.MeleeAttackDistance = 40
 				self.MeleeAttackDamageDistance = 60
+				self.HasMeleeAttackKnockBack = false
+				self.SlowPlayerOnMeleeAttack = false
+				self.MeleeAttackAnimationDecreaseLengthAmount = 0
 			
 				self.AnimTbl_MeleeAttack = {
 					"vjges_melee_2h_left",
@@ -1196,11 +1221,28 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 			end
 			
 		elseif self.PIV_HasShield == true then
+			self.MeleeAttackDamage = math.random(15,20)
+			if self.PIV_Brute == true then
+				self.MeleeAttackDamage = math.random(20,25)
+			end
+			self.HasMeleeAttackKnockBack = false
+			self.SlowPlayerOnMeleeAttack = false
+			self.MeleeAttackAnimationDecreaseLengthAmount = 0
+			self.MeleeAttackDistance = 40
+			self.MeleeAttackDamageDistance = 60
 			self.AnimTbl_MeleeAttack = {
 				"vjges_melee_moving01a",
 				"vjges_melee_moving03a",
 				"vjges_melee_moving06a",
 			}
+			
+		elseif self.PIV_Biter == true then
+			self.AnimTbl_MeleeAttack = {"vjseq_Choke_Eating"}	
+			self.MeleeAttackAnimationDecreaseLengthAmount = 1.45
+			self.SlowPlayerOnMeleeAttack = true
+			self.HasMeleeAttackKnockBack = false
+			self.SoundTbl_MeleeAttack = {"vj_piv/zombie_bite1.wav","vj_piv/zombie_bite2.wav","vj_piv/zombie_bite3.wav"}
+			self.SoundTbl_MeleeAttackMiss = {"vj_piv/z-swipe-1.wav","vj_piv/z-swipe-2.wav","vj_piv/z-swipe-3.wav","vj_piv/z-swipe-4.wav","vj_piv/z-swipe-5.wav","vj_piv/z-swipe-6.wav"}	
 		else
 		
 			self.MeleeAttackDamage = math.random(15,20)
@@ -1208,6 +1250,8 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 				self.MeleeAttackDamage = math.random(20,25)
 			end
 			self.HasMeleeAttackKnockBack = false
+			self.SlowPlayerOnMeleeAttack = false
+			self.MeleeAttackAnimationDecreaseLengthAmount = 0
 			self.MeleeAttackDistance = 40
 			self.MeleeAttackDamageDistance = 60
 			self.SoundTbl_MeleeAttack = {"vj_piv/z_hit-01.wav","vj_piv/z_hit-02.wav","vj_piv/z_hit-03.wav","vj_piv/z_hit-04.wav","vj_piv/z_hit-05.wav","vj_piv/z_hit-06.wav"}
@@ -1218,6 +1262,10 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 				"vjseq_nz_attack_stand_ad_2-2",
 				"vjseq_nz_attack_stand_ad_2-3",
 				"vjseq_nz_attack_stand_ad_2-4",
+				"vjseq_nz_attack_stand_au_1",
+				"vjseq_nz_attack_stand_au_2-2",
+				"vjseq_nz_attack_stand_au_2-3",
+				"vjseq_nz_attack_stand_au_2-4",
 			}
 	        
 			if math.random(1,4) == 1 then 
@@ -1227,8 +1275,11 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 					self.MeleeAttackDamage = math.random(25,30)
 				end
 				self.HasMeleeAttackKnockBack = true
+				self.SlowPlayerOnMeleeAttack = false
+				self.MeleeAttackAnimationDecreaseLengthAmount = 0
 				self.MeleeAttackDistance = 50
 				self.MeleeAttackDamageDistance = 70
+
 				self.SoundTbl_MeleeAttack = {"vj_piv/BodyHit-3.wav","vj_piv/BodyHit-4.wav","vj_piv/BodyHit-5.wav","vj_piv/BodyHit-6.wav"}
 				self.SoundTbl_MeleeAttackMiss = {"vj_piv/Miss1.wav","vj_piv/Miss2.wav","vj_piv/Miss3.wav","vj_piv/Miss4.wav","vj_piv/Miss5.wav"}	
 			
@@ -1258,6 +1309,9 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 				end
 				self.MeleeAttackDistance = 40
 				self.MeleeAttackDamageDistance = 60
+				self.HasMeleeAttackKnockBack = false
+				self.SlowPlayerOnMeleeAttack = false
+				self.MeleeAttackAnimationDecreaseLengthAmount = 0
 			
 				self.AnimTbl_MeleeAttack = {
 					"vjges_melee_1h_left",
@@ -1273,6 +1327,9 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 				end
 				self.MeleeAttackDistance = 40
 				self.MeleeAttackDamageDistance = 60
+				self.HasMeleeAttackKnockBack = false
+				self.SlowPlayerOnMeleeAttack = false
+				self.MeleeAttackAnimationDecreaseLengthAmount = 0
 			
 				self.AnimTbl_MeleeAttack = {
 					"vjges_melee_2h_left",
@@ -1282,6 +1339,15 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 			end
 			
 		elseif self.PIV_HasShield == true then
+			self.MeleeAttackDamage = math.random(15,20)
+			if self.PIV_Brute == true then
+				self.MeleeAttackDamage = math.random(20,25)
+			end
+			self.HasMeleeAttackKnockBack = false
+			self.SlowPlayerOnMeleeAttack = false
+			self.MeleeAttackAnimationDecreaseLengthAmount = 0
+			self.MeleeAttackDistance = 40
+			self.MeleeAttackDamageDistance = 60
 			self.AnimTbl_MeleeAttack = {
 				"vjges_melee_moving01a",
 				"vjges_melee_moving03a",
@@ -1295,6 +1361,8 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 				self.MeleeAttackDamage = math.random(20,25)
 			end
 			self.HasMeleeAttackKnockBack = false
+			self.SlowPlayerOnMeleeAttack = false
+			self.MeleeAttackAnimationDecreaseLengthAmount = 0
 			self.MeleeAttackDistance = 40
 			self.MeleeAttackDamageDistance = 60
 			self.SoundTbl_MeleeAttack = {"vj_piv/z_hit-01.wav","vj_piv/z_hit-02.wav","vj_piv/z_hit-03.wav","vj_piv/z_hit-04.wav","vj_piv/z_hit-05.wav","vj_piv/z_hit-06.wav"}
@@ -1305,10 +1373,12 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 				"vjges_nz_attack_walk_ad_2",
 				"vjges_nz_attack_walk_ad_3",
 				"vjges_nz_attack_walk_ad_4",
+				"vjges_nz_attack_walk_ad_right_only_1",
 				"vjges_nz_attack_walk_au_1",
 				"vjges_nz_attack_walk_au_2",
 				"vjges_nz_attack_walk_au_3",
-				"vjges_nz_attack_walk_au_4"
+				"vjges_nz_attack_walk_au_4",
+				"vjges_nz_attack_walk_au_right_only_1"
 			}
 
 		end
@@ -1317,19 +1387,46 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt, isProp)
+	if self:IsOnFire() && math.random(1,4) == 1 then 
+		hitEnt:Ignite(math.random(1,4))
+	end
+
+    if self.PIV_Biter && !isProp && !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt then	
+		if hitEnt.IsVJBaseSNPC && VJ_PICK(hitEnt.CustomBlood_Particle) then
+			ParticleEffectAttach(VJ_PICK(hitEnt.CustomBlood_Particle),PATTACH_POINT_FOLLOW,self,self:LookupAttachment("mouth"))
+		elseif (hitEnt:IsPlayer() or hitEnt:IsNPC() or hitEnt:IsNextBot()) then
+			ParticleEffectAttach("blood_impact_red_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("mouth"))
+		end
+
+		if (hitEnt.IsVJBaseSNPC && hitEnt.MovementType == VJ_MOVETYPE_GROUND && !hitEnt.VJ_IsHugeMonster && !hitEnt.IsVJBaseSNPC_Tank) then
+			hitEnt:StopMoving()
+			hitEnt:SetState(VJ_STATE_ONLY_ANIMATION)
+			hitEnt:VJ_DoSetEnemy(self,true,true)
+			local ang = self:GetAngles()
+			hitEnt:SetAngles(Angle(ang.x,(self:GetPos() -hitEnt:GetPos()):Angle().y,ang.z))
+			timer.Simple(self.SlowPlayerOnMeleeAttackTime,function()
+				if IsValid(hitEnt) && !self.PlayingAttackAnimation then
+					hitEnt:SetState()
+				end
+			end)
+		end
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_Miss()
-    if !self:IsMoving() && !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt && !self.PIV_WeHaveAWeapon &&
+    if self.MeleeAttacking && !self:IsMoving() &&
 	    (
         self:GetSequence() == self:LookupSequence("standing_melee_1") or
         self:GetSequence() == self:LookupSequence("standing_melee_2") or
         self:GetSequence() == self:LookupSequence("standing_melee_3") or
         self:GetSequence() == self:LookupSequence("standing_melee_4")
-		) 
+		)
+	or self.PIV_Biter && self.MeleeAttacking && !self:IsMoving() && self:GetSequence() == self:LookupSequence("choke_eating")
 	then
         self.PlayingAttackAnimation = false
         self:StopAttacks(false)
-        self.vACT_StopAttacks = false    
-		
+        self.vACT_StopAttacks = false
         self:VJ_ACT_PLAYACTIVITY("vjseq_choke_miss",true,false,true)
     end
 end
@@ -1552,7 +1649,7 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 	return !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt  && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
 	end
 
-	if GetConVarNumber("vj_piv_cripple") == 1 && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_stoker" && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_phorid" then  -- if the convars not on don't run this
+	if GetConVarNumber("vj_piv_cripple") == 1 && self.PIV_Brute == false && self:GetClass() != "npc_vj_piv_exploder" && self:GetClass() != "npc_vj_piv_slammer" && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_stoker" && self:GetClass() != "npc_vj_piv_slammer" && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_phorid" then  -- if the convars not on don't run this
 		if hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then -- are we hitting the leg?
 			self.PIV_LegHP = self.PIV_LegHP -dmginfo:GetDamage() -- take away leg hp
 		end
@@ -1689,6 +1786,8 @@ function ENT:Cripple()
 	self.AnimTbl_Walk = {ACT_WALK_STIMULATED}
 	self.AnimTbl_Run = {ACT_WALK_STIMULATED}
 	
+	self.CanTurnWhileStationary = false
+	
     self:SetCollisionBounds(Vector(13,13,20),Vector(-13,-13,0))
 	self.VJC_Data = {
 	CameraMode = 1, 
@@ -1700,6 +1799,8 @@ function ENT:Cripple()
     self:CapabilitiesRemove(bit.bor(CAP_MOVE_JUMP))
 	self:CapabilitiesRemove(bit.bor(CAP_MOVE_CLIMB))
 	self.HasDeathAnimation = false
+	self.HasRangeAttack = false
+	self.HasLeapAttack = false
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:IsDirt(pos)

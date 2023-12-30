@@ -1,7 +1,7 @@
 AddCSLuaFile("shared.lua")
 include('shared.lua')
 /*-----------------------------------------------
-	*** Copyright (c) 2012-2021 by DrVrej, All rights reserved. ***
+	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
@@ -30,8 +30,8 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 	self.HasMeleeAttackKnockBack = true
 	self.MeleeAttackDistance = 60
 	self.MeleeAttackDamageDistance = 80
-	self.SoundTbl_MeleeAttack = {"vj_piv/sickler/attack1.wav","vj_piv/sickler/attack2.wav","vj_piv/sickler/attack3.wav"}
-	self.SoundTbl_MeleeAttackMiss = {"vj_piv/z-swipe-1.wav","vj_piv/z-swipe-2.wav","vj_piv/z-swipe-3.wav","vj_piv/z-swipe-4.wav","vj_piv/z-swipe-5.wav","vj_piv/z-swipe-6.wav"}
+	self.SoundTbl_MeleeAttack = {"vj_piv/SwordHit-1.wav","vj_piv/SwordHit-2.wav","vj_piv/SwordHit-3.wav","vj_piv/SwordHit-4.wav","vj_piv/SwordHit-5.wav","vj_piv/SwordHit-6.wav","vj_piv/SwordHit-7.wav","vj_piv/SwordHit-8.wav","vj_piv/SwordHit-9.wav"}
+	self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_light_sharp_01.wav","vj_piv/swing_light_sharp_02.wav","vj_piv/swing_light_sharp_03.wav"}
 	
 	self.MeleeAttackAnimationAllowOtherTasks = true
 	
@@ -43,7 +43,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 end
 /*-----------------------------------------------
-	*** Copyright (c) 2012-2021 by DrVrej, All rights reserved. ***
+	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/

@@ -103,6 +103,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		self.MeleeAttackDistance = 32 
 		self.MeleeAttackDamageDistance = 60 
 		self.MeleeAttackDamage = math.random(20,25)
+		self.SoundTbl_MeleeAttack = {"vj_piv/husk/zombie_slice_1.wav","vj_piv/husk/zombie_slice_2.wav","vj_piv/husk/zombie_slice_3.wav","vj_piv/husk/zombie_slice_4.wav","vj_piv/husk/zombie_slice_5.wav","vj_piv/husk/zombie_slice_6.wav"}
 		
 	else
 	
@@ -112,6 +113,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		self.MeleeAttackDistance = 32 
 		self.MeleeAttackDamageDistance = 60 
 		self.MeleeAttackDamage = math.random(20,25)
+		self.SoundTbl_MeleeAttack = {"vj_piv/husk/zombie_slice_1.wav","vj_piv/husk/zombie_slice_2.wav","vj_piv/husk/zombie_slice_3.wav","vj_piv/husk/zombie_slice_4.wav","vj_piv/husk/zombie_slice_5.wav","vj_piv/husk/zombie_slice_6.wav"}
 		
 	end
 		
@@ -210,16 +212,23 @@ end
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Zombie_CustomOnAlert()
+	if GetConVar("vj_piv_alert_anim"):GetInt() == 1 && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Resting == 0 && self:GetSequence() != self:LookupSequence(ACT_OPEN_DOOR) then
+		if math.random(1,GetConVar("vj_piv_alert_anim_chance"):GetInt()) == 1 then
+			self:VJ_ACT_PLAYACTIVITY("vjges_throwwarning",false,false,true)
+		end
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnKilled(dmginfo,hitgroup)
    	if self.PIV_Virulent_Explode == true then
-			util.VJ_SphereDamage(self,self,self:GetPos(),150,math.random(0,0),DMG_BLAST,true,true,{Force=20})
+		util.VJ_SphereDamage(self,self,self:GetPos(),150,math.random(0,0),DMG_BLAST,true,true,{Force=20})
 		for k,v in ipairs(ents.FindInSphere(self:GetPos(),150)) do
 			v:TakeDamage(math.random(30,40))
 		end
-			util.ScreenShake(self:GetPos(),44,600,1.5,2000)
-		end
+		util.ScreenShake(self:GetPos(),44,600,1.5,2000)
 	end
-	
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnPriorToKilled(dmginfo,hitgroup)
 	if self.PIV_Virulent_Explode == true then

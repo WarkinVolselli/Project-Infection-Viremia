@@ -13,6 +13,7 @@ ENT.AnimTbl_Walk = {ACT_WALK_SCARED}
 ENT.AnimTbl_Run = {ACT_WALK_SCARED}
 
 ENT.PIV_HasArmor = true
+ENT.PIV_CanBeCrippled = false
 
 ENT.GeneralSoundPitch1 = 70
 ENT.GeneralSoundpitch2 = 70
@@ -194,6 +195,15 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Zombie_CustomOnAlert()
+	if GetConVar("vj_piv_alert_anim"):GetInt() == 1 && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Resting == 0 && self:GetSequence() != self:LookupSequence(ACT_OPEN_DOOR) then
+		if math.random(1,GetConVar("vj_piv_alert_anim_chance"):GetInt()) == 1 then
+			local tbl = VJ_PICK({"vjges_gesture_signal_forward","vjges_gesture_disagree"})
+			self:VJ_ACT_PLAYACTIVITY(tbl,false,false,true)
+		end
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:PIV_CustomMutate()
 self.AnimTbl_Run = {ACT_SPRINT}
 
@@ -202,8 +212,6 @@ self:SetHealth(self.StartHealth)
 		
 local mymaxhealth = self:Health()
 self:SetMaxHealth(mymaxhealth)
-
-self.PIV_LegHP = self.PIV_LegHP *2
 
 if GetConVar("vj_piv_lights"):GetInt() == 1 then 
 

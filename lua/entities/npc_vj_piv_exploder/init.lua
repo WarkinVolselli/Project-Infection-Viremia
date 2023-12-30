@@ -13,8 +13,6 @@ ENT.GeneralSoundpitch2 = 120
 
 ENT.MeleeAttackDamage = math.random(20,25)
 
-ENT.PIV_LegHP = 10000
-
 ENT.HasDeathRagdoll = false -- If set to false, it will not spawn the regular ragdoll of the SNPC
 ENT.GibOnDeathDamagesTable = {"All"}
 

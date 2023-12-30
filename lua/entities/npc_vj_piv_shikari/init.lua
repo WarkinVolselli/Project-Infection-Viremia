@@ -49,12 +49,12 @@ function ENT:Zombie_CustomOnInitialize()
 	self:SetSkin(math.random(0,3))
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnAlert(argent)
-    local alert = math.random(1,3)
-	if self:GetSequence() == self:LookupSequence("emerge1") then return false end
-	if alert == 1 then
-		local tbl = VJ_PICK({"vjseq_Idle_Angry"})
-		self:VJ_ACT_PLAYACTIVITY(tbl,true,VJ_GetSequenceDuration(self,tbl),false)
+function ENT:Zombie_CustomOnAlert()
+	if GetConVar("vj_piv_alert_anim"):GetInt() == 1 && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Resting == 0 && self:GetSequence() != self:LookupSequence(ACT_OPEN_DOOR) then
+		if math.random(1,GetConVar("vj_piv_alert_anim_chance"):GetInt()) == 1 then
+			local tbl = VJ_PICK({"vjseq_idle_angry","vjseq_br2_roar"})
+			self:VJ_ACT_PLAYACTIVITY(tbl,true,false,true)
+		end
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -68,6 +68,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		self.MeleeAttackDistance = 44 
 		self.MeleeAttackDamageDistance = 60
 		self.MeleeAttackDamage = math.random(5,10)
+		self.SoundTbl_MeleeAttack = {"vj_piv/husk/zombie_slice_1.wav","vj_piv/husk/zombie_slice_2.wav","vj_piv/husk/zombie_slice_3.wav","vj_piv/husk/zombie_slice_4.wav","vj_piv/husk/zombie_slice_5.wav","vj_piv/husk/zombie_slice_6.wav"}
 		
 	else
 	
@@ -77,6 +78,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		self.MeleeAttackDistance = 32 
 		self.MeleeAttackDamageDistance = 60 
 		self.MeleeAttackDamage = math.random(5,10)
+		self.SoundTbl_MeleeAttack = {"vj_piv/husk/zombie_slice_1.wav","vj_piv/husk/zombie_slice_2.wav","vj_piv/husk/zombie_slice_3.wav","vj_piv/husk/zombie_slice_4.wav","vj_piv/husk/zombie_slice_5.wav","vj_piv/husk/zombie_slice_6.wav"}
 
 	end
 		

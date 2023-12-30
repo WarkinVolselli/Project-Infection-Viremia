@@ -143,6 +143,14 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Zombie_CustomOnAlert()
+	if GetConVar("vj_piv_alert_anim"):GetInt() == 1 && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Resting == 0 && self:GetSequence() != self:LookupSequence(ACT_OPEN_DOOR) then
+		if math.random(1,GetConVar("vj_piv_alert_anim_chance"):GetInt()) == 1 then
+			self:VJ_ACT_PLAYACTIVITY("vjges_tantrum",false,false,true)
+		end
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnKilled(dmginfo,hitgroup)
    	if self.PIV_Husk_Explode == true then
 			util.VJ_SphereDamage(self,self,self:GetPos(),150,math.random(0,0),DMG_BLAST,true,true,{Force=20})
@@ -223,7 +231,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		self.HasMeleeAttackKnockBack = false
 		self.MeleeAttackDistance = 40
 		self.MeleeAttackDamageDistance = 60
-		self.SoundTbl_MeleeAttack = {"vj_piv/z_hit-01.wav","vj_piv/z_hit-02.wav","vj_piv/z_hit-03.wav","vj_piv/z_hit-04.wav","vj_piv/z_hit-05.wav","vj_piv/z_hit-06.wav"}
+		self.SoundTbl_MeleeAttack = {"vj_piv/husk/zombie_slice_1.wav","vj_piv/husk/zombie_slice_2.wav","vj_piv/husk/zombie_slice_3.wav","vj_piv/husk/zombie_slice_4.wav","vj_piv/husk/zombie_slice_5.wav","vj_piv/husk/zombie_slice_6.wav"}
 		self.SoundTbl_MeleeAttackMiss = {"vj_piv/z-swipe-1.wav","vj_piv/z-swipe-2.wav","vj_piv/z-swipe-3.wav","vj_piv/z-swipe-4.wav","vj_piv/z-swipe-5.wav","vj_piv/z-swipe-6.wav"}	
 			
 		self.AnimTbl_MeleeAttack = {
@@ -248,7 +256,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		self.HasMeleeAttackKnockBack = false
 		self.MeleeAttackDistance = 40
 		self.MeleeAttackDamageDistance = 60
-		self.SoundTbl_MeleeAttack = {"vj_piv/z_hit-01.wav","vj_piv/z_hit-02.wav","vj_piv/z_hit-03.wav","vj_piv/z_hit-04.wav","vj_piv/z_hit-05.wav","vj_piv/z_hit-06.wav"}
+		self.SoundTbl_MeleeAttack = {"vj_piv/husk/zombie_slice_1.wav","vj_piv/husk/zombie_slice_2.wav","vj_piv/husk/zombie_slice_3.wav","vj_piv/husk/zombie_slice_4.wav","vj_piv/husk/zombie_slice_5.wav","vj_piv/husk/zombie_slice_6.wav"}
 		self.SoundTbl_MeleeAttackMiss = {"vj_piv/z-swipe-1.wav","vj_piv/z-swipe-2.wav","vj_piv/z-swipe-3.wav","vj_piv/z-swipe-4.wav","vj_piv/z-swipe-5.wav","vj_piv/z-swipe-6.wav"}	
 			
 		self.AnimTbl_MeleeAttack = {
