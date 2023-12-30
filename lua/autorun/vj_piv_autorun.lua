@@ -195,9 +195,11 @@ if VJExists == true then
 	VJ.AddConVar("vj_piv_spawnanim", 0, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_deathanim", 1, {FCVAR_ARCHIVE}) 
 	VJ.AddConVar("vj_piv_deathanim_chance", 4, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_resting", 1, {FCVAR_ARCHIVE}) 
+	VJ.AddConVar("vj_piv_resting", 0, {FCVAR_ARCHIVE}) 
 	VJ.AddConVar("vj_piv_alt_idle_walk", 1, {FCVAR_ARCHIVE}) 
 	VJ.AddConVar("vj_piv_alt_runner_anims", 1, {FCVAR_ARCHIVE}) 
+	VJ.AddConVar("vj_piv_alert_anim", 1, {FCVAR_ARCHIVE}) 
+	VJ.AddConVar("vj_piv_alert_anim_chance", 4, {FCVAR_ARCHIVE}) 
 	VJ.AddConVar("vj_piv_lights", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_rebirth", 0, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_rebirthall", 0, {FCVAR_ARCHIVE})
@@ -215,7 +217,7 @@ if VJExists == true then
 	VJ.AddConVar("vj_piv_weapons_dropping_chance", 3, {FCVAR_ARCHIVE})
 	
 	VJ.AddConVar("vj_piv_throwing", 1, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_throwing_chance", 6, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_throwing_chance", 10, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_throwing_min", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_throwing_max", 3, {FCVAR_ARCHIVE})
 	
@@ -223,13 +225,15 @@ if VJExists == true then
 	
 	VJ.AddConVar("vj_piv_subclasses", 1, {FCVAR_ARCHIVE})
 	
-	VJ.AddConVar("vj_piv_shambler_chance", 10, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_shambler_chance", 8, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_jogger_chance", 5, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_brute_chance", 10, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_biter_chance", 7, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_super_sprinter_chance", 5, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_rusher_chance", 8, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_leaper_chance", 10, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_rusher_chance", 5, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_crawler_chance", 10, {FCVAR_ARCHIVE})
-	
+	VJ.AddConVar("vj_piv_crawler_chance", 12, {FCVAR_ARCHIVE})
+
 	VJ.AddConVar("vj_piv_advanced_mutations", 1, {FCVAR_ARCHIVE})
 
 	VJ.AddConVar("vj_piv_blazing_chance", 10, {FCVAR_ARCHIVE})
@@ -322,8 +326,11 @@ if VJExists == true then
 			vj_piv_deathanim_chance = "4",
 			
 			vj_piv_alt_idle_walk = "1",
-			vj_piv_resting = "1",
+			vj_piv_resting = "0",
 			vj_piv_alt_runner_anims = "1",
+			
+			vj_piv_alert_anim = "1",
+			vj_piv_alert_anim_chance = "4",
 		
 			vj_piv_aggressive_runner_attacks = "1",
 			
@@ -345,16 +352,18 @@ if VJExists == true then
 			vj_piv_weapons_dropping_chance = "3",
 			
 			vj_piv_throwing = "1",
-			vj_piv_throwing_chance = "6",
+			vj_piv_throwing_chance = "10",
 			vj_piv_throwing_min = "1",
 			vj_piv_throwing_max = "3",			
 
-			vj_piv_shambler_chance = "10", 
+			vj_piv_shambler_chance = "8", 
 			vj_piv_jogger_chance = "5",
+			vj_piv_biter_chance = "7",
 			vj_piv_brute_chance = "10",
+			vj_piv_super_sprinter_chance = "5",
+			vj_piv_rusher_chance = "8",
 			vj_piv_leaper_chance = "10",
-			vj_piv_rusher_chance = "5",
-			vj_piv_crawler_chance = "10",
+			vj_piv_crawler_chance = "12",
 			
 			vj_piv_blazing_chance = "10",
 			vj_piv_electra_chance = "10",
@@ -444,12 +453,16 @@ if VJExists == true then
 	Panel:ControlHelp("When enabled, zombies will sometimes play death animations based on how they were killed.")
 	Panel:AddControl("Slider", {Label = "Death Animation Chance", Command = "vj_piv_deathanim_chance", Min = 1, Max = 100})
 	
+	Panel:AddControl("Checkbox", {Label = "Enable Alert Animations?", Command = "vj_piv_alert_anim"})
+	Panel:ControlHelp("When enabled, zombies will sometimes play 'taunt' animations when alerted.")
+	Panel:AddControl("Slider", {Label = "Alert Animation Chance", Command = "vj_piv_alert_anim_chance", Min = 1, Max = 100})
+	
 	Panel:AddControl("Checkbox", {Label = "Enable Alternate Idle Walk?", Command = "vj_piv_alt_idle_walk"})
 	Panel:ControlHelp("When enabled, zombies will have a more passive walk animation when idle.")
 	Panel:AddControl("Checkbox", {Label = "Enable Alternate Runner Animations?", Command = "vj_piv_alt_runner_anims"})
 	Panel:ControlHelp("When enabled, Runners will use more aggressive walking and idle animations.")
-	Panel:AddControl("Checkbox", {Label = "Enable Resting?", Command = "vj_piv_resting"})
-	Panel:ControlHelp("When enabled, zombies will sometimes sit or lay down when idle.")
+	Panel:AddControl("Checkbox", {Label = "Enable Resting? [EXPERIMENTAL]", Command = "vj_piv_resting"})
+	Panel:ControlHelp("When enabled, zombies will sometimes sit or lay down when idle. (Disabled by default due to bug.)")
 
 	Panel:AddControl("Checkbox", {Label = "Enable Headshot Damage Multiplier?", Command = "vj_piv_headshot_damage"})
 	Panel:ControlHelp("When enabled, zombies will take increased damage from headshots. (Certain enemies are exempt.)	")
@@ -481,12 +494,14 @@ if VJExists == true then
 	Panel:AddControl("Checkbox", {Label = "Enable Subclasses?", Command = "vj_piv_subclasses"})
 	Panel:ControlHelp("When enabled, common zombies will sometimes spawn as stronger variants.")
 
-	Panel:AddControl("Slider", {Label = "Crawler Subclass Chance", Command = "vj_piv_crawler_chance", Min = 1, Max = 100})
-	Panel:AddControl("Slider", {Label = "Shambler Subclass Chance", Command = "vj_piv_shambler_chance", Min = 1, Max = 100})
-	Panel:AddControl("Slider", {Label = "Jogger Subclass Chance", Command = "vj_piv_jogger_chance", Min = 1, Max = 100})
-	Panel:AddControl("Slider", {Label = "Brute Subclass Chance", Command = "vj_piv_brute_chance", Min = 1, Max = 100})
-	Panel:AddControl("Slider", {Label = "Leaper Subclass Chance", Command = "vj_piv_leaper_chance", Min = 1, Max = 100})
-	Panel:AddControl("Slider", {Label = "Rusher Subclass Chance", Command = "vj_piv_rusher_chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Crawler Chance", Command = "vj_piv_crawler_chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Shambler Chance", Command = "vj_piv_shambler_chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Jogger Chance", Command = "vj_piv_jogger_chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Biter Chance", Command = "vj_piv_biter_chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Brute Chance", Command = "vj_piv_brute_chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Super Sprinter Chance", Command = "vj_piv_super_sprinter_chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Rusher Chance", Command = "vj_piv_rusher_chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Leaper Chance", Command = "vj_piv_leaper_chance", Min = 1, Max = 100})
 
 	Panel:AddControl("Checkbox", {Label = "Enable Advanced Mutations?", Command = "vj_piv_advanced_mutations"})
 	Panel:ControlHelp("When enabled, certain specials will sometimes spawn as stronger variants with elemental effects. (Requires Enable Subclasses.)")
@@ -565,6 +580,13 @@ if VJExists == true then
 	Panel:AddControl("Slider", {Label = "Ghille Stealth Chance", Command = "vj_piv_mil_ghillie_stealth_chance", Min = 1, Max = 100})
 	
 	-- husks
+	
+	Panel:AddControl("Checkbox", {Label = "Shamblers Can Revive?", Command = "vj_piv_shambler_revive"})
+	Panel:ControlHelp("When enabled, Shamblers will sometimes revive a few seconds after death.")
+	Panel:AddControl("Slider", {Label = "Shambler Revive Chance", Command = "vj_piv_shambler_revive_chance", Min = 1, Max = 100})
+	Panel:AddControl("Checkbox", {Label = "Shamblers Can Revive As Revenants?", Command = "vj_piv_shambler_revive_revenant"})
+	Panel:ControlHelp("When enabled, Shamblers will sometimes mutate into a Revenant when reviving.")
+	Panel:AddControl("Slider", {Label = "Shambler Revive As Revenant Chance", Command = "vj_piv_shambler_revive_revenant_chance", Min = 1, Max = 100})
 
 	Panel:AddControl("Checkbox", {Label = "Husks Can Run?", Command = "vj_piv_husk_run"})
 	Panel:ControlHelp("When enabled, Husks will sometimes charge for a few seconds.")
@@ -583,13 +605,6 @@ if VJExists == true then
 	Panel:AddControl("Checkbox", {Label = "Virulents Can Explode?", Command = "vj_piv_virulent_explode"})
 	Panel:ControlHelp("When enabled, Virulents will sometimes explode on death.")
 	Panel:AddControl("Slider", {Label = "Virulent Explosion Chance", Command = "vj_piv_virulent_explode_chance", Min = 1, Max = 100})
-	
-	Panel:AddControl("Checkbox", {Label = "Shamblers Can Revive?", Command = "vj_piv_shambler_revive"})
-	Panel:ControlHelp("When enabled, Shamblers will sometimes revive a few seconds after death.")
-	Panel:AddControl("Slider", {Label = "Shambler Revive Chance", Command = "vj_piv_shambler_revive_chance", Min = 1, Max = 100})
-	Panel:AddControl("Checkbox", {Label = "Shamblers Can Revive As Revenants?", Command = "vj_piv_shambler_revive_revenant"})
-	Panel:ControlHelp("When enabled, Shamblers will sometimes mutate into a Revenant when reviving.")
-	Panel:AddControl("Slider", {Label = "Shambler Revive As Revenant Chance", Command = "vj_piv_shambler_revive_revenant_chance", Min = 1, Max = 100})
 
 	end
 
@@ -669,11 +684,11 @@ hook.Add("PlayerDeath","PIV_Infection_Player",function(victim,inflictor,attacker
 	  for i = 0,18 do
 		bg[i] = victim:GetBodygroup(i)
 end	 	  
-        if attacker.PIV_Infection_IsWalker == true && GetConVar("vj_piv_infection_type"):GetInt() == 1  == true then
+    if attacker.PIV_Infection_IsWalker == true && GetConVar("vj_piv_infection_type"):GetInt() == 1  == true then
                     zombie = ents.Create("npc_vj_piv_walker_inf")		
 	elseif attacker.PIV_Infection_IsDrowned == true then
                     zombie = ents.Create("npc_vj_piv_drowned_inf")
-end
+	end
 			zombie:SetMaterial("hud/killicons/default")
             zombie:SetPos(victim:GetPos())
             zombie:SetAngles(victim:GetAngles())
