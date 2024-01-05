@@ -210,7 +210,7 @@ if VJExists == true then
 	-- weapons
 	
 	VJ.AddConVar("vj_piv_weapons", 1, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_weapons_chance", 4, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_weapons_chance", 5, {FCVAR_ARCHIVE})
 	
 	VJ.AddConVar("vj_piv_weapons_dropping", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_weapons_dropping_stumble", 1, {FCVAR_ARCHIVE})
@@ -340,7 +340,7 @@ if VJExists == true then
 			vj_piv_rebirthall = "0",
 			
 			vj_piv_weapons = "1",
-			vj_piv_weapons_chance = "4",
+			vj_piv_weapons_chance = "5",
 			
 			vj_piv_door_breaking = "1",
 			
