@@ -413,7 +413,7 @@ function ENT:CustomOnPreInitialize()
 			self.HasLeapAttack = false
 		end
 		
-		if math.random(1,GetConVar("vj_piv_biter_chance"):GetInt()) == 1 && !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt && !self.PIV_WeHaveAWeapon then
+		if math.random(1,GetConVar("vj_piv_biter_chance"):GetInt()) == 1 && !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt then
 			self.PIV_Biter = true
 		end
 
@@ -423,14 +423,14 @@ function ENT:CustomOnPreInitialize()
 		self.FireRun = true
 	end
 
-    if GetConVar("vj_piv_alt_idle_walk"):GetInt() == 1 && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false && self:GetClass() != "npc_vj_piv_sickler" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_exploder" && self:GetClass() != "npc_vj_piv_phorid" && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_slammer" && self:GetClass() != "npc_vj_piv_shambler" && self:GetClass() != "npc_vj_piv_shambler_f" && self:GetClass() != "npc_vj_piv_blood_bomber" && self.PIV_Shambler == false then
+    if GetConVar("vj_piv_alt_idle_walk"):GetInt() == 1 && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Crippled == false && self.PIV_Jogger == true && self:GetClass() != "npc_vj_piv_sickler" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_exploder" && self:GetClass() != "npc_vj_piv_phorid" && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_slammer" && self:GetClass() != "npc_vj_piv_shambler" && self:GetClass() != "npc_vj_piv_shambler_f" && self:GetClass() != "npc_vj_piv_blood_bomber" && self.PIV_Shambler == false then
 		self.AnimTbl_Walk = {ACT_WALK_AIM_STEALTH}
 	end
 
 	self.IsDigging = false
 	self:Dig()
 	
-		if GetConVar("vj_piv_weapons"):GetInt() == 1 && math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self.PIV_Thrower == false && self:GetClass() != "npc_vj_piv_slammer" && self:GetClass() != "npc_vj_piv_blood_bomber" && self:GetClass() != "npc_vj_piv_phorid" && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Jogger == false && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_cremator" && self:GetClass() != "npc_vj_piv_husk"  && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_panzer" && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_exploder" && self:GetClass() != "npc_vj_piv_grenadier" then
+		if GetConVar("vj_piv_weapons"):GetInt() == 1 && math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self.PIV_Thrower == false && self.PIV_Jogger == false && self:GetClass() != "npc_vj_piv_slammer" && self:GetClass() != "npc_vj_piv_blood_bomber" && self:GetClass() != "npc_vj_piv_phorid" && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_cremator" && self:GetClass() != "npc_vj_piv_husk"  && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_panzer" && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_exploder" && self:GetClass() != "npc_vj_piv_grenadier" then
 				
 			self.PIV_WeHaveAWeapon = true
 
@@ -560,6 +560,10 @@ function ENT:CustomOnPreInitialize()
 					self.AnimTbl_IdleStand = {ACT_HL2MP_IDLE_MELEE}
 					self.AnimTbl_Walk = {ACT_HL2MP_WALK_MELEE2}
 					self.AnimTbl_Run = {ACT_HL2MP_WALK_MELEE2}
+				elseif self.PIV_Jogger == true then
+					self.AnimTbl_IdleStand = {ACT_HL2MP_IDLE_MELEE}
+					self.AnimTbl_Walk = {ACT_HL2MP_WALK_MELEE2}
+					self.AnimTbl_Run = {ACT_HL2MP_WALK_CROUCH_MELEE}
 				else
 					self.AnimTbl_IdleStand = {ACT_HL2MP_IDLE_MELEE}
 					self.AnimTbl_Walk = {ACT_HL2MP_WALK_MELEE}

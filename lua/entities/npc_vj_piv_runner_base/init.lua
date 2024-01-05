@@ -415,7 +415,7 @@ function ENT:CustomOnPreInitialize()
     if GetConVar("vj_piv_alt_idle_walk"):GetInt() == 1 && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false && self:GetClass() != "npc_vj_piv_revenant" && self:GetClass() != "npc_vj_piv_revenant_f" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_shocker" && self:GetClass() != "npc_vj_piv_remordeo" && self:GetClass() != "npc_vj_piv_tank" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_sickler" then
 		self.AnimTbl_Walk = {ACT_WALK_AIM_STEALTH}
 	end
-	
+
     if GetConVar("vj_piv_alt_runner_anims"):GetInt() == 1 && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false && self:GetClass() != "npc_vj_piv_revenant" && self:GetClass() != "npc_vj_piv_revenant_f" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_shocker" && self:GetClass() != "npc_vj_piv_remordeo" && self:GetClass() != "npc_vj_piv_tank" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_sickler" then
 		self.AnimTbl_IdleStand = {ACT_IDLE_ON_FIRE}
 		self.AnimTbl_Walk = {ACT_WALK_ON_FIRE}
@@ -425,7 +425,7 @@ function ENT:CustomOnPreInitialize()
 	self:Dig()
 	
 
-		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self.PIV_Thrower == false &&  self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Super_Sprinter == false && self.PIV_Rusher == false && self.PIV_Leaper == false && self:GetClass() != "npc_vj_piv_tank" &&  self:GetClass() != "npc_vj_piv_creep" && self:GetClass() != "npc_vj_piv_shocker" && self:GetClass() != "npc_vj_piv_stalker" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_sickler" && self:GetClass() != "npc_vj_piv_drowned" && self:GetClass() != "npc_vj_piv_drowned_suit" && self:GetClass() != "npc_vj_piv_revenant" && self:GetClass() != "npc_vj_piv_revenant_f" && self.PIV_FuckingCrawlingLittleCunt == false then
+		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self.PIV_Thrower == false && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Super_Sprinter == false && self.PIV_Rusher == false && self:GetClass() != "npc_vj_piv_tank" &&  self:GetClass() != "npc_vj_piv_creep" && self:GetClass() != "npc_vj_piv_shocker" && self:GetClass() != "npc_vj_piv_stalker" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_sickler" && self:GetClass() != "npc_vj_piv_drowned" && self:GetClass() != "npc_vj_piv_drowned_suit" && self:GetClass() != "npc_vj_piv_drowned_inf" then
 
 			self.PIV_WeHaveAWeapon = true
 			self.MeleeAttackDamage = math.random(20,25)
@@ -551,9 +551,20 @@ function ENT:CustomOnPreInitialize()
 			self.ExtraGunModel1:SetLocalPos(self:GetPos())
 
 			if self.PIV_WeaponType == 2 && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false then
-				self.AnimTbl_IdleStand = {ACT_HL2MP_IDLE_MELEE}
-				self.AnimTbl_Walk = {ACT_HL2MP_WALK_MELEE}
-				self.AnimTbl_Run = {ACT_HL2MP_RUN_MELEE}
+
+				if self:GetClass() == "vj_piv_revenant" or self:GetClass() == "vj_piv_revenant_f" or self.PIV_Rusher == true then
+					self.AnimTbl_IdleStand = {ACT_HL2MP_IDLE_MELEE}
+					self.AnimTbl_Walk = {ACT_HL2MP_WALK_MELEE2}
+					self.AnimTbl_Run = {ACT_HL2MP_WALK_CROUCH_MELEE2}
+				elseif self.PIV_Super_Sprinter == true then
+					self.AnimTbl_IdleStand = {ACT_HL2MP_IDLE_MELEE}
+					self.AnimTbl_Walk = {ACT_HL2MP_WALK_MELEE2}
+					self.AnimTbl_Run = {ACT_HL2MP_WALK_CROUCH_MELEE}
+				else
+					self.AnimTbl_IdleStand = {ACT_HL2MP_IDLE_MELEE}
+					self.AnimTbl_Walk = {ACT_HL2MP_WALK_MELEE}
+					self.AnimTbl_Run = {ACT_HL2MP_RUN_MELEE2}
+				end
 			end
 		end
 		

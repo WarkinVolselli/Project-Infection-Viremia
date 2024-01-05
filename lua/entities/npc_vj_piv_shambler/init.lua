@@ -26,7 +26,11 @@ ENT.SoundTbl_Death = {"vj_piv/shambler/death_1.mp3","vj_piv/shambler/death_2.mp3
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
-	self:SetSkin(math.random(0,3))
+	if GetConVar("vj_piv_hl2skins"):GetInt() == 1 then -- if HL2 Skins Only is enabled, this will make the zombies only use HL2 skins
+		self:SetSkin(1)
+	else
+		self:SetSkin(math.random(0,3))
+	end
 	self:SetBodygroup(2,math.random(0,1))
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
