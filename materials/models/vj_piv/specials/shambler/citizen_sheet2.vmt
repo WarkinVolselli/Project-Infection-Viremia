@@ -2,7 +2,7 @@
 {
 	// Original shader: VertexLitTexture
 	"$basetexture" "models/vj_piv/specials/shambler/citizen_sheet2"
-    "$bumpmap" "models\vj_piv\hl2\citizens\citizen_sheet_n"
+    "$bumpmap" "models/vj_piv/specials/shambler/citizen_sheet2_n"
 	"$halflambert" 1
 	"$nocull" 1
 
