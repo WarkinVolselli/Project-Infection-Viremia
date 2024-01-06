@@ -1589,8 +1589,8 @@ function ENT:DropTheFuckignWeaponGoddamn()
 			self.HasLeapAttack = true
 		end
 		if GetConVar("vj_piv_alt_runner_anims"):GetInt() == 1 then
+			self.AnimTbl_IdleStand = {ACT_IDLE_ON_FIRE}
 			self.AnimTbl_Walk = {ACT_WALK_ON_FIRE}
-			self.AnimTbl_Walk = {ACT_IDLE_ON_FIRE}
 		end
 		if self.PIV_FuckingCrawlingLittleCunt == true or self.PIV_Crippled == true then
 			self.AnimTbl_IdleStand = {ACT_IDLE_AGITATED}

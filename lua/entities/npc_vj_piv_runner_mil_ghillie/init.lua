@@ -74,14 +74,13 @@ end
 function ENT:StandTheFuckUp()
 	if self.PIV_GoblinMode == true then
 	
-		self.AnimTbl_IdleStand = {ACT_IDLE}
+		self.AnimTbl_IdleStand = {ACT_IDLE_AIM_STIMULATED}
 
 		if self.PIV_Rusher == true then
 			self.AnimTbl_Walk = {ACT_WALK}
 			self.AnimTbl_Run = {ACT_RUN_RELAXED}
-		elseif self.PIV_Leaper == true then
-			self.AnimTbl_Walk = {ACT_WALK}
-			self.AnimTbl_Run = {ACT_RUN}
+		elseif self.PIV_Super_Sprinter == true then
+			self.AnimTbl_Run = {ACT_RUN_AIM}
 		else
 			self.AnimTbl_Walk = {ACT_WALK}
 			self.AnimTbl_Run = {ACT_SPRINT}
@@ -89,6 +88,11 @@ function ENT:StandTheFuckUp()
 
 		if GetConVar("vj_piv_alt_idle_walk"):GetInt() == 1 then
 			self.AnimTbl_Walk = {ACT_WALK_AIM_STEALTH}
+		end
+
+		if GetConVar("vj_piv_alt_runner_anims"):GetInt() == 1 then
+			self.AnimTbl_IdleStand = {ACT_IDLE_ON_FIRE}
+			self.AnimTbl_Walk = {ACT_WALK_ON_FIRE}
 		end
 
 		self.HasIdleSounds = true
