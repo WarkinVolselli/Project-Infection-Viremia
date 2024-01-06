@@ -15,6 +15,8 @@ ENT.SoundTbl_Alert = {"vj_piv/metrozombie/zombine_alert1.wav","vj_piv/metrozombi
 ENT.SoundTbl_BeforeMeleeAttack = {"vj_piv/metrozombie/zombine_readygrenade1.wav","vj_piv/metrozombie/zombine_readygrenade2.wav","vj_piv/metrozombie/zombine_charge1.wav","vj_piv/metrozombie/zombine_charge2.wav"}
 ENT.SoundTbl_Pain = {"vj_piv/metrozombie/zombine_pain1.wav","vj_piv/metrozombie/zombine_pain2.wav","vj_piv/metrozombie/zombine_pain3.wav","vj_piv/metrozombie/zombine_pain4.wav"}
 ENT.SoundTbl_Death = {"vj_piv/metrozombie/zombine_die1.wav","vj_piv/metrozombie/zombine_die2.wav"}
+
+ENT.Immune_AcidPoisonRadiation = true -- Immune to Acid, Poison and Radiation
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
 	self:SetSkin(math.random(0,1))

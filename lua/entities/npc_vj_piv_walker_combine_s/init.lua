@@ -16,6 +16,8 @@ ENT.SoundTbl_Alert = {"vj_piv/combinezombie/zombine_alert1.wav","vj_piv/combinez
 ENT.SoundTbl_BeforeMeleeAttack = {"vj_piv/combinezombie/zombine_readygrenade1.wav","vj_piv/combinezombie/zombine_readygrenade2.wav","vj_piv/combinezombie/zombine_readygrenade3.wav","vj_piv/combinezombie/zombine_charge1.wav","vj_piv/combinezombie/zombine_charge2.wav"}
 ENT.SoundTbl_Pain = {"vj_piv/combinezombie/zombine_pain1.wav","vj_piv/combinezombie/zombine_pain2.wav","vj_piv/combinezombie/zombine_pain3.wav","vj_piv/combinezombie/zombine_pain4.wav","vj_piv/combinezombie/zombine_pain5.wav","vj_piv/combinezombie/zombine_pain6.wav","vj_piv/combinezombie/zombine_pain7.wav"}
 ENT.SoundTbl_Death = {"vj_piv/combinezombie/zombine_die1.wav","vj_piv/combinezombie/zombine_die2.wav","vj_piv/combinezombie/zombine_die3.wav","vj_piv/combinezombie/zombine_die4.wav"}
+
+ENT.Immune_AcidPoisonRadiation = true -- Immune to Acid, Poison and Radiation
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
 	self:SetSkin(math.random(0,1))
