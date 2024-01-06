@@ -8,6 +8,8 @@ include('shared.lua')
 ENT.Model = {"models/vj_piv/specials/spewer/spewer.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.StartHealth = 250
 
+ENT.AnimTbl_IdleStand = {ACT_IDLE_AIM_STIMULATED}
+
 ENT.PIV_Infection = true
 ENT.PIV_Infection_IsWalker = true
 ---------------------------------------------------------------------------------------------------------------------------------------------

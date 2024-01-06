@@ -1068,7 +1068,7 @@ function ENT:CustomOnThink_AIEnabled()
 								self.CanTurnWhileStationary = true
 								if self:GetClass() == "npc_vj_piv_cremator" then
 									self.AnimTbl_IdleStand = {ACT_IDLE_HURT}		
-								elseif self:GetClass() == "npc_vj_piv_panzer" or self:GetClass() == "npc_vj_piv_panzer_boss" or self:GetClass() == "npc_vj_piv_fat_walker_m" then
+								elseif self:GetClass() == "npc_vj_piv_panzer" or self:GetClass() == "npc_vj_piv_panzer_boss" or self:GetClass() == "npc_vj_piv_fat_walker_m" or self:GetClass() == "npc_vj_piv_spewer" then
 									self.AnimTbl_IdleStand = {ACT_IDLE_AIM_STIMULATED}									
 								elseif self.PIV_Shambler == true or self:GetClass() == "npc_vj_piv_shambler" or self:GetClass() == "npc_vj_piv_shambler_f" or self:GetClass() == "npc_vj_piv_blood_bomber" then
 									self.AnimTbl_IdleStand = {ACT_IDLE_AIM_RELAXED}							
@@ -1092,7 +1092,7 @@ function ENT:CustomOnThink_AIEnabled()
 						self.CanTurnWhileStationary = true
 						if self:GetClass() == "npc_vj_piv_cremator" then
 							self.AnimTbl_IdleStand = {ACT_IDLE_HURT}		
-						elseif self:GetClass() == "npc_vj_piv_panzer" or self:GetClass() == "npc_vj_piv_panzer_boss" or self:GetClass() == "npc_vj_piv_fat_walker_m" then
+						elseif self:GetClass() == "npc_vj_piv_panzer" or self:GetClass() == "npc_vj_piv_panzer_boss" or self:GetClass() == "npc_vj_piv_fat_walker_m" or self:GetClass() == "npc_vj_piv_spewer" then
 							self.AnimTbl_IdleStand = {ACT_IDLE_AIM_STIMULATED}									
 						elseif self.PIV_Shambler == true or self:GetClass() == "npc_vj_piv_shambler" or self:GetClass() == "npc_vj_piv_shambler_f" or self:GetClass() == "npc_vj_piv_blood_bomber" then
 							self.AnimTbl_IdleStand = {ACT_IDLE_AIM_RELAXED}									
@@ -1129,7 +1129,7 @@ function ENT:CustomOnAlert(ent)
 		end
 		if self:GetClass() == "npc_vj_piv_cremator" then
 			self.AnimTbl_IdleStand = {ACT_IDLE_HURT}		
-		elseif self:GetClass() == "npc_vj_piv_panzer" or self:GetClass() == "npc_vj_piv_panzer_boss" or self:GetClass() == "npc_vj_piv_fat_walker_m" then
+		elseif self:GetClass() == "npc_vj_piv_panzer" or self:GetClass() == "npc_vj_piv_panzer_boss" or self:GetClass() == "npc_vj_piv_fat_walker_m" or self:GetClass() == "npc_vj_piv_spewer" then
 			self.AnimTbl_IdleStand = {ACT_IDLE_AIM_STIMULATED}									
 		elseif self.PIV_Shambler == true or self:GetClass() == "npc_vj_piv_shambler" or self:GetClass() == "npc_vj_piv_shambler_f" or self:GetClass() == "npc_vj_piv_blood_bomber" then
 			self.AnimTbl_IdleStand = {ACT_IDLE_AIM_RELAXED}
