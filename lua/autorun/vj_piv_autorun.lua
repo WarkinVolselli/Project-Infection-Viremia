@@ -234,7 +234,7 @@ if VJExists == true then
 	VJ.AddConVar("vj_piv_leaper_chance", 10, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_crawler_chance", 12, {FCVAR_ARCHIVE})
 
-	VJ.AddConVar("vj_piv_advanced_mutations", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_elementals", 1, {FCVAR_ARCHIVE})
 
 	VJ.AddConVar("vj_piv_blazing_chance", 10, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_electra_chance", 10, {FCVAR_ARCHIVE})
@@ -345,7 +345,7 @@ if VJExists == true then
 			vj_piv_door_breaking = "1",
 			
 			vj_piv_subclasses = "1",
-			vj_piv_advanced_mutations = "1",
+			vj_piv_elementals = "1",
 			
 			vj_piv_weapons_dropping = "1",
 			vj_piv_weapons_dropping_stumble = "1",
@@ -492,7 +492,7 @@ if VJExists == true then
 	Panel:AddControl("Slider", {Label = "Max Throwing Items", Command = "vj_piv_throwing_max", Min = 1, Max = 100})
 
 	Panel:AddControl("Checkbox", {Label = "Enable Subclasses?", Command = "vj_piv_subclasses"})
-	Panel:ControlHelp("When enabled, common zombies will sometimes spawn as stronger variants.")
+	Panel:ControlHelp("When enabled, zombies will sometimes spawn as stronger variants.")
 
 	Panel:AddControl("Slider", {Label = "Crawler Chance", Command = "vj_piv_crawler_chance", Min = 1, Max = 100})
 	Panel:AddControl("Slider", {Label = "Shambler Chance", Command = "vj_piv_shambler_chance", Min = 1, Max = 100})
@@ -503,8 +503,8 @@ if VJExists == true then
 	Panel:AddControl("Slider", {Label = "Rusher Chance", Command = "vj_piv_rusher_chance", Min = 1, Max = 100})
 	Panel:AddControl("Slider", {Label = "Leaper Chance", Command = "vj_piv_leaper_chance", Min = 1, Max = 100})
 
-	Panel:AddControl("Checkbox", {Label = "Enable Advanced Mutations?", Command = "vj_piv_advanced_mutations"})
-	Panel:ControlHelp("When enabled, certain specials will sometimes spawn as stronger variants with elemental effects. (Requires Enable Subclasses.)")
+	Panel:AddControl("Checkbox", {Label = "Enable Elementals?", Command = "vj_piv_elementals"})
+	Panel:ControlHelp("When enabled, some zombies can spawn with elemental effects that grant them additional abilities.")
 	
 	Panel:AddControl("Slider", {Label = "Blazing Mutation Chance", Command = "vj_piv_blazing_chance", Min = 1, Max = 100})
 	Panel:AddControl("Slider", {Label = "Electra Mutation Chance", Command = "vj_piv_electra_chance", Min = 1, Max = 100})
