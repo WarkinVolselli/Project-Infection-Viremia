@@ -9,6 +9,8 @@ ENT.Model = {"models/vj_piv/specials/military/grenadier.mdl"} -- The game will p
 ENT.StartHealth = 200
 ENT.HullType = HULL_HUMAN
 
+ENT.PIV_IsSpecial = true
+
 ENT.PIV_HasArmor = true
 
 ENT.HasRangeAttack = true

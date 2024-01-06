@@ -8,6 +8,8 @@ include('shared.lua')
 ENT.Model = {"models/vj_piv/specials/husk/zombie.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.StartHealth = 200
 
+ENT.PIV_IsSpecial = true
+
 ENT.NextRunT = 0
 ENT.Running = false
 ENT.RunT = 0

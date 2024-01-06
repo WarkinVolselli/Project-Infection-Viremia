@@ -8,6 +8,8 @@ include('shared.lua')
 ENT.Model = {"models/vj_piv/specials/exploder/exploder.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.StartHealth = 300
 
+ENT.PIV_IsSpecial = true
+
 ENT.GeneralSoundPitch1 = 130
 ENT.GeneralSoundpitch2 = 120
 

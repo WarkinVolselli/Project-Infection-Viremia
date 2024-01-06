@@ -8,6 +8,8 @@ include('shared.lua')
 ENT.Model = {"models/vj_piv/specials/drowned/drowned_haimatsu.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.StartHealth = 200
 
+ENT.PIV_IsSpecial = true
+
 ENT.PIV_Infection_IsDrowned = true
 
 ENT.SoundTbl_Idle = {"vj_piv/drowned/suit/deepsea_suit_idle_001.wav","vj_piv/drowned/suit/deepsea_suit_idle_002.wav","vj_piv/drowned/suit/deepsea_suit_idle_003.wav","vj_piv/drowned/suit/deepsea_suit_idle_004.wav","vj_piv/drowned/suit/deepsea_suit_idle_005.wav","vj_piv/drowned/suit/deepsea_suit_idle_006.wav","vj_piv/drowned/suit/deepsea_suit_idle_007.wav","vj_piv/drowned/suit/deepsea_suit_idle_008.wav","vj_piv/drowned/suit/deepsea_suit_idle_009.wav","vj_piv/drowned/suit/deepsea_suit_idle_010.wav","vj_piv/drowned/suit/deepsea_suit_idle_011.wav","vj_piv/drowned/suit/deepsea_suit_idle_012.wav","vj_piv/drowned/suit/deepsea_suit_idle_013.wav"}

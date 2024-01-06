@@ -8,6 +8,8 @@ include('shared.lua')
 ENT.Model = {"models/vj_piv/specials/drowned/drowned.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.StartHealth = 125
 
+ENT.PIV_IsSpecial = true
+
 ENT.PIV_Infection_IsDrowned = true
 
 ENT.HasEntitiesToNoCollide = true

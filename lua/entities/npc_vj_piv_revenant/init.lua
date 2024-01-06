@@ -9,6 +9,8 @@ ENT.Model = {"models/vj_piv/specials/shambler/shambler_male.mdl"} -- The game wi
 ENT.StartHealth = 200
 ENT.ReviveRevenant = false
 
+ENT.PIV_IsSpecial = true
+
 ENT.PIV_Charger = true
 ENT.SoundTbl_Breath = {"vj_piv/revenant/crimhead_run.wav"}
 ENT.SoundTbl_Idle = {""}

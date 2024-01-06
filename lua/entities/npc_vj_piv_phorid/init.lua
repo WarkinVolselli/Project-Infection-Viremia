@@ -8,7 +8,9 @@ include('shared.lua')
 ENT.Model = {"models/vj_piv/specials/phorid/phorid.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.StartHealth = 3000
 ENT.VJ_IsHugeMonster = true
+
 ENT.PIV_IsBoss = true
+
 ENT.HullType = HULL_MEDIUM 
 
 ENT.MeleeAttackDistance = 70

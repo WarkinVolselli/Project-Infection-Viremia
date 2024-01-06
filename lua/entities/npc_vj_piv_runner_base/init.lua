@@ -33,12 +33,14 @@ ENT.RangeUseAttachmentForPosID = "anim_attachment_RH"
 ENT.PIV_Infection = true
 ENT.PIV_Infection_IsWalker = false
 ENT.PIV_FuckingCrawlingLittleCunt = false 
+ENT.PIV_HasArmor = false
+ENT.PIV_Tank = false
+ENT.PIV_IsSpecial = false
+ENT.PIV_IsBoss = false
+
 ENT.PIV_Super_Sprinter = false
 ENT.PIV_Rusher = false
 ENT.PIV_Leaper = false
-ENT.PIV_HasArmor = false
-ENT.PIV_Tank = false
-ENT.PIV_IsBoss = false
 
 ENT.PIV_Blazing = false
 ENT.PIV_Electra = false

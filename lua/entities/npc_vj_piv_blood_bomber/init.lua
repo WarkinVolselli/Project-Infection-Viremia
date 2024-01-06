@@ -9,6 +9,8 @@ ENT.Model = {"models/vj_piv/specials/bloodbomber/bloodbomber.mdl"} -- The game w
 ENT.StartHealth = 200
 ENT.HullType = HULL_HUMAN
 
+ENT.PIV_IsSpecial = true
+
 ENT.AnimTbl_IdleStand = {ACT_IDLE_AIM_RELAXED}
 ENT.AnimTbl_Walk = {ACT_WALK_RELAXED}
 ENT.AnimTbl_Run = {ACT_WALK_ANGRY} -- Set the walking animations | Put multiple to let the base pick a random animation when it moves

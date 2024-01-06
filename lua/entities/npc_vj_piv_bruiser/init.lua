@@ -8,6 +8,8 @@ include('shared.lua')
 ENT.Model = {"models/vj_piv/specials/bruiser/bruiser.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.StartHealth = 600
 
+ENT.PIV_IsSpecial = true
+
 ENT.VJ_IsHugeMonster = true
 
 ENT.AnimTbl_Walk = {ACT_WALK}

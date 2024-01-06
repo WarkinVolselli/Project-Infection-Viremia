@@ -11,6 +11,8 @@ ENT.AnimTbl_IdleStand = {ACT_IDLE}
 ENT.AnimTbl_Walk = {ACT_WALK}
 ENT.AnimTbl_Run = {ACT_RUN}
 
+ENT.PIV_IsSpecial = true
+
 ENT.MeleeAttackDistance = 50
 ENT.MeleeAttackDamageDistance = 60
 

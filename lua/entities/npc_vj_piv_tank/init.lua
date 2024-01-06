@@ -9,8 +9,9 @@ ENT.Model = {"models/vj_piv/specials/hulk/hulk.mdl"} -- The game will pick a ran
 ENT.StartHealth = 1500
 ENT.VJ_IsHugeMonster = true
 ENT.PIV_Tank = true
-ENT.PIV_IsBoss = true
 ENT.PIV_CanMutate = false
+
+ENT.PIV_IsSpecial = true
 
 ENT.AnimTbl_Death = {"vjseq_death","vjseq_death_11ab"}	
 

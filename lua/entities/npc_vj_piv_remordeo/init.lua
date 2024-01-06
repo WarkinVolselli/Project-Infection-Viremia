@@ -8,6 +8,7 @@ include('shared.lua')
 ENT.Model = {"models/vj_piv/specials/remordeo/remordeo.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.StartHealth = 200
 
+ENT.PIV_IsSpecial = true
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.HasRangeAttack = true -- Should the SNPC have a range attack?
 ENT.RangeUseAttachmentForPos = true -- Should the projectile spawn on a attachment?

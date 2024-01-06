@@ -8,6 +8,7 @@ include('shared.lua')
 ENT.Model = {"models/vj_piv/hl2/combine/Combine_Soldier.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.PIV_IsZombine = true
 
+ENT.PIV_IsSpecial = true
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
 self:SetMaterial("Models/effects/vol_light001")

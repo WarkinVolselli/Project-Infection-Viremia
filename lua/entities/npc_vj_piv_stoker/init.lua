@@ -8,6 +8,8 @@ include('shared.lua')
 ENT.Model = {"models/vj_piv/hl2/charple.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.StartHealth = 300
 
+ENT.PIV_IsSpecial = true
+
 ENT.Immune_Fire = true -- Immune to fire-type damages
 
 ENT.HasLeapAttack = false 

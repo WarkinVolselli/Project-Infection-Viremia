@@ -10,6 +10,7 @@ ENT.StartHealth = 300
 ENT.HullType = HULL_HUMAN
 ENT.AnimTbl_Run = {ACT_RUN}
 
+ENT.PIV_IsSpecial = true
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.Behavior = VJ_BEHAVIOR_NEUTRAL -- The behavior of the SNPC
 	-- VJ_BEHAVIOR_AGGRESSIVE = Default behavior, attacks enemies || VJ_BEHAVIOR_NEUTRAL = Neutral to everything, unless provoked

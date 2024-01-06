@@ -8,6 +8,8 @@ include('shared.lua')
 ENT.Model = {"models/vj_piv/specials/military/juggernaut.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.StartHealth = 1000
 
+ENT.PIV_IsSpecial = true
+
 ENT.AnimTbl_IdleStand = {ACT_IDLE_AIM_STIMULATED}
 ENT.AnimTbl_Walk = {ACT_WALK_SCARED}
 ENT.AnimTbl_Run = {ACT_WALK_SCARED}

@@ -11,6 +11,8 @@ ENT.StartHealth = 500
 ENT.PIV_CanClimb = false
 ENT.MeleeAttackDamageAngleRadius = 50
 
+ENT.PIV_IsSpecial = true
+
 ENT.AnimTbl_Walk = {ACT_WALK}
 ENT.AnimTbl_Run = {ACT_WALK_ANGRY}
 
@@ -97,7 +99,7 @@ function ENT:Zombie_CustomOnInitialize()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
-	if GetConVar("vj_piv_advanced_mutations"):GetInt() == 1 then
+	if GetConVar("vj_piv_elementals"):GetInt() == 1 then
 		if math.random(1,GetConVar("vj_piv_toxic_chance"):GetInt()) == 1 then
 			self.PIV_Toxic = true
 			self.Immune_AcidPoisonRadiation = true

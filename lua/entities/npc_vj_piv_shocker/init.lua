@@ -7,6 +7,8 @@ include('shared.lua')
 -----------------------------------------------*/
 ENT.Model = {"models/vj_piv/specials/specimen/specimen.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 
+ENT.PIV_IsSpecial = true
+
 ENT.StartHealth = 100
 
 ENT.AnimTbl_Walk = {ACT_SPRINT} -- Set the walking animations | Put multiple to let the base pick a random animation when it moves

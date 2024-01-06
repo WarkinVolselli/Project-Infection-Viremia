@@ -12,6 +12,7 @@ ENT.PIV_HasArmor = true
 ENT.Berserk = false
 ENT.PIV_CanMutate = false
 ENT.PIV_Tank = true
+
 ENT.PIV_IsBoss = true
 
 ENT.AnimTbl_Run = {ACT_RUN_PROTECTED}	

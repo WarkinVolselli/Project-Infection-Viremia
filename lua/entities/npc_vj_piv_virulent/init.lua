@@ -11,6 +11,8 @@ ENT.StartHealth = 400
 ENT.PIV_Infection = true
 ENT.PIV_Infection_IsWalker = true
 
+ENT.PIV_IsSpecial = true
+
 ENT.PIV_Virulent_Explode = false
 
 ENT.BloodColor = "Yellow" -- The blood type, this will determine what it should use (decal, particle, etc.)
