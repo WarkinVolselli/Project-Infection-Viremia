@@ -8,13 +8,8 @@
 	//phong parameters
 
 	"$phong" "1"
-	"$phongboost" "3"
-	"$phongexponent" "12" 		
-	"$phongfresnelranges"	"[.1 .1 1]"
-	
-	//rimlight parameters	
-
-	"$rimlight" "1"
-	"$rimlightexponent" "20"
+	"$phongboost" "1"
+	"$phongexponent" "38" 		
+	"$phongfresnelranges"	"[0.05 0.5 1]"
 	
 }
