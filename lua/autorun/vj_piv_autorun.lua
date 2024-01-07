@@ -278,7 +278,7 @@ if VJExists == true then
 	VJ.AddConVar("vj_piv_husk_explode", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_husk_explode_chance", 4, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_husk_headless", 1, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_husk_headless_chance", 4, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_husk_headless_chance", 6, {FCVAR_ARCHIVE})
 
 	VJ.AddConVar("vj_piv_virulent_run", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_virulent_explode", 1, {FCVAR_ARCHIVE})
@@ -395,7 +395,7 @@ if VJExists == true then
 			vj_piv_husk_explode = "1",
 			vj_piv_husk_explode_chance = "4",
 			vj_piv_husk_headless = "1",
-			vj_piv_husk_headless_chance = "4",
+			vj_piv_husk_headless_chance = "6",
 			
 			vj_piv_virulent_run = "1",
 			vj_piv_virulent_explode = "1",
