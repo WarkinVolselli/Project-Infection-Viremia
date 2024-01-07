@@ -29,7 +29,11 @@ ENT.SoundTbl_Charge = {"vj_piv/husk/zed_clot_alpha_vox_taunt_chest_01.ogg","vj_p
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
-	self:SetSkin(math.random(0,6))
+	if GetConVar("vj_piv_hl2skins"):GetInt() == 1 then -- if HL2 Skins Only is enabled, this will make the zombies only use HL2 skins
+		self:SetSkin(math.random(0,1))
+	else
+		self:SetSkin(math.random(0,7))
+	end
 	
     self.NextRunT = CurTime() + math.random(2,6)
 		
