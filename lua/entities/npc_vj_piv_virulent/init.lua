@@ -65,20 +65,22 @@ function ENT:Zombie_CustomOnInitialize()
 	
 	self:SetCollisionBounds(Vector(22,22,60), Vector(-22,-22,0))
 	
-	local type = math.random(1,2)
+	local type = math.random(1,6)
 	
 	if type == 1 then
-	self.AnimTbl_Idle = {ACT_IDLE}
-	self.AnimTbl_Walk = {ACT_WALK}
-	self.AnimTbl_Run = {ACT_WALK}
-	self.PIV_MovementAnims = 1
-	elseif type == 2 then
-	self.AnimTbl_Run = {ACT_WALK_STIMULATED}
-	self.PIV_MovementAnims = 2
+		self.AnimTbl_IdleStand = {ACT_IDLE_STIMULATED}
+		self.AnimTbl_Walk = {ACT_WALK_STIMULATED}
+		self.AnimTbl_Run = {ACT_WALK_STIMULATED}
+		self.PIV_MovementAnims = 2
+	else
+		self.AnimTbl_IdleStand = {ACT_IDLE}
+		self.AnimTbl_Walk = {ACT_WALK}
+		self.AnimTbl_Run = {ACT_WALK}
+		self.PIV_MovementAnims = 1
 	end
 	
 	if self.PIV_Mutated == true then
-	self.AnimTbl_Run = {ACT_RUN}
+		self.AnimTbl_Run = {ACT_RUN}
 	end
 	
 end
