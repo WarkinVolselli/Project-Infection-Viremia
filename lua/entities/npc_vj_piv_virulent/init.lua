@@ -65,8 +65,6 @@ function ENT:Zombie_CustomOnInitialize()
 	
 	self:SetCollisionBounds(Vector(22,22,60), Vector(-22,-22,0))
 	
-    self.NextRunT = CurTime() + math.random(2,6)
-	
 	local type = math.random(1,2)
 	
 	if type == 1 then
@@ -215,6 +213,7 @@ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnAlert()
+    self.NextRunT = CurTime() + math.random(2,8)
 	if GetConVar("vj_piv_alert_anim"):GetInt() == 1 && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Resting == 0 && self:GetSequence() != self:LookupSequence(ACT_OPEN_DOOR) then
 		if math.random(1,GetConVar("vj_piv_alert_anim_chance"):GetInt()) == 1 then
 			self:VJ_ACT_PLAYACTIVITY("vjges_throwwarning",false,false,true)
