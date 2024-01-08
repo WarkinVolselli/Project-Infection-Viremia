@@ -204,6 +204,7 @@ if VJExists == true then
 	VJ.AddConVar("vj_piv_rebirth", 0, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_rebirthall", 0, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_door_breaking", 1, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_boss_summon", 1, {FCVAR_ARCHIVE})
 	
 	VJ.AddConVar("vj_piv_aggressive_runner_attacks", 1, {FCVAR_ARCHIVE}) 
 	
@@ -344,6 +345,8 @@ if VJExists == true then
 			
 			vj_piv_door_breaking = "1",
 			
+			vj_piv_boss_summon = "1",
+			
 			vj_piv_subclasses = "1",
 			vj_piv_elementals = "1",
 			
@@ -468,8 +471,11 @@ if VJExists == true then
 	Panel:ControlHelp("When enabled, zombies will take increased damage from headshots. (Certain enemies are exempt.)	")
 	Panel:AddControl("Slider", {Label = "Headshot Damage Multiplier", Command = "vj_piv_headshot_damage_mult", Min = 1, Max = 100})
 	
+	Panel:AddControl("Checkbox", {Label = "Enable Boss Summons?", Command = "vj_piv_boss_summon"})
+	Panel:ControlHelp("When enabled, bosses can summon more zombies.")
+	
 	Panel:AddControl("Checkbox", {Label = "Enable Boss Eyeglow?", Command = "vj_piv_lights"})
-	Panel:ControlHelp("When enabled, bosses will have glowing eyes based on strain.")
+	Panel:ControlHelp("When enabled, bosses will have glowing eyes.")
 
 	Panel:AddControl("Checkbox", {Label = "Enable Zombie Rebirth? [EXPERIMENTAL]", Command = "vj_piv_rebirth"})
 	Panel:ControlHelp("When enabled, player controlled zombies will be able to mutate into a stronger version. (Disabled by default due to bugs.)")
