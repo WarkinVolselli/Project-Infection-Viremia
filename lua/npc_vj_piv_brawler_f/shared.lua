@@ -1,6 +1,0 @@
-ENT.Base 			= "npc_vj_piv_brawler"
-ENT.Type 			= "ai"
-ENT.PrintName 		= "Thug (Female)"
-ENT.Author 			= "Warkin"
-ENT.Purpose 		= "Spawn it and fight with it!"
-ENT.Instructions 	= "Click on the spawnicon to spawn it."
