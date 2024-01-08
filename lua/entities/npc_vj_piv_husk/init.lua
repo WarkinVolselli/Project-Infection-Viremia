@@ -35,34 +35,32 @@ function ENT:Zombie_CustomOnInitialize()
 		self:SetSkin(math.random(0,7))
 	end
 	
-    self.NextRunT = CurTime() + math.random(2,6)
-		
-	local type = math.random(1,4)
+	local type = math.random(1,8)
 	
 	if type == 1 then
-	self.AnimTbl_Idle = {ACT_IDLE}
-	self.AnimTbl_Walk = {ACT_WALK}
-	self.AnimTbl_Run = {ACT_WALK}
-	self.PIV_MovementAnims = 1
+		self.AnimTbl_IdleStand = {ACT_IDLE_STIMULATED}
+		self.AnimTbl_Walk = {ACT_WALK_STIMULATED}
+		self.AnimTbl_Run = {ACT_WALK_STIMULATED}
+		self.PIV_MovementAnims = 2
 	elseif type == 2 then
-	self.AnimTbl_Idle = {ACT_IDLE_STIMULATED}
-	self.AnimTbl_Walk = {ACT_WALK_STIMULATED}
-	self.AnimTbl_Run = {ACT_WALK_STIMULATED}
-	self.PIV_MovementAnims = 2
+		self.AnimTbl_IdleStand = {ACT_IDLE_AGITATED}
+		self.AnimTbl_Walk = {ACT_WALK_AGITATED}
+		self.AnimTbl_Run = {ACT_WALK_AGITATED}
+		self.PIV_MovementAnims = 3
 	elseif type == 3 then
-	self.AnimTbl_Idle = {ACT_IDLE_AGITATED}
-	self.AnimTbl_Walk = {ACT_WALK_AGITATED}
-	self.AnimTbl_Run = {ACT_WALK_AGITATED}
-	self.PIV_MovementAnims = 3
-	elseif type == 4 then
-	self.AnimTbl_Idle = {ACT_IDLE_RELAXED}
-	self.AnimTbl_Walk = {ACT_WALK_RELAXED}
-	self.AnimTbl_Run = {ACT_WALK_RELAXED}
-	self.PIV_MovementAnims = 4
+		self.AnimTbl_IdleStand = {ACT_IDLE_RELAXED}
+		self.AnimTbl_Walk = {ACT_WALK_RELAXED}
+		self.AnimTbl_Run = {ACT_WALK_RELAXED}
+		self.PIV_MovementAnims = 4
+	else
+		self.AnimTbl_IdleStand = {ACT_IDLE}
+		self.AnimTbl_Walk = {ACT_WALK}
+		self.AnimTbl_Run = {ACT_WALK}
+		self.PIV_MovementAnims = 1
 	end
 	
 	if self.PIV_Mutated == true then
-	self.AnimTbl_Run = {ACT_RUN}
+		self.AnimTbl_Run = {ACT_RUN}
 	end
 	
 end
@@ -137,7 +135,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 	
 	    self.SoundTbl_CombatIdle = {"vj_piv/husk/zed_clot_alpha_vox_yell_short_01.ogg","vj_piv/husk/zed_clot_alpha_vox_yell_short_02.ogg","vj_piv/husk/zed_clot_alpha_vox_yell_short_03.ogg","vj_piv/husk/zed_clot_alpha_vox_growl_short_alt_01.ogg","vj_piv/husk/zed_clot_alpha_vox_growl_short_alt_02.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_med_01.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_med_02.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_med_03.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_med_04.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_med_05.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_short_01.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_short_02.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_short_03.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_short_04.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_short_05.ogg","vj_piv/husk/zed_clot_alpha_vox_grunt_hard_short_06.ogg"}
 	
-        if self:IsMoving() then
+        if self:IsMoving() && self:GetSequence() == self:LookupSequence(ACT_RUN) then
 
 			local stop = VJ_PICK({"vjseq_running_to_standing","vjseq_running_to_standing_02","vjseq_shove_forward_01"})
 		    self:VJ_ACT_PLAYACTIVITY(stop,true,VJ_GetSequenceDuration(self,tbl),false)
@@ -150,6 +148,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnAlert()
+    self.NextRunT = CurTime() + math.random(2,8)
 	if GetConVar("vj_piv_alert_anim"):GetInt() == 1 && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Resting == 0 && self:GetSequence() != self:LookupSequence(ACT_OPEN_DOOR) then
 		if math.random(1,GetConVar("vj_piv_alert_anim_chance"):GetInt()) == 1 then
 			self:VJ_ACT_PLAYACTIVITY("vjges_tantrum",false,false,true)
