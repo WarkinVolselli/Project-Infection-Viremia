@@ -367,7 +367,7 @@ function ENT:CustomOnPreInitialize()
 	self.NextEvadeTime = CurTime() 
     self.PIV_LegHP = self.StartHealth / 2
 
-	if GetConVar("vj_piv_subclasses"):GetInt() == 1 && self.PIV_WeHaveAWeapon == false && self:GetClass() != "npc_vj_piv_tank" && self:GetClass() != "npc_vj_piv_creep" && self:GetClass() != "npc_vj_piv_revenant" && self:GetClass() != "npc_vj_piv_revenant_f" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_sickler" && self:GetClass() != "npc_vj_piv_drowned" && self:GetClass() != "npc_vj_piv_drowned_suit" && self:GetClass() != "npc_vj_piv_drowned_inf" && self.PIV_Mutated == false then
+	if GetConVar("vj_piv_subclasses"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_tank" && self:GetClass() != "npc_vj_piv_creep" && self:GetClass() != "npc_vj_piv_revenant" && self:GetClass() != "npc_vj_piv_revenant_f" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_sickler" && self:GetClass() != "npc_vj_piv_drowned" && self:GetClass() != "npc_vj_piv_drowned_suit" && self:GetClass() != "npc_vj_piv_drowned_inf" && self.PIV_Mutated == false then
 
 		if math.random(1,GetConVar("vj_piv_rusher_chance"):GetInt()) == 1 && !PIV_Crippled && !PIV_FuckingCrawlingLittleCunt then
 			self.AnimTbl_Run = {ACT_RUN_RELAXED}
@@ -427,7 +427,7 @@ function ENT:CustomOnPreInitialize()
 	self:Dig()
 	
 
-		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Crippled == false && self.PIV_Thrower == false && self.PIV_Super_Sprinter == false && self.PIV_Rusher == false && self:GetClass() != "npc_vj_piv_tank" &&  self:GetClass() != "npc_vj_piv_creep" && self:GetClass() != "npc_vj_piv_shocker" && self:GetClass() != "npc_vj_piv_stalker" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_sickler" && self:GetClass() != "npc_vj_piv_drowned" && self:GetClass() != "npc_vj_piv_drowned_suit" && self:GetClass() != "npc_vj_piv_drowned_inf" then
+		if math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Crippled == false && self.PIV_Thrower == false && self.PIV_Super_Sprinter == false && self.PIV_Rusher == false && self:GetClass() != "npc_vj_piv_revenant" &&  self:GetClass() != "npc_vj_piv_revenant_f" && self:GetClass() != "npc_vj_piv_tank" &&  self:GetClass() != "npc_vj_piv_creep" && self:GetClass() != "npc_vj_piv_shocker" && self:GetClass() != "npc_vj_piv_stalker" && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_f" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_sickler" && self:GetClass() != "npc_vj_piv_drowned" && self:GetClass() != "npc_vj_piv_drowned_suit" && self:GetClass() != "npc_vj_piv_drowned_inf" then
 
 			self.PIV_WeHaveAWeapon = true
 			self.MeleeAttackDamage = math.random(20,25)

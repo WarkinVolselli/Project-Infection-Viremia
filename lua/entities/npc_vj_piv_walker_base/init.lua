@@ -368,7 +368,7 @@ function ENT:CustomOnPreInitialize()
 
     self.PIV_LegHP = self.StartHealth / 2
 
-	if GetConVar("vj_piv_subclasses"):GetInt() == 1 && !self.PIV_WeHaveAWeapon && self:GetClass() != "npc_vj_piv_slammer" && self:GetClass() != "npc_vj_piv_blood_bomber" && self:GetClass() != "npc_vj_piv_phorid" && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_cremator" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_stoker" && self:GetClass() != "npc_vj_piv_exploder" && self:GetClass() != "npc_vj_piv_cremator" && self.PIV_Mutated == false then
+	if GetConVar("vj_piv_subclasses"):GetInt() == 1 && self:GetClass() != "npc_vj_piv_slammer" && self:GetClass() != "npc_vj_piv_blood_bomber" && self:GetClass() != "npc_vj_piv_phorid" && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_cremator" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_stoker" && self:GetClass() != "npc_vj_piv_exploder" && self:GetClass() != "npc_vj_piv_cremator" && self.PIV_Mutated == false then
 
 		-- joggers
 		if math.random(1,GetConVar("vj_piv_jogger_chance"):GetInt()) == 1 && !PIV_Crippled && !PIV_FuckingCrawlingLittleCunt && self:GetClass() != "npc_vj_piv_shambler" && self:GetClass() != "npc_vj_piv_shambler_f" then
