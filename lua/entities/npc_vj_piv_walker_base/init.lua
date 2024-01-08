@@ -425,7 +425,7 @@ function ENT:CustomOnPreInitialize()
 		self.FireRun = true
 	end
 
-    if GetConVar("vj_piv_alt_idle_walk"):GetInt() == 1 && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Crippled == false && self:GetClass() != "npc_vj_piv_sickler" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_exploder" && self:GetClass() != "npc_vj_piv_phorid" && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_slammer" && self:GetClass() != "npc_vj_piv_shambler" && self:GetClass() != "npc_vj_piv_shambler_f" && self:GetClass() != "npc_vj_piv_blood_bomber" && self.PIV_Shambler == false then
+    if GetConVar("vj_piv_alt_idle_walk"):GetInt() == 1 && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Crippled == false && self:GetClass() != "npc_vj_piv_panzer" && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_sickler" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_exploder" && self:GetClass() != "npc_vj_piv_phorid" && self:GetClass() != "npc_vj_piv_bruiser" && self:GetClass() != "npc_vj_piv_slammer" && self:GetClass() != "npc_vj_piv_shambler" && self:GetClass() != "npc_vj_piv_shambler_f" && self:GetClass() != "npc_vj_piv_blood_bomber" && self.PIV_Shambler == false then
 		self.AnimTbl_Walk = {ACT_WALK_AIM_STEALTH}
 	end
 
