@@ -7,13 +7,7 @@
 	"$model" "1"
 	"$halflambert" "1"
 	"$phong" "1"
-	"$phongboost" "2"
-	"$phongexponent" "25"
-	"$phongalbedotint" "1"										
-	"$phongfresnelranges"	"[.5 .5 .5]"
-
-"$detail" "nature/dirtfloor005c"
-"$detailblendmode" 0
-"$detailblendfactor" .8
-
+	"$phongboost" "1"
+	"$phongexponent" "10" 		
+	"$phongfresnelranges"	"[0.3 0.7 1]"
 }
