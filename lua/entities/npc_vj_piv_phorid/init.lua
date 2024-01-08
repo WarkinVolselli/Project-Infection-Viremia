@@ -122,7 +122,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		end
 	end
 	
-	if IsValid(self:GetEnemy()) && self.PIV_SpawnCoolDownT < CurTime() && self.VJ_IsBeingControlled == false then
+	if IsValid(self:GetEnemy()) && self.PIV_SpawnCoolDownT < CurTime() && self.VJ_IsBeingControlled == false && GetConVar("vj_piv_boss_summon"):GetInt() == 1 then
 
 	    self.PIV_SpawnCoolDownT = CurTime() + 10
 		self:PIV_SummonHelp()

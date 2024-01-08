@@ -120,59 +120,82 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
-	if math.random(1,3) == 1 then
-	
-		self.MeleeAttackAnimationAllowOtherTasks = true
-		
-		self.MeleeAttackDamage = math.random(25,30)
+	if self.Combo == 1 then
+		self.MeleeAttackDamage = math.random(23,28)
 		self.HasMeleeAttackKnockBack = true
 		self.MeleeAttackDistance = 40
 		self.MeleeAttackDamageDistance = 70
-		
+			
 		self.SoundTbl_MeleeAttackMiss = {"vj_piv/Miss1.wav","vj_piv/Miss2.wav","vj_piv/Miss3.wav","vj_piv/Miss4.wav","vj_piv/Miss5.wav"}
 		self.SoundTbl_MeleeAttack = {"vj_piv/wrenchhit1.wav","vj_piv/wrenchhit2.wav","vj_piv/wrenchhit3.wav","vj_piv/wrenchhit4.wav"}
 
 		self.AnimTbl_MeleeAttack = {
-			"vjges_melee_moving01a",
-			"vjges_melee_moving03a",
-			"vjges_melee_moving06a",
+			"vjseq_cmb02",
 		}
-	
-		elseif math.random(1,3) == 2 then
-	
-		self.MeleeAttackAnimationAllowOtherTasks = false
-	
-		self.MeleeAttackDamage = math.random(20,25)
+	elseif self.Combo == 2 then
+		self.MeleeAttackDamage = math.random(30,35)
 		self.HasMeleeAttackKnockBack = true
-		self.MeleeAttackDistance = 40
+		self.MeleeAttackDistance = 150
 		self.MeleeAttackDamageDistance = 70
-		
-		self.SoundTbl_MeleeAttack = {"vj_piv/z_hit-01.wav","vj_piv/z_hit-02.wav","vj_piv/z_hit-03.wav","vj_piv/z_hit-04.wav","vj_piv/z_hit-05.wav","vj_piv/z_hit-06.wav"}
-		self.SoundTbl_MeleeAttackMiss = {"vj_piv/z-swipe-1.wav","vj_piv/z-swipe-2.wav","vj_piv/z-swipe-3.wav","vj_piv/z-swipe-4.wav","vj_piv/z-swipe-5.wav","vj_piv/z-swipe-6.wav"}	
+			
+		self.SoundTbl_MeleeAttack = {"vj_piv/BodyHit-3.wav","vj_piv/BodyHit-4.wav","vj_piv/BodyHit-5.wav","vj_piv/BodyHit-6.wav"}
+		self.SoundTbl_MeleeAttackMiss = {"vj_piv/Miss1.wav","vj_piv/Miss2.wav","vj_piv/Miss3.wav","vj_piv/Miss4.wav","vj_piv/Miss5.wav"}
 
 		self.AnimTbl_MeleeAttack = {
-			"vjseq_cmb01",
+			"vjseq_cmb03",
 		}
-		
-		elseif math.random(1,3) == 3 then
-		
-			self.MeleeAttackAnimationAllowOtherTasks = false
+	else
+		if math.random(1,3) == 1 then
+			self.MeleeAttackAnimationAllowOtherTasks = true
 			
-			self.MeleeAttackDamage = math.random(28,33)
+			self.MeleeAttackDamage = math.random(25,30)
 			self.HasMeleeAttackKnockBack = true
-			self.MeleeAttackDistance = 160
+			self.MeleeAttackDistance = 40
 			self.MeleeAttackDamageDistance = 70
-		
-			self.SoundTbl_MeleeAttack = {"vj_piv/BodyHit-3.wav","vj_piv/BodyHit-4.wav","vj_piv/BodyHit-5.wav","vj_piv/BodyHit-6.wav"}
+			
 			self.SoundTbl_MeleeAttackMiss = {"vj_piv/Miss1.wav","vj_piv/Miss2.wav","vj_piv/Miss3.wav","vj_piv/Miss4.wav","vj_piv/Miss5.wav"}
+			self.SoundTbl_MeleeAttack = {"vj_piv/wrenchhit1.wav","vj_piv/wrenchhit2.wav","vj_piv/wrenchhit3.wav","vj_piv/wrenchhit4.wav"}
 
 			self.AnimTbl_MeleeAttack = {
-				"vjseq_atk_jumpkick",
-				"vjseq_atk_jumpknee",
+				"vjges_melee_moving01a",
+				"vjges_melee_moving03a",
+				"vjges_melee_moving06a",
 			}
-	
+		
+			elseif math.random(1,3) == 2 then
+		
+			self.MeleeAttackAnimationAllowOtherTasks = false
+		
+			self.MeleeAttackDamage = math.random(20,25)
+			self.HasMeleeAttackKnockBack = true
+			self.MeleeAttackDistance = 40
+			self.MeleeAttackDamageDistance = 70
+			
+			self.SoundTbl_MeleeAttack = {"vj_piv/z_hit-01.wav","vj_piv/z_hit-02.wav","vj_piv/z_hit-03.wav","vj_piv/z_hit-04.wav","vj_piv/z_hit-05.wav","vj_piv/z_hit-06.wav"}
+			self.SoundTbl_MeleeAttackMiss = {"vj_piv/z-swipe-1.wav","vj_piv/z-swipe-2.wav","vj_piv/z-swipe-3.wav","vj_piv/z-swipe-4.wav","vj_piv/z-swipe-5.wav","vj_piv/z-swipe-6.wav"}	
+
+			self.AnimTbl_MeleeAttack = {
+				"vjseq_cmb01",
+			}
+			
+			elseif math.random(1,3) == 3 then
+			
+				self.MeleeAttackAnimationAllowOtherTasks = false
+				
+				self.MeleeAttackDamage = math.random(28,33)
+				self.HasMeleeAttackKnockBack = true
+				self.MeleeAttackDistance = 160
+				self.MeleeAttackDamageDistance = 70
+			
+				self.SoundTbl_MeleeAttack = {"vj_piv/BodyHit-3.wav","vj_piv/BodyHit-4.wav","vj_piv/BodyHit-5.wav","vj_piv/BodyHit-6.wav"}
+				self.SoundTbl_MeleeAttackMiss = {"vj_piv/Miss1.wav","vj_piv/Miss2.wav","vj_piv/Miss3.wav","vj_piv/Miss4.wav","vj_piv/Miss5.wav"}
+
+				self.AnimTbl_MeleeAttack = {
+					"vjseq_atk_jumpkick",
+					"vjseq_atk_jumpknee",
+				}
+		end
 	end
-	        
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnThink_AIEnabled()
@@ -191,7 +214,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 	
 	-- Dodge System
     if self.VJ_IsBeingControlled == true or self.PIV_Crawler or self.PIV_Crippled or self.Flinching or self:GetSequence() == self:LookupSequence(ACT_BIG_FLINCH) or self.DeathAnimationCodeRan then return end
-    if IsValid(self:GetEnemy()) == true && self.MeleeAttacking == false && self.VJ_IsBeingControlled == false && CurTime() > self.PIV_NextStrafeT && self:GetPos():Distance(self:GetEnemy():GetPos()) < 200 then
+    if IsValid(self:GetEnemy()) == true && self.MeleeAttacking == false && self.VJ_IsBeingControlled == false && CurTime() > self.PIV_NextStrafeT && self:GetPos():Distance(self:GetEnemy():GetPos()) < 200 && self:GetPos():Distance(self:GetEnemy():GetPos()) > 50 then
         self:StopMoving()
         self:VJ_ACT_PLAYACTIVITY({"vjseq_sway_b","vjseq_sway_f","vjseq_sway_l","vjseq_sway_r"}, true, false, false)
 		VJ_EmitSound(self,"vj_piv/Miss"..math.random(1,5)..".wav",70,100)
@@ -200,7 +223,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
         self.PIV_NextStrafeT = CurTime() + math.random(3,6)
 	end
 
-	if IsValid(self:GetEnemy()) && self.PIV_SpawnCoolDownT < CurTime() then
+	if IsValid(self:GetEnemy()) && self.PIV_SpawnCoolDownT < CurTime() && self.VJ_IsBeingControlled == false && GetConVar("vj_piv_boss_summon"):GetInt() == 1 then
 
 		self:PIV_SummonHelp_Spawn()
 		
