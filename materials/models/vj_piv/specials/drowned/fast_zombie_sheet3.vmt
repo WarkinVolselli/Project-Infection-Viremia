@@ -12,8 +12,4 @@
 	//"$phongexponenttexture" "Models/vj_piv/specials/drowned/fast_zombie_phong"
 	//"$phongalbedotint" "1"										
 	"$phongfresnelranges"	"[.2 .6 1]"
-
-"$detail" "nature/mudfloor002a"
-"$detailblendmode" 0
-"$detailblendfactor" .8
 }
