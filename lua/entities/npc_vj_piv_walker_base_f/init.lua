@@ -120,7 +120,7 @@ self.SoundTbl_Alert = {
 	"vj_piv/dl_bite_male/walker_male_call_nw_01_0.wav",
 	"vj_piv/dl_bite_male/walker_male_call_nw_02_0.wav"
 }
-self.AlertSoundPitch = VJ_Set(115, 115)
+self.AlertSoundPitch = VJ.SET(115, 115)
 else
 self.SoundTbl_Alert = {
 	"vj_piv/dl_bite_female/walker_female00_berserker_00_0.wav",
@@ -449,13 +449,13 @@ self.SoundTbl_Death = {
 
 elseif self.Voice == 4 then
 
-	self.IdleSoundPitch = VJ_Set(120, 120)
-	self.CombatIdleSoundPitch = VJ_Set(120, 120)
-	self.AlertSoundPitch = VJ_Set(120, 120)
-	self.CallForHelpSoundPitch = VJ_Set(120, 120)
-	self.BeforeMeleeAttackSoundPitch = VJ_Set(120, 120)
-	self.PainSoundPitch = VJ_Set(120, 120)
-	self.DeathSoundPitch = VJ_Set(120, 120)
+	self.IdleSoundPitch = VJ.SET(120, 120)
+	self.CombatIdleSoundPitch = VJ.SET(120, 120)
+	self.AlertSoundPitch = VJ.SET(120, 120)
+	self.CallForHelpSoundPitch = VJ.SET(120, 120)
+	self.BeforeMeleeAttackSoundPitch = VJ.SET(120, 120)
+	self.PainSoundPitch = VJ.SET(120, 120)
+	self.DeathSoundPitch = VJ.SET(120, 120)
 
 
     local ContagionVoice = math.random(1,4)

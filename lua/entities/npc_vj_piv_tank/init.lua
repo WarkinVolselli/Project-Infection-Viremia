@@ -7,11 +7,20 @@ include('shared.lua')
 -----------------------------------------------*/
 ENT.Model = {"models/vj_piv/specials/hulk/hulk.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.StartHealth = 1500
-ENT.VJ_IsHugeMonster = true
+ENT.PIV_IsHugeZombie = true
 ENT.PIV_Tank = true
 ENT.PIV_CanMutate = false
+ENT.PIV_IsBoss = true
 
 ENT.PIV_IsSpecial = true
+
+ENT.PIV_CanBeCrippled = false
+ENT.PIV_HasSubclasses = false
+ENT.PIV_CanBeThrower = false
+ENT.PIV_HasWeapons = false
+ENT.PIV_CanBreakDoors = false
+ENT.PIV_AllowedToClimb = false
+ENT.PIV_AllowedToRest = false
 
 ENT.AnimTbl_Death = {"vjseq_death","vjseq_death_11ab"}	
 
@@ -31,11 +40,7 @@ ENT.NextRangeAttackTime = math.random(8,12)
 ENT.GeneralSoundPitch1 = 100
 ENT.GeneralSoundpitch2 = 90
 
-ENT.AnimTbl_IdleStand = {ACT_IDLE}
-ENT.AnimTbl_Walk = {ACT_WALK}
-ENT.AnimTbl_Run = {ACT_WALK}
-
-ENT.BeforeRangeAttackPitch = VJ_Set(100, 100)
+ENT.BeforeRangeAttackPitch = VJ.SET(100, 100)
 ENT.AlertSoundLevel = 85
 ENT.CombatIdleSoundLevel = 85
 ENT.PainSoundLevel = 85
@@ -77,8 +82,7 @@ function ENT:Zombie_CustomOnInitialize()
 	if math.random(1,5) == 1 then
 		self:SetSkin(3)
 	end
-	
-	self.ChargeAnim = (ACT_RUN_PROTECTED)
+
 	self.StopChargingT = CurTime()
 	self.Charging = false
 end
@@ -149,7 +153,7 @@ end
 function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 	if self.CanDoTheFunny == false then return end
 	
-	local stumble = VJ_PICK({"vjseq_shoved_backward","vjseq_shoved_rightward","vjseq_shoved_leftward","vjseq_shoved_forward",})
+	local stumble = VJ.PICK({"vjseq_shoved_backward","vjseq_shoved_rightward","vjseq_shoved_leftward","vjseq_shoved_forward",})
 	
 	if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SNIPER) then
 		if hitgroup == HITGROUP_HEAD or hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH then
@@ -178,7 +182,7 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 
 	if dmginfo:IsExplosionDamage() then
 		if self.NextSplodeStumbleT < CurTime() then
-			self:VJ_ACT_PLAYACTIVITY(stumble,true,VJ_GetSequenceDuration(self,tbl),false)
+			self:VJ_ACT_PLAYACTIVITY(stumble,true,VJ.AnimDuration(self,tbl),false)
 			self.NextSplodeStumbleT = CurTime() + math.random(6,8)
 			self:StopCharging()
 		end
@@ -206,7 +210,7 @@ function ENT:Zombie_CustomOnThink()
 			if IsValid(tr.Entity) && (tr.Entity != self.VJ_TheController && tr.Entity != self.VJ_TheControllerBullseye) then
 		      if self:Disposition(tr.Entity) != D_LI then			
 					hitEnt = tr.Entity
-					VJ_EmitSound(self,self.SoundTbl_ChargeHit,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
+					VJ.EmitSound(self,self.SoundTbl_ChargeHit,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
 					local dmginfo = DamageInfo()
 					dmginfo:SetDamage(math.random(40,45))
 					dmginfo:SetDamageType(DMG_CLUB)
@@ -247,21 +251,18 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		local controlled = IsValid(self.VJ_TheController)
 		
 		if ((controlled && self.VJ_TheController:KeyDown(IN_ATTACK2)) or !controlled) && dist <= self.ChargeDistance && dist > self.MinChargeDistance && (self:GetForward():Dot((ent:GetPos() -self:GetPos()):GetNormalized()) > math.cos(math.rad(10))) && !self:BusyWithActivity() && CurTime() > self.NextChargeT && !self.Charging && ent:Visible(self)then
-			VJ_EmitSound(self,self.SoundTbl_StartCharge,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
+			VJ.EmitSound(self,self.SoundTbl_StartCharge,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
 			self.HasMeleeAttack = false
 			self.HasRangeAttack = false
 			self.StopChargingT = CurTime() +math.random(4,6)
 			self.Charging = true
-			self.AnimTbl_IdleStand = {self.ChargeAnim}
-			self.AnimTbl_Walk = {self.ChargeAnim}
-			self.AnimTbl_Run = {self.ChargeAnim}
 			self:SetState(VJ_STATE_ONLY_ANIMATION)
 		end
 	end
 end
 ----------------------------------------------------------------------------
 function ENT:Zombie_CustomOnAlert(ent)
-	self.NextChargeT = CurTime() +math.random(6,12)
+	--self.NextChargeT = CurTime() +math.random(6,12)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:StopCharging(crash)
@@ -273,16 +274,13 @@ function ENT:StopCharging(crash)
 	self.NextChargeT = CurTime() +math.Rand(10,20)
 	if crash then
 		util.ScreenShake(self:GetPos(),16,100,1,150)
-	    VJ_EmitSound(self,self.SoundTbl_Crash,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
-		VJ_EmitSound(self,self.SoundTbl_Pain,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
+	    VJ.EmitSound(self,self.SoundTbl_Crash,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
+		VJ.EmitSound(self,self.SoundTbl_Pain,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
 	    self:VJ_ACT_PLAYACTIVITY(crash && "vjseq_hulk_stumblea",true,false,false)
 	else
-		VJ_EmitSound(self,self.SoundTbl_Pain,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
+		VJ.EmitSound(self,self.SoundTbl_Pain,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
 	    self:VJ_ACT_PLAYACTIVITY(crash && "vjseq_shoved_forward",true,false,false)
 	end	
-	self.AnimTbl_IdleStand = {ACT_IDLE}
-	self.AnimTbl_Walk = {ACT_WALK}
-	self.AnimTbl_Run = {ACT_WALK}
 end
 /*-----------------------------------------------
 	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***

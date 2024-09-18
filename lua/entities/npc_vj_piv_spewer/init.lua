@@ -10,14 +10,10 @@ ENT.StartHealth = 250
 
 ENT.PIV_IsSpecial = true
 
-ENT.AnimTbl_IdleStand = {ACT_IDLE_AIM_STIMULATED}
-
-ENT.PIV_Infection = true
-ENT.PIV_Infection_IsWalker = true
+ENT.PIV_CanBeCrawler = false
+ENT.PIV_CanBeThrower = false
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.BloodColor = "Red" -- The blood type, this will determine what it should use (decal, particle, etc.)
- 
-ENT.PI_LegHP = 10000
 
 ENT.HasRangeAttack = true -- Should the SNPC have a range attack?
 ENT.RangeUseAttachmentForPos = true -- Should the projectile spawn on a attachment?
@@ -49,7 +45,7 @@ ENT.GeneralSoundPitch2 = 80
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnInitialize()	
-	self:SetModelScale(1.1)
+	self:SetModelScale(1.15)
 	self:SetSkin(math.random(0,3))
 end	
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -57,31 +53,7 @@ function ENT:RangeAttackCode_GetShootPos(TheProjectile)
 	return self:CalculateProjectile("Curve", self:GetAttachment(self:LookupAttachment(self.RangeUseAttachmentForPosID)).Pos, self:GetEnemy():GetPos() + self:GetEnemy():OBBCenter(), 500) + self:GetUp()*math.Rand(-100,100) + self:GetRight()*math.Rand(-100,100)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Cripple()
-	self.PIV_CanMutate = false
-	self:DropTheFuckignWeaponGoddamn()
-	self.AnimTbl_IdleStand = {ACT_IDLE_STIMULATED}
-	self.AnimTbl_Walk = {ACT_WALK_STIMULATED}
-	self.AnimTbl_Run = {ACT_WALK_STIMULATED}
-	
-    self:SetCollisionBounds(Vector(13,13,20),Vector(-13,-13,0))
-	self.VJC_Data = {
-	CameraMode = 1, 
-	ThirdP_Offset = Vector(30, 25, -20), 
-	FirstP_Bone = "ValveBiped.Bip01_Head1", 
-	FirstP_Offset = Vector(5, 0, -1), 
-    }
-    self.FireRun = false
-    self:CapabilitiesRemove(bit.bor(CAP_MOVE_JUMP))
-	self:CapabilitiesRemove(bit.bor(CAP_MOVE_CLIMB))
-	self.HasDeathAnimation = false
-	self.AnimTbl_RangeAttack = {""}
-end
----------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:PIV_CustomMutate()
-self.AnimTbl_Walk = {ACT_WALK}
-self.AnimTbl_Run = {ACT_SPRINT}
-
 self.StartHealth = self.StartHealth *2
 self:SetHealth(self.StartHealth)
 		

@@ -20,7 +20,7 @@ ENT.Immune_AcidPoisonRadiation = true -- Immune to Acid, Poison and Radiation
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
 	self:SetSkin(math.random(0,1))
-	self.NextSoundTime_Breath = VJ_Set(15,60)
+	self.NextSoundTime_Breath = VJ.SET(15,60)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
@@ -30,7 +30,7 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 			dmginfo:ScaleDamage(0.9)
 			local attacker = dmginfo:GetAttacker()
 		end
-		if self.HasSounds == true && self.HasImpactSounds == true then VJ_EmitSound(self,"physics/flesh/flesh_impact_bullet"..math.random(1,5)..".wav",70) 
+		if self.HasSounds == true && self.HasImpactSounds == true then VJ.EmitSound(self,"physics/flesh/flesh_impact_bullet"..math.random(1,5)..".wav",70) 
 	end	
 	
 	if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 then

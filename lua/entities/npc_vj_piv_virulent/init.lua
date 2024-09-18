@@ -15,6 +15,13 @@ ENT.PIV_IsSpecial = true
 
 ENT.PIV_Virulent_Explode = false
 
+ENT.PIV_HasSubclasses = false
+ENT.PIV_CanBeCrippled = false
+ENT.PIV_AllowedToClimb = false
+ENT.PIV_HasWeapons = false
+ENT.PIV_CanBeThrower = false
+ENT.PIV_AllowedToRest = false
+
 ENT.BloodColor = "Yellow" -- The blood type, this will determine what it should use (decal, particle, etc.)
 
 ENT.AnimTbl_MeleeAttack = {"vjges_melee_01"} -- Melee Attack Animations
@@ -65,24 +72,14 @@ function ENT:Zombie_CustomOnInitialize()
 	
 	self:SetCollisionBounds(Vector(22,22,60), Vector(-22,-22,0))
 	
-	local type = math.random(1,6)
+	local type = math.random(1,5)
 	
 	if type == 1 then
-		self.AnimTbl_IdleStand = {ACT_IDLE_STIMULATED}
-		self.AnimTbl_Walk = {ACT_WALK_STIMULATED}
-		self.AnimTbl_Run = {ACT_WALK_STIMULATED}
 		self.PIV_MovementAnims = 2
 	else
-		self.AnimTbl_IdleStand = {ACT_IDLE}
-		self.AnimTbl_Walk = {ACT_WALK}
-		self.AnimTbl_Run = {ACT_WALK}
 		self.PIV_MovementAnims = 1
 	end
-	
-	if self.PIV_Mutated == true then
-		self.AnimTbl_Run = {ACT_RUN}
-	end
-	
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnPreInitialize()
@@ -135,12 +132,10 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		
     then
 
-        VJ_EmitSound(self,self.SoundTbl_Charge,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
+        VJ.EmitSound(self,self.SoundTbl_Charge,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
 
         self.Running = true
         self.RunT = CurTime() + math.random(5,10)
-
-        self.AnimTbl_Run = {ACT_RUN}
 
     end
 
@@ -151,17 +146,9 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
         !self.PIV_Crippled && 
 		self.PIV_Mutated == false
     then
-
         self.Running = false
         self.NextRunT = CurTime() + math.random(6,12)
-	    VJ_EmitSound(self,self.SoundTbl_Pain,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
-		
-		if self.PIV_MovementAnims == 1 then
-			self.AnimTbl_Run = {ACT_WALK}
-		elseif self.PIV_MovementAnims == 2 then
-			self.AnimTbl_Run = {ACT_WALK_STIMULATED}
-		end
-
+	    VJ.EmitSound(self,self.SoundTbl_Pain,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
     end
 
 end
@@ -184,9 +171,6 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:PIV_CustomMutate()
-self.AnimTbl_Walk = {ACT_WALK}
-self.AnimTbl_Run = {ACT_RUN}
-
 self.StartHealth = self.StartHealth *2
 self:SetHealth(self.StartHealth)
 		
@@ -225,7 +209,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnKilled(dmginfo,hitgroup)
    	if self.PIV_Virulent_Explode == true then
-		util.VJ_SphereDamage(self,self,self:GetPos(),150,math.random(0,0),DMG_BLAST,true,true,{Force=20})
+		VJ.ApplyRadiusDamage(self,self,self:GetPos(),150,math.random(0,0),DMG_BLAST,true,true,{Force=20})
 		for k,v in ipairs(ents.FindInSphere(self:GetPos(),150)) do
 			v:TakeDamage(math.random(30,40))
 		end
@@ -235,20 +219,20 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnPriorToKilled(dmginfo,hitgroup)
 	if self.PIV_Virulent_Explode == true then
-		VJ_EmitSound(self,{"vj_piv/gore/PreExplode1.wav","vj_piv/gore/PreExplode2.wav","vj_piv/gore/PreExplode3.wav"},75,math.random(100,100))
+		VJ.EmitSound(self,{"vj_piv/gore/PreExplode1.wav","vj_piv/gore/PreExplode2.wav","vj_piv/gore/PreExplode3.wav"},75,math.random(100,100))
 	timer.Simple(0.25,function() if IsValid(self) then
-		VJ_EmitSound(self,{"vj_piv/gore/HeadshotDevestate3.wav","vj_piv/gore/HeadshotDevestate4.wav","vj_piv/gore/HeadshotDevestate5.wav"},75,math.random(100,100))
+		VJ.EmitSound(self,{"vj_piv/gore/HeadshotDevestate3.wav","vj_piv/gore/HeadshotDevestate4.wav","vj_piv/gore/HeadshotDevestate5.wav"},75,math.random(100,100))
 	timer.Simple(0.70,function() if IsValid(self) then
-		VJ_EmitSound(self,{"vj_piv/gore/Explode1.wav","vj_piv/gore/Explode2.wav","vj_piv/gore/Explode3.wav"},100,math.random(100,100))
+		VJ.EmitSound(self,{"vj_piv/gore/Explode1.wav","vj_piv/gore/Explode2.wav","vj_piv/gore/Explode3.wav"},100,math.random(100,100))
         local bloodeffect = EffectData()
 		bloodeffect:SetOrigin(self:GetPos()+ self:GetUp()*80)
-		bloodeffect:SetColor(VJ_Color2Byte(Color(155,137,59,255)))
+		bloodeffect:SetColor(VJ.Color2Byte(Color(155,137,59,255)))
 		bloodeffect:SetScale(250)
 		util.Effect("VJ_Blood1",bloodeffect)
 		
 		local bloodspray = EffectData()
 			bloodspray:SetOrigin(self:GetPos() +self:OBBCenter())
-			bloodspray:SetColor(VJ_Color2Byte(Color(155,137,59,255)))
+			bloodspray:SetColor(VJ.Color2Byte(Color(155,137,59,255)))
 			bloodspray:SetScale(1)
 			bloodspray:SetFlags(3)
 			bloodspray:SetColor(1)

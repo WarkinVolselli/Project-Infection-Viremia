@@ -10,8 +10,8 @@ ENT.Model = {"models/vj_piv/hl2/combine/Combine_Super_Soldier.mdl"} -- The game 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
 
-	self.NextSoundTime_Breath = VJ_Set(15,60)
-	
+	self.NextSoundTime_Breath = VJ.SET(15,60)
+
 	if GetConVar("vj_piv_lights"):GetInt() == 1 then 
 
 		self.Light2 = ents.Create("light_dynamic")
@@ -28,8 +28,8 @@ function ENT:Zombie_CustomOnInitialize()
 		self:DeleteOnRemove(self.Light2)
 		
         self.EyeGlow = ents.Create("env_sprite")
-        self.EyeGlow:SetKeyValue("model","sprites/glow1.vmt")
-        self.EyeGlow:SetKeyValue("scale","0.25")
+        self.EyeGlow:SetKeyValue("model","sprites/vj_piv/glow01.vmt")
+        self.EyeGlow:SetKeyValue("scale","0.1")
         self.EyeGlow:SetKeyValue("rendermode","5")
         self.EyeGlow:SetKeyValue("rendercolor","255 0 0 255")
         self.EyeGlow:SetKeyValue("spawnflags","1") 

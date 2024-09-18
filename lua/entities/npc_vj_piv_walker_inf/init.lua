@@ -7,7 +7,7 @@ include('shared.lua')
 -----------------------------------------------*/
 function ENT:CustomInitialize()
 timer.Simple(0.1,function()
-local death = VJ_PICK({"Infectiondeath","Infectiondeath2","Death_04"})
+local death = VJ.PICK({"Infectiondeath","Infectiondeath2","Death_04"})
 self:VJ_ACT_PLAYACTIVITY(death,true,4,false)
 self.Behavior = VJ_BEHAVIOR_PASSIVE_NATURE  
 self.GodMode = true
@@ -25,7 +25,7 @@ end)
 
 timer.Simple(4,function()
 if IsValid(self) then
-local rise = VJ_PICK({"Infectionrise","Infectionrise2"})
+local rise = VJ.PICK({"Infectionrise","Infectionrise2"})
 self:VJ_ACT_PLAYACTIVITY(rise,true,4,false)
 self.GodMode = false
 self.VJ_NoTarget = false

@@ -31,7 +31,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
-	self.NextSoundTime_Breath = VJ_Set(7,20)
+	self.NextSoundTime_Breath = VJ.SET(7,20)
 	self:SetBodygroup(2,math.random(0,2))
 	self:SetBodygroup(3,math.random(0,2))
 	self:SetBodygroup(4,math.random(0,3))	
@@ -46,7 +46,7 @@ function ENT:Zombie_CustomOnInitialize()
 		if math.random(1,GetConVar("vj_piv_mil_gasmask_chance"):GetInt()) == 1 then
 			self:SetBodygroup(4,4)
 			self.ImmuneDamagesTable = {DMG_PARALYZE,DMG_POISON,DMG_PARALYZE,DMG_POISON,DMG_RADIATION,DMG_NERVEGAS}
-			self.NextSoundTime_Idle = VJ_Set(16, 23)
+			self.NextSoundTime_Idle = VJ.SET(16, 23)
 			self.SoundTbl_CombatIdle = {"vj_piv/mil_zomb/gasmask/walker_combatidle_1.wav","vj_piv/mil_zomb/gasmask/walker_combatidle_2.wav","vj_piv/mil_zomb/gasmask/walker_combatidle_3.wav","vj_piv/mil_zomb/gasmask/walker_combatidle_4.wav"}
 			self.SoundTbl_Idle = {"vj_piv/mil_zomb/gasmask/idle_1.wav","vj_piv/mil_zomb/gasmask/idle_2.wav","vj_piv/mil_zomb/gasmask/idle_3.wav"}
 			self.SoundTbl_Alert = {"vj_piv/mil_zomb/gasmask/alert_1.wav","vj_piv/mil_zomb/gasmask/alert_2.wav","vj_piv/mil_zomb/gasmask/alert_3.wav","vj_piv/mil_zomb/gasmask/alert_4.wav"}
@@ -56,14 +56,15 @@ function ENT:Zombie_CustomOnInitialize()
 		end
 	end
 
-	if GetConVar("vj_piv_mil_ghillie_stealth"):GetInt() == 1 && math.random(1,GetConVar("vj_piv_mil_ghillie_stealth_chance"):GetInt()) == 1 && self.PIV_WeHaveAWeapon == false && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false then
+	if GetConVar("vj_piv_mil_ghillie_stealth"):GetInt() == 1 && math.random(1,GetConVar("vj_piv_mil_ghillie_stealth_chance"):GetInt()) == 1 && self.PIV_WeHaveAWeapon == false && self.PIV_Thrower == false && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false then
 		self.PIV_LittleBastard = true
+		self:SitTheFuckDown()
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnThink_AIEnabled()
-	if IsValid(self:GetEnemy()) && self.PIV_Crippled == false && self.PIV_LittleBastard == true && self.NextCrawlT < CurTime() then
-		if self:GetPos():Distance(self:GetEnemy():GetPos()) < 150 then
+	if self.PIV_Crippled == false && self.PIV_LittleBastard == true && self.NextCrawlT < CurTime() then
+		if IsValid(self:GetEnemy()) && self:GetPos():Distance(self:GetEnemy():GetPos()) < 150 then
 			self:StandTheFuckUp()
 		else
 			self:SitTheFuckDown()
@@ -73,49 +74,25 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:StandTheFuckUp()
 	if self.PIV_GoblinMode == true then
-		if self.PIV_Shambler == true then
-			self.AnimTbl_IdleStand = {ACT_IDLE_AIM_RELAXED}
-		else
-			self.AnimTbl_IdleStand = {ACT_IDLE}
-		end
-
-		if self.PIV_Shambler == true then
-			self.AnimTbl_Walk = {ACT_WALK_RELAXED}
-			self.AnimTbl_Run = {ACT_WALK_RELAXED}
-		elseif self.PIV_Jogger == true then
-			self.AnimTbl_Walk = {ACT_WALK}
-			self.AnimTbl_Run = {ACT_RUN}
-		else
-			self.AnimTbl_Walk = {ACT_WALK}
-			self.AnimTbl_Run = {ACT_WALK}
-		end
-
-		if GetConVar("vj_piv_alt_idle_walk"):GetInt() == 1 then
-			self.AnimTbl_Walk = {ACT_WALK_AIM_STEALTH}
-		end
-
 		self.HasIdleSounds = true
 		self.HasAlertSounds = true
 		
 		self.NextCrawlT = CurTime() + math.random(5,10)
 		
-		local stop = VJ_PICK({"vjseq_crouch_to_stand"})
-		self:VJ_ACT_PLAYACTIVITY(stop,true,VJ_GetSequenceDuration(self,tbl),false)
+		local stop = VJ.PICK({"vjseq_crouch_to_stand"})
+		self:VJ_ACT_PLAYACTIVITY(stop,true,VJ.AnimDuration(self,tbl),false)
 		self.PIV_GoblinMode = false
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:SitTheFuckDown()
 	if self.PIV_GoblinMode == false then
-		self.AnimTbl_IdleStand = {ACT_CROUCHIDLE}
-		self.AnimTbl_Walk = {ACT_WALK_CROUCH_AIM}
-		self.AnimTbl_Run = {ACT_WALK_CROUCH_AIM}
 		
 		self.HasIdleSounds = false
 		self.HasAlertSounds = false
 		
-		local start = VJ_PICK({"vjseq_stand_to_crouch"})
-		self:VJ_ACT_PLAYACTIVITY(start,true,VJ_GetSequenceDuration(self,tbl),false)
+		local start = VJ.PICK({"vjseq_stand_to_crouch"})
+		self:VJ_ACT_PLAYACTIVITY(start,true,VJ.AnimDuration(self,tbl),false)
 		self.PIV_GoblinMode = true
 	end
 end

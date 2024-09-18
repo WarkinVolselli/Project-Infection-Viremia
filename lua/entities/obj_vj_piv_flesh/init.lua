@@ -13,7 +13,7 @@ ENT.DirectDamageType = DMG_POISON -- Damage type
 ENT.DecalTbl_DeathDecals = {"YellowBlood"}
 ENT.SoundTbl_OnCollide = {"vj_acid/acid_splat.wav"}
 ENT.OnCollideSoundLevel = 70
-ENT.OnCollideSoundPitch = VJ_Set(90,120) 
+ENT.OnCollideSoundPitch = VJ.SET(90,120) 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomPhysicsObjectOnInitialize(phys)
 	phys:Wake()

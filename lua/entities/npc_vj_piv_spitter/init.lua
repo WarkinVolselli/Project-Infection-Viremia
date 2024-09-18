@@ -10,8 +10,7 @@ ENT.StartHealth = 150
 
 ENT.PIV_IsSpecial = true
 
-ENT.PIV_Infection = true
-ENT.PIV_Infection_IsWalker = true
+ENT.PIV_CanBeCrawler = false
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.BloodColor = "Red" -- The blood type, this will determine what it should use (decal, particle, etc.)
 
@@ -50,27 +49,6 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:RangeAttackCode_GetShootPos(TheProjectile)
 	return self:CalculateProjectile("Curve", self:GetAttachment(self:LookupAttachment(self.RangeUseAttachmentForPosID)).Pos, self:GetEnemy():GetPos() + self:GetEnemy():OBBCenter(), 1500) + self:GetUp()*math.Rand(-30,30) + self:GetRight()*math.Rand(-40,40)
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Cripple()
-	self.PIV_CanMutate = false
-	self:DropTheFuckignWeaponGoddamn()
-	self.AnimTbl_IdleStand = {ACT_IDLE_STIMULATED}
-	self.AnimTbl_Walk = {ACT_WALK_STIMULATED}
-	self.AnimTbl_Run = {ACT_WALK_STIMULATED}
-	
-    self:SetCollisionBounds(Vector(13,13,20),Vector(-13,-13,0))
-	self.VJC_Data = {
-	CameraMode = 1, 
-	ThirdP_Offset = Vector(30, 25, -20), 
-	FirstP_Bone = "ValveBiped.Bip01_Head1", 
-	FirstP_Offset = Vector(5, 0, -1), 
-    }
-    self.FireRun = false
-    self:CapabilitiesRemove(bit.bor(CAP_MOVE_JUMP))
-	self:CapabilitiesRemove(bit.bor(CAP_MOVE_CLIMB))
-	self.HasDeathAnimation = false
-	self.AnimTbl_RangeAttack = {""}
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:PIV_CustomMutate()

@@ -7,7 +7,7 @@ include('shared.lua')
 -----------------------------------------------*/
 function ENT:Zombie_CustomOnInitialize()
 	self:SetSkin(math.random(2,3))
-	self.NextSoundTime_Breath = VJ_Set(15,60)
+	self.NextSoundTime_Breath = VJ.SET(15,60)
 end
 /*-----------------------------------------------
 	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***

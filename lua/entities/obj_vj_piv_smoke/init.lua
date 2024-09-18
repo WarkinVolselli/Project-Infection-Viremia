@@ -30,7 +30,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnThink()
 	ParticleEffectAttach("smoke_exhaust_01", PATTACH_ABSORIGIN_FOLLOW, self, 0)
-	util.VJ_SphereDamage(self,self,self:GetPos(),100,1,DMG_RADIATION,true,true)
+	VJ.ApplyRadiusDamage(self,self,self:GetPos(),100,1,DMG_RADIATION,true,true)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:DoKilledEnemy(victim,attacker,inflictor)	

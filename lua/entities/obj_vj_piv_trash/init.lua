@@ -19,7 +19,7 @@ ENT.RemoveOnHit = false -- Should it remove itself when it touches something? | 
 ENT.PaintDecalOnCollide = false -- Should it paint decals when it collides with something? | Use this only when using a projectile that doesn't get removed when it collides with something
 ENT.DecalTbl_OnCollideDecals = {} -- Decals that paint when the projectile collides with something | It picks a random one from this table
 ENT.CollideCodeWithoutRemoving = true -- If RemoveOnHit is set to false, you can still make the projectile deal damage, place a decal, etc.
-ENT.NextCollideWithoutRemove = VJ_Set(1,1) -- Time until it can run the code again
+ENT.NextCollideWithoutRemove = VJ.SET(1,1) -- Time until it can run the code again
 	-- ====== Shake World On Death Variables ====== --
 ENT.ShakeWorldOnDeath = true -- Should the world shake when the projectile hits something?
 ENT.ShakeWorldOnDeathAmplitude = 1 -- How much the screen will shake | From 1 to 16, 1 = really low 16 = really high
@@ -56,7 +56,7 @@ ENT.IdleSoundChance = 1
 ENT.OnCollideSoundChance = 1
 ENT.OnRemoveSoundChance = 1
 	-- ====== Timer Variables ====== --
-ENT.NextSoundTime_Idle = VJ_Set(0.001,0.001)
+ENT.NextSoundTime_Idle = VJ.SET(0.001,0.001)
 	-- ====== Sound Level Variables ====== --
 	-- The proper number are usually range from 0 to 180, though it can go as high as 511
 	-- More Information: https://developer.valvesoftware.com/wiki/Soundscripts#SoundLevel_Flags
@@ -65,10 +65,10 @@ ENT.IdleSoundLevel = 70
 ENT.OnCollideSoundLevel = 80
 ENT.OnRemoveSoundLevel = 75
 	-- ====== Sound Pitch Variables ====== --
-ENT.StartupSoundPitch = VJ_Set(125, 150)
-ENT.IdleSoundPitch = VJ_Set(90, 100)
-ENT.OnCollideSoundPitch = VJ_Set(90, 100)
-ENT.OnRemoveSoundPitch = VJ_Set(90, 100)
+ENT.StartupSoundPitch = VJ.SET(125, 150)
+ENT.IdleSoundPitch = VJ.SET(90, 100)
+ENT.OnCollideSoundPitch = VJ.SET(90, 100)
+ENT.OnRemoveSoundPitch = VJ.SET(90, 100)
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomPhysicsObjectOnInitialize(phys)
 	phys:Wake()
@@ -261,7 +261,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnCollideWithoutRemove(data, phys) 
 	self.HasIdleSounds = false
-	VJ_STOPSOUND(self.CurrentIdleSound)
+	VJ.STOPSOUND(self.CurrentIdleSound)
 	self.DoesDirectDamage = false
 	timer.Simple(GetConVarNumber("vj_npc_fadegibstime"),function() if IsValid(self) then
 		self:Remove()
@@ -271,7 +271,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnDoDamage_Direct(data, phys, hitEnt)
 	self.HasIdleSounds = false
-	VJ_STOPSOUND(self.CurrentIdleSound)
+	VJ.STOPSOUND(self.CurrentIdleSound)
 	self.DoesDirectDamage = false
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
