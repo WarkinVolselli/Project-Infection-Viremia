@@ -10,6 +10,13 @@ ENT.StartHealth = 300
 
 ENT.PIV_IsSpecial = true
 
+ENT.PIV_HasSubclasses = false
+ENT.PIV_CanBeCrippled = false
+ENT.PIV_AllowedToClimb = false
+ENT.PIV_HasWeapons = false
+ENT.PIV_CanBeThrower = false
+ENT.PIV_AllowedToRest = false
+
 ENT.GeneralSoundPitch1 = 130
 ENT.GeneralSoundpitch2 = 120
 
@@ -29,7 +36,6 @@ ENT.SoundTbl_Pain = {"vj_piv/exploder/pain_1.mp3","vj_piv/exploder/pain_2.mp3","
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
 	self:SetModelScale(1.2)
-	self.PIV_LegHP = self.PIV_LegHP *2
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
@@ -47,22 +53,20 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnKilled(dmginfo,hitgroup)
-		util.VJ_SphereDamage(self,self,self:GetPos(),200,math.random(0,0),DMG_BLAST,true,true,{Force=20})
+		VJ.ApplyRadiusDamage(self,self,self:GetPos(),200,math.random(0,0),DMG_BLAST,true,true,{Force=20})
 	for k,v in ipairs(ents.FindInSphere(self:GetPos(),200)) do
 		v:TakeDamage(math.random(50,60))
 	end
 		util.ScreenShake(self:GetPos(),60,1200,3,2000)
-		VJ_EmitSound(self,{"vj_piv/exploder/Explode1.wav","vj_piv/exploder/Explode2.wav","vj_piv/exploder/Explode3.wav"},100,math.random(100,100))
+		VJ.EmitSound(self,{"vj_piv/exploder/Explode1.wav","vj_piv/exploder/Explode2.wav","vj_piv/exploder/Explode3.wav"},100,math.random(100,100))
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnThink_AIEnabled()
 	if IsValid(self:GetEnemy()) then
 		if self:GetPos():Distance(self:GetEnemy():GetPos()) < 400 then
-			self.AnimTbl_Walk = {ACT_WALK}
-			self.AnimTbl_Run = {ACT_WALK}
+			self.Running = false
 		else
-			self.AnimTbl_Walk = {ACT_WALK}
-			self.AnimTbl_Run = {ACT_RUN}
+			self.Running = true
 		end
 	end
 end
@@ -71,7 +75,7 @@ function ENT:SetUpGibesOnDeath(dmginfo,hitgroup)
 	if self.HasGibDeathParticles == true then
 		local bloodeffect = EffectData()
 		bloodeffect:SetOrigin(self:GetPos() +self:OBBCenter())
-		bloodeffect:SetColor(VJ_Color2Byte(Color(130,19,10)))
+		bloodeffect:SetColor(VJ.Color2Byte(Color(130,19,10)))
 		bloodeffect:SetScale(300)
 		util.Effect("VJ_Blood1",bloodeffect)
 		
@@ -126,18 +130,31 @@ function ENT:SetUpGibesOnDeath(dmginfo,hitgroup)
 	self:CreateGibEntity("obj_vj_gib","models/Gibs/HGIBS_rib.mdl",{Pos=self:LocalToWorld(Vector(0,0,30))})
 	self:CreateGibEntity("obj_vj_gib","models/Gibs/HGIBS.mdl",{Pos=self:LocalToWorld(Vector(0,0,60))})
 end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
+	if hitgroup == HITGROUP_STOMACH or hitgroup == HITGROUP_CHEST then
+		if (dmginfo:IsBulletDamage()) then
+			dmginfo:ScaleDamage(3)
+		end
+	end
+	
+	if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 then
+		dmginfo:ScaleDamage(GetConVarNumber("vj_piv_headshot_damage_mult"))
+    end
+
+end
 ----------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 	if self.CanDoTheFunny == false then return end
 	
-	local stumble = VJ_PICK({"vjseq_shoved_backward","vjseq_shoved_rightward","vjseq_shoved_leftward","vjseq_shoved_forward",})
+	local stumble = VJ.PICK({"vjseq_shoved_backward_01","vjseq_shoved_rightward","vjseq_shoved_leftward","vjseq_shoved_forward",})
 	
 	if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SNIPER) then
 		if hitgroup == HITGROUP_HEAD or hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH then
 			if self.PIVNextStumbleT < CurTime() then
-				if dmginfo:GetDamage() > 40 or dmginfo:GetDamageForce():Length() > 10000 then
+				if dmginfo:GetDamage() > 50 or dmginfo:GetDamageForce():Length() > 10000 then
 					if math.random (1,2) == 1 then
-						self:VJ_ACT_PLAYACTIVITY("vjseq_shoved_backward",true,false,false)
+						self:VJ_ACT_PLAYACTIVITY("vjseq_shoved_backward_01",true,false,false)
 						self.PIVNextStumbleT = CurTime() + 5
 					end
 				end
@@ -146,21 +163,21 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 	end
 
 	if dmginfo:IsDamageType(DMG_CLUB) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_GENERIC) then
-		if dmginfo:GetDamage() > 20 or dmginfo:GetDamageForce():Length() > 10000 then
+		if dmginfo:GetDamage() > 30 or dmginfo:GetDamageForce():Length() > 10000 then
 			if self.PIV_NextShoveT < CurTime() then
-				self:VJ_ACT_PLAYACTIVITY("vjseq_shoved_backward",true,false,false)
+				self:VJ_ACT_PLAYACTIVITY("vjseq_shoved_backward_01",true,false,false)
 				self.PIV_NextShoveT = CurTime() + math.random(5,8)
 			end
 		end
-    return !self.PIVCrippled && !self.PIVFuckingCrawlingLittleCunt  && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
+    return !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt  && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
 	end
 
 	if dmginfo:IsExplosionDamage() then
 		if self.NextSplodeStumbleT < CurTime() then
-			self:VJ_ACT_PLAYACTIVITY(stumble,true,VJ_GetSequenceDuration(self,tbl),false)
+			self:VJ_ACT_PLAYACTIVITY(stumble,true,VJ.AnimDuration(self,tbl),false)
 			self.NextSplodeStumbleT = CurTime() + 5
 		end
-	return !self.PIVCrippled && !self.PIVFuckingCrawlingLittleCunt  && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
+	return !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt  && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
 	end
 	
 end

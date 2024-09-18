@@ -10,12 +10,13 @@ ENT.StartHealth = 1000
 
 ENT.PIV_IsSpecial = true
 
-ENT.AnimTbl_IdleStand = {ACT_IDLE_AIM_STIMULATED}
-ENT.AnimTbl_Walk = {ACT_WALK_SCARED}
-ENT.AnimTbl_Run = {ACT_WALK_SCARED}
-
 ENT.PIV_HasArmor = true
+
 ENT.PIV_CanBeCrippled = false
+ENT.PIV_CanBeBrute = false
+ENT.PIV_CanBeCrawler = false
+ENT.PIV_HasWeapons = false
+ENT.PIV_CanBeThrower = false
 
 ENT.GeneralSoundPitch1 = 70
 ENT.GeneralSoundpitch2 = 70
@@ -76,7 +77,7 @@ ENT.SoundTbl_Death = {
 }
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
-	self.NextSoundTime_Breath = VJ_Set(7,20)
+	self.NextSoundTime_Breath = VJ.SET(7,20)
 	self:SetSkin(math.random(0,1))
 	self:SetModelScale(1.2)
 end
@@ -192,7 +193,7 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 			self.DamageSpark1:Fire("StopSpark", "", 0.001)
 			self:DeleteOnRemove(self.DamageSpark1)
 		end
-		if self.HasSounds == true && self.HasImpactSounds == true then VJ_EmitSound(self,"vj_impact_metal/bullet_metal/metalsolid"..math.random(1,10)..".wav",70) 
+		if self.HasSounds == true && self.HasImpactSounds == true then VJ.EmitSound(self,"vj_impact_metal/bullet_metal/metalsolid"..math.random(1,10)..".wav",70) 
 	end	
 
 end
@@ -200,14 +201,13 @@ end
 function ENT:Zombie_CustomOnAlert()
 	if GetConVar("vj_piv_alert_anim"):GetInt() == 1 && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Resting == 0 && self:GetSequence() != self:LookupSequence(ACT_OPEN_DOOR) then
 		if math.random(1,GetConVar("vj_piv_alert_anim_chance"):GetInt()) == 1 then
-			local tbl = VJ_PICK({"vjges_gesture_signal_forward","vjges_gesture_disagree"})
+			local tbl = VJ.PICK({"vjges_gesture_signal_forward","vjges_gesture_disagree"})
 			self:VJ_ACT_PLAYACTIVITY(tbl,false,false,true)
 		end
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:PIV_CustomMutate()
-self.AnimTbl_Run = {ACT_SPRINT}
 
 self.StartHealth = self.StartHealth *1.5
 self:SetHealth(self.StartHealth)

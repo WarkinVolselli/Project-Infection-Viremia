@@ -14,12 +14,15 @@ ENT.AnimTbl_Run = {ACT_RUN}
 ENT.Combo = 0
 ENT.PIV_IsSpecial = true
 
+ENT.PIV_HasSubclasses = false
+ENT.PIV_CanBeThrower = false
+ENT.PIV_HasWeapons = false
+
 ENT.MeleeAttackDistance = 50
 ENT.MeleeAttackDamageDistance = 60
 
 ENT.PIV_NextStrafeT = 0
 ENT.PIV_NextRunT = 0
-
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
 
@@ -28,7 +31,7 @@ end
 function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 	if self.Combo == 1 then
-		self.MeleeAttackDamage = math.random(18,23)
+		self.MeleeAttackDamage = math.random(20,25)
 		self.HasMeleeAttackKnockBack = false
 		self.MeleeAttackDistance = 40
 		self.MeleeAttackDamageDistance = 60
@@ -86,17 +89,17 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt, isProp) 
-    if self.MeleeAttacking && self:GetSequence() == self:LookupSequence("cmb01") then
+    if self.AttackType == VJ.ATTACK_TYPE_MELEE && self:GetSequence() == self:LookupSequence("cmb01") then
 		self.Combo = 1
-    elseif self.MeleeAttacking && self:GetSequence() == self:LookupSequence("cmb02") then
+    elseif self.AttackType == VJ.ATTACK_TYPE_MELEE && self:GetSequence() == self:LookupSequence("cmb02") then
 		self.Combo = 2
-    elseif self.MeleeAttacking && self:GetSequence() == self:LookupSequence("cmb03") then
+    elseif self.AttackType == VJ.ATTACK_TYPE_MELEE && self:GetSequence() == self:LookupSequence("cmb03") then
 		self.Combo = 0
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnMeleeAttack_Miss()
-    if self.MeleeAttacking &&
+    if self.AttackType == VJ.ATTACK_TYPE_MELEE &&
 	    (
         self:GetSequence() == self:LookupSequence("cmb01") or
         self:GetSequence() == self:LookupSequence("cmb02") or
@@ -108,24 +111,12 @@ function ENT:CustomOnMeleeAttack_Miss()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnThink_AIEnabled()
-	if !IsValid(self:GetEnemy()) then
-		self.AnimTbl_Walk = {ACT_WALK}
-		self.AnimTbl_Run = {ACT_RUN}
-	else
-		if self:GetPos():Distance(self:GetEnemy():GetPos()) < 200  && self.PIV_Mutated == false then
-			self.AnimTbl_Walk = {ACT_WALK_AIM}
-			self.AnimTbl_Run = {ACT_WALK_AIM}
-		else
-			self.AnimTbl_Walk = {ACT_WALK}
-			self.AnimTbl_Run = {ACT_RUN}
-		end
-	end
 	-- Dodge System
     if self.VJ_IsBeingControlled == true or self.PIV_Crawler or self.PIV_Crippled or self.Flinching or self:GetSequence() == self:LookupSequence(ACT_BIG_FLINCH) or self.DeathAnimationCodeRan then return end
     if IsValid(self:GetEnemy()) == true && self.MeleeAttacking == false && self.VJ_IsBeingControlled == false && CurTime() > self.PIV_NextStrafeT && self:GetPos():Distance(self:GetEnemy():GetPos()) < 200 && self:GetPos():Distance(self:GetEnemy():GetPos()) > 50 then
         self:StopMoving()
         self:VJ_ACT_PLAYACTIVITY({"vjseq_sway_b","vjseq_sway_f","vjseq_sway_l","vjseq_sway_r"}, true, false, false)
-		VJ_EmitSound(self,"vj_piv/Miss"..math.random(1,5)..".wav",70,100)
+		VJ.EmitSound(self,"vj_piv/Miss"..math.random(1,5)..".wav",70,100)
         self.PIV_NextRunT = CurTime() + 2
         if self.PIV_Mutated == false then
 			self.PIV_NextStrafeT = CurTime() + math.random(3,6)

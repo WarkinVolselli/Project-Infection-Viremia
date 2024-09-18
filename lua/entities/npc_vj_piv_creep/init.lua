@@ -9,10 +9,15 @@ ENT.Model = {"models/vj_piv/specials/specimen/specimen.mdl"} -- The game will pi
 ENT.StartHealth = 150
 
 ENT.PIV_IsSpecial = true
+ENT.PIV_Rusher = true
 
 ENT.AnimTbl_IdleStand = {ACT_IDLE_HURT}
 ENT.AnimTbl_Walk = {ACT_WALK}
 ENT.AnimTbl_Run = {ACT_RUN_AIM}
+
+ENT.PIV_HasSubclasses = false
+ENT.PIV_CanBeThrower = false
+ENT.PIV_HasWeapons = false
 
 ENT.HasLeapAttack = false 
 ENT.LeapAttackDamage = math.random(20,25)
@@ -81,13 +86,9 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
         self.PIV_GoblinMode = true
 		self.HasLeapAttack = false 
         self.RunT = CurTime() + math.random(6,12)
-
-		self.AnimTbl_IdleStand = {ACT_CROUCHIDLE}
-        self.AnimTbl_Walk = {ACT_WALK_CROUCH_AIM}
-        self.AnimTbl_Run = {ACT_RUN_STEALTH}
 		
-		local start = VJ_PICK({"vjseq_stand_to_crouch"})
-		self:VJ_ACT_PLAYACTIVITY(start,true,VJ_GetSequenceDuration(self,tbl),false)
+		local start = VJ.PICK({"vjseq_stand_to_crouch"})
+		self:VJ_ACT_PLAYACTIVITY(start,true,VJ.AnimDuration(self,tbl),false)
 		
     end
 
@@ -102,13 +103,9 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
         self.PIV_GoblinMode = false
 		self.HasLeapAttack = true 
         self.NextRunT = CurTime() + math.random(6,12)
-		
-		self.AnimTbl_IdleStand = {ACT_IDLE_HURT}
-        self.AnimTbl_Walk = {ACT_WALK}
-		self.AnimTbl_Run = {ACT_RUN_AIM}
 
-		local stop = VJ_PICK({"vjseq_crouch_to_stand"})
-		self:VJ_ACT_PLAYACTIVITY(stop,true,VJ_GetSequenceDuration(self,tbl),false)
+		local stop = VJ.PICK({"vjseq_crouch_to_stand"})
+		self:VJ_ACT_PLAYACTIVITY(stop,true,VJ.AnimDuration(self,tbl),false)
 
     end
 	

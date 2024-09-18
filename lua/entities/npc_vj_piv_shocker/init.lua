@@ -1,19 +1,20 @@
 AddCSLuaFile("shared.lua")
 include('shared.lua')
 /*-----------------------------------------------
-	*** Copyright (c) 2012-2017 by DrVrej, All rights reserved. ***
+	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
 ENT.Model = {"models/vj_piv/specials/specimen/specimen.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 
 ENT.PIV_IsSpecial = true
+ENT.PIV_Super_Sprinter = true
+
+ENT.PIV_HasSubclasses = false
+ENT.PIV_CanBeThrower = false
+ENT.PIV_HasWeapons = false
 
 ENT.StartHealth = 100
-
-ENT.AnimTbl_Walk = {ACT_SPRINT} -- Set the walking animations | Put multiple to let the base pick a random animation when it moves
-ENT.AnimTbl_Run = {ACT_SPRINT} -- Set the running animations | Put multiple to let the base pick a random animation when it moves
-ENT.AnimTbl_IdleStand = {ACT_IDLE_STEALTH} -- The idle animation table when AI is enabled | DEFAULT: {ACT_IDLE}
 
 ENT.SoundTbl_Breath = {"ambient/energy/electric_loop.wav"}
 ENT.SoundTbl_Idle = 
@@ -61,7 +62,7 @@ ENT.SoundTbl_Pain = {"vj_piv/shocker/flesher_searching_01.mp3","vj_piv/shocker/f
 ENT.DeathAnimationChance = 1 -- Put 1 if you want it to play the animation all the time
 ENT.AnimTbl_Death = {"vjseq_nz_death_elec_1","vjseq_nz_death_elec_2","vjseq_nz_death_elec_3","vjseq_nz_death_elec_4","vjseq_nz_death_elec_5"} -- Death Animations
 
-ENT.MaxJumpLegalDistance = VJ_Set(50, 200) -- The max distance the NPC can jump (Usually from one node to another) | ( UP, DOWN )
+ENT.MaxJumpLegalDistance = VJ.SET(50, 200) -- The max distance the NPC can jump (Usually from one node to another) | ( UP, DOWN )
 
 ENT.HasRangeAttack = true -- Should the SNPC have a range attack?
 ENT.AnimTbl_RangeAttack = {"vjseq_nz_sonic_attack_2","vjseq_nz_sonic_attack_2","vjseq_nz_sonic_attack_2"} -- Range Attack Animations
@@ -115,7 +116,7 @@ end
 function ENT:CustomOnThink()
 if math.random(1,5) == 1 then
 ParticleEffectAttach("electrical_arc_01_parent",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("forward"))
-util.VJ_SphereDamage(self, self, self:GetPos(), 100, math.random(1,5), DMG_SHOCK, true, true)	
+VJ.ApplyRadiusDamage(self, self, self:GetPos(), 100, math.random(1,5), DMG_SHOCK, true, true)	
 end	
 end	
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -166,7 +167,7 @@ function ENT:RangeAttackCode_GetShootPos(TheProjectile)
 	return (self:GetEnemy():GetPos() - self:LocalToWorld(Vector(math.random(10,10),math.random(1,1),math.random(24,27))))*5 + self:GetUp()*45
 end
 /*-----------------------------------------------
-	*** Copyright (c) 2012-2017 by DrVrej, All rights reserved. ***
+	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/

@@ -10,6 +10,11 @@ ENT.StartHealth = 200
 ENT.HullType = HULL_HUMAN
 
 ENT.PIV_IsSpecial = true
+ENT.PIV_IsMilitary = true
+
+ENT.PIV_CanBeCrawler = false
+ENT.PIV_HasWeapons = false
+ENT.PIV_CanBeThrower = false
 
 ENT.PIV_HasArmor = true
 
@@ -83,7 +88,7 @@ ENT.SoundTbl_Death = {
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
-	self.NextSoundTime_Breath = VJ_Set(7,20)
+	self.NextSoundTime_Breath = VJ.SET(7,20)
 	self:SetBodygroup(1,math.random(0,1))
 	self:SetBodygroup(3,math.random(0,1))
 end
@@ -123,7 +128,7 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 		self.DamageSpark1:Fire("StopSpark", "", 0.001)
 		self:DeleteOnRemove(self.DamageSpark1)
 	end
-	if self.HasSounds == true && self.HasImpactSounds == true then VJ_EmitSound(self,"vj_impact_metal/bullet_metal/metalsolid"..math.random(1,10)..".wav",70)
+	if self.HasSounds == true && self.HasImpactSounds == true then VJ.EmitSound(self,"vj_impact_metal/bullet_metal/metalsolid"..math.random(1,10)..".wav",70)
 		dmginfo:ScaleDamage(0.50)
     end
 end

@@ -1,13 +1,18 @@
 AddCSLuaFile("shared.lua")
 include('shared.lua')
 /*-----------------------------------------------
-	*** Copyright (c) 2012-2017 by DrVrej, All rights reserved. ***
+	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
 ENT.Model = {"models/vj_piv/hl2/charple.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 
 ENT.PIV_IsSpecial = true
+
+ENT.PIV_HasSubclasses = false
+ENT.PIV_CanBeCrippled = false
+ENT.PIV_HasWeapons = false
+ENT.PIV_CanBeThrower = false
 
 ENT.StartHealth = 400
 
@@ -18,10 +23,6 @@ ENT.MeleeAttackDamage = 0
 ENT.MeleeAttackDamageType = DMG_BURN
 ENT.MeleeAttackDistance = 150 -- How close does it have to be until it attacks?
 ENT.MeleeAttackDamageDistance = 200 -- How far does the damage go?
-
-ENT.AnimTbl_IdleStand = {ACT_IDLE_HURT}
-ENT.AnimTbl_Walk = {ACT_WALK_AIM}
-ENT.AnimTbl_Run = {ACT_WALK_AIM}
 
 ENT.SoundTbl_Breath = {"ambient/fire/firebig.wav"}
 ENT.SoundTbl_Idle = {"vj_piv/cremator/volatile_attack_fake_00_0.wav","vj_piv/cremator/volatile_attack_fake_01_0.wav","vj_piv/cremator/volatile_attack_fake_02_0.wav","vj_piv/cremator/volatile_attack_fake_03_0.wav","vj_piv/cremator/volatile00_idle_calm_00_0.wav","vj_piv/cremator/volatile00_idle_calm_01_0.wav"}
@@ -37,7 +38,6 @@ ENT.GeneralSoundPitch2 = 80
 ENT.Immune_Fire = true 
 ENT.MeleeAttackSetEnemyOnFire = true 
 ENT.MeleeAttackSetEnemyOnFireTime = math.random(3,6)
-ENT.SetCorpseOnFire = true
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
@@ -75,9 +75,9 @@ function ENT:CustomOnMeleeAttack_BeforeChecks()
 	effects.BeamRingPoint(self:GetPos(), 0.3, 2, 400, 16, 0, Color(255, 255, 255), {material="sprites/flame01", framerate=20})
 	effects.BeamRingPoint(self:GetPos(), 0.3, 2, 200, 16, 0, Color(255, 255, 255), {material="sprites/flame01", framerate=20})
 	
-	VJ_EmitSound(self,"ambient/fire/ignite.wav",100,math.random(80,100))
+	VJ.EmitSound(self,"ambient/fire/ignite.wav",100,math.random(80,100))
 	
-	util.VJ_SphereDamage(self, self, self:GetPos(), 200, 10, self.MeleeAttackDamageType, true, true, {DisableVisibilityCheck=true, Force=80})
+	VJ.ApplyRadiusDamage(self, self, self:GetPos(), 200, 10, self.MeleeAttackDamageType, true, true, {DisableVisibilityCheck=true, Force=80})
 	util.ScreenShake(self:GetPos(),50,600,2,1000)
     util.ScreenShake(self:GetPos(),50,600,2,1000)
 	
@@ -94,9 +94,9 @@ function ENT:CustomOnKilled(dmginfo, hitgroup)
 	effects.BeamRingPoint(self:GetPos(), 0.3, 2, 400, 16, 0, Color(255, 255, 255), {material="sprites/flame01", framerate=20})
 	effects.BeamRingPoint(self:GetPos(), 0.3, 2, 200, 16, 0, Color(255, 255, 255), {material="sprites/flame01", framerate=20})
 	
-	VJ_EmitSound(self,"ambient/fire/ignite.wav",100,math.random(80,100))
+	VJ.EmitSound(self,"ambient/fire/ignite.wav",100,math.random(80,100))
 	
-	util.VJ_SphereDamage(self, self, self:GetPos(), 200, 10, self.MeleeAttackDamageType, true, true, {DisableVisibilityCheck=true, Force=80})
+	VJ.ApplyRadiusDamage(self, self, self:GetPos(), 200, 10, self.MeleeAttackDamageType, true, true, {DisableVisibilityCheck=true, Force=80})
 	util.ScreenShake(self:GetPos(),50,600,2,1000)
     util.ScreenShake(self:GetPos(),50,600,2,1000)
 end
@@ -121,7 +121,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
 end
 /*-----------------------------------------------
-	*** Copyright (c) 2012-2017 by DrVrej, All rights reserved. ***
+	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/

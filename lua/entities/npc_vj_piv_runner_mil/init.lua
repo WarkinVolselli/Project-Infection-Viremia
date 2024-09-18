@@ -27,7 +27,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
-	self.NextSoundTime_Breath = VJ_Set(7,20)
+	self.NextSoundTime_Breath = VJ.SET(7,20)
 	self:SetBodygroup(1,math.random(0,1))
 	self:SetBodygroup(3,math.random(0,1))
 	self:SetBodygroup(4,math.random(1,6))
@@ -61,7 +61,7 @@ function ENT:Zombie_CustomOnInitialize()
 		if math.random(1,GetConVar("vj_piv_mil_gasmask_chance"):GetInt()) == 1 then
 			self:SetBodygroup(4,math.random(0,0))
 			self.ImmuneDamagesTable = {DMG_PARALYZE,DMG_POISON,DMG_RADIATION,DMG_NERVEGAS}
-			self.NextSoundTime_Idle = VJ_Set(16, 23)
+			self.NextSoundTime_Idle = VJ.SET(16, 23)
 			self.SoundTbl_CombatIdle = {"vj_piv/mil_zomb/gasmask/combatidle_1.wav","vj_piv/mil_zomb/gasmask/combatidle_2.wav","vj_piv/mil_zomb/gasmask/combatidle_3.wav","vj_piv/mil_zomb/gasmask/combatidle_4.wav"}
 			self.SoundTbl_Idle = {"vj_piv/mil_zomb/gasmask/idle_1.wav","vj_piv/mil_zomb/gasmask/idle_2.wav","vj_piv/mil_zomb/gasmask/idle_3.wav"}
 			self.SoundTbl_Alert = {"vj_piv/mil_zomb/gasmask/alert_1.wav","vj_piv/mil_zomb/gasmask/alert_2.wav","vj_piv/mil_zomb/gasmask/alert_3.wav","vj_piv/mil_zomb/gasmask/alert_4.wav"}
@@ -75,7 +75,7 @@ end
 function ENT:SpawnBloodParticles(dmginfo,hitgroup)
 if self.PIV_HasArmor == true then
 	if hitgroup == HITGROUP_HEAD then
-		local p_name = VJ_PICK(self.CustomBlood_Particle)
+		local p_name = VJ.PICK(self.CustomBlood_Particle)
 		if p_name == false then return end
 		
 		local dmg_pos = dmginfo:GetDamagePosition()
@@ -93,26 +93,27 @@ end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
-if self.PIV_HasArmor == true then
-	if hitgroup == HITGROUP_HEAD then return end
-	if (dmginfo:IsBulletDamage()) then
-		local attacker = dmginfo:GetAttacker()
-		self.DamageSpark1 = ents.Create("env_spark")
-		self.DamageSpark1:SetKeyValue("Magnitude","1")
-		self.DamageSpark1:SetKeyValue("Spark Trail Length","1")
-		self.DamageSpark1:SetPos(dmginfo:GetDamagePosition())
-		self.DamageSpark1:SetAngles(self:GetAngles())
-		//self.DamageSpark1:Fire("LightColor", "255 255 255")
-		self.DamageSpark1:SetParent(self)
-		self.DamageSpark1:Spawn()
-		self.DamageSpark1:Activate()
-		self.DamageSpark1:Fire("StartSpark", "", 0)
-		self.DamageSpark1:Fire("StopSpark", "", 0.001)
-		self:DeleteOnRemove(self.DamageSpark1)
+
+	if self.PIV_HasArmor == true then
+		if hitgroup == HITGROUP_HEAD then return end
+		if (dmginfo:IsBulletDamage()) then
+			local attacker = dmginfo:GetAttacker()
+			self.DamageSpark1 = ents.Create("env_spark")
+			self.DamageSpark1:SetKeyValue("Magnitude","1")
+			self.DamageSpark1:SetKeyValue("Spark Trail Length","1")
+			self.DamageSpark1:SetPos(dmginfo:GetDamagePosition())
+			self.DamageSpark1:SetAngles(self:GetAngles())
+			//self.DamageSpark1:Fire("LightColor", "255 255 255")
+			self.DamageSpark1:SetParent(self)
+			self.DamageSpark1:Spawn()
+			self.DamageSpark1:Activate()
+			self.DamageSpark1:Fire("StartSpark", "", 0)
+			self.DamageSpark1:Fire("StopSpark", "", 0.001)
+			self:DeleteOnRemove(self.DamageSpark1)
+		end
+		if self.HasSounds == true && self.HasImpactSounds == true then VJ.EmitSound(self,"vj_impact_metal/bullet_metal/metalsolid"..math.random(1,10)..".wav",70) end
+		dmginfo:ScaleDamage(0.50)
 	end
-	if self.HasSounds == true && self.HasImpactSounds == true then VJ_EmitSound(self,"vj_impact_metal/bullet_metal/metalsolid"..math.random(1,10)..".wav",70) end
-	dmginfo:ScaleDamage(0.50)
-end
 
 	if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 then
 		dmginfo:ScaleDamage(GetConVarNumber("vj_piv_headshot_damage_mult"))

@@ -1,7 +1,7 @@
 AddCSLuaFile("shared.lua")
 include('shared.lua')
 /*-----------------------------------------------
-	*** Copyright (c) 2012-2017 by DrVrej, All rights reserved. ***
+	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
@@ -22,9 +22,6 @@ ENT.RangeAttackExtraTimers = {0.7,0.8,0.9,1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,
 ENT.NextRangeAttackTime = 8 -- How much time until it can use a range attack?
 ENT.Immune_AcidPoisonRadiation = true -- Makes the SNPC not get damage from Acid, posion, radiation
 
-ENT.AnimTbl_Walk = {ACT_RUN}
-ENT.AnimTbl_IdleStand = {ACT_IDLE_AIM_STEALTH}
-
 ENT.AlertSoundLevel = 80
 ENT.CombatIdleSoundLevel = 80
 ENT.BeforeMeleeAttackSoundLevel = 80
@@ -32,7 +29,9 @@ ENT.BeforeRangeAttackSoundLevel = 80
 ENT.PainSoundLevel = 80
 ENT.DeathSoundLevel = 80
 
-ENT.PIV_LegHP = 10000
+ENT.PIV_CanBeCrawler = false
+ENT.PIV_CanBeDiseased = false
+ENT.PIV_CanBeThrower = false
 
 	-- ====== Sound File Paths ====== --
 -- Leave blank if you don't want any sounds to play
@@ -48,18 +47,13 @@ ENT.SoundTbl_BeforeMeleeAttack = {"vj_piv/mil_zomb/gasmask/runner/idle1.wav","vj
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.GeneralSoundPitch1 = 100
 ENT.GeneralSoundPitch2 = 90
-ENT.BeforeRangeAttackPitch = VJ_Set(90, 100)
+ENT.BeforeRangeAttackPitch = VJ.SET(90, 100)
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()	
-self.NextSoundTime_Breath = VJ_Set(7,20)
-self:SetModelScale(1.1)
+self.NextSoundTime_Breath = VJ.SET(7,20)
     self.PIV_LegHP = self.StartHealth * 2
 	if GetConVarNumber("vj_npc_noidleparticle") == 0 then
- 	    ParticleEffectAttach("smoke_exhaust_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("chest"))
-		if GetConVarNumber("vj_piv_reducedparticles") == 0 then
-			ParticleEffectAttach("smoke_exhaust_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("rfoot"))
-			ParticleEffectAttach("smoke_exhaust_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("lfoot"))
-		end
+ 	    ParticleEffectAttach("smoke_exhaust_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("origin"))
 	end
 	
 end	
@@ -68,8 +62,8 @@ function ENT:RangeAttackCode_GetShootPos(TheProjectile)
 	return self:CalculateProjectile("Curve", self:GetAttachment(self:LookupAttachment(self.RangeUseAttachmentForPosID)).Pos, self:GetEnemy():GetPos() + self:GetEnemy():OBBCenter(), 1500) + self:GetUp()*math.Rand(0,100) + self:GetRight()*math.Rand(-200,200)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Zombie_CustomOnThink_AIEnabled() 
-    util.VJ_SphereDamage(self,self,self:GetPos(),100,1,DMG_RADIATION,true,true)
+function ENT:Zombie_CustomOnThink() 
+    VJ.ApplyRadiusDamage(self,self,self:GetPos(),100,0.25,DMG_RADIATION,true,true)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:PIV_CustomMutate()
@@ -103,7 +97,7 @@ end
 
 end
 /*-----------------------------------------------
-	*** Copyright (c) 2012-2017 by DrVrej, All rights reserved. ***
+	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/

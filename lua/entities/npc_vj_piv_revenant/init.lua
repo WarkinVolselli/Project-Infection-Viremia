@@ -10,8 +10,12 @@ ENT.StartHealth = 200
 ENT.ReviveRevenant = false
 
 ENT.PIV_IsSpecial = true
+ENT.PIV_Rusher = true
 
-ENT.PIV_Charger = true
+ENT.PIV_HasSubclasses = false
+ENT.PIV_CanBeThrower = false
+ENT.PIV_HasWeapons = false
+
 ENT.SoundTbl_Breath = {"vj_piv/revenant/crimhead_run.wav"}
 ENT.SoundTbl_Idle = {""}
 ENT.SoundTbl_Alert = {"vj_piv/revenant/crimhead_alert1.wav","vj_piv/revenant/crimhead_alert2.wav"}
@@ -19,11 +23,6 @@ ENT.SoundTbl_CombatIdle = {"vj_piv/revenant/crimhead_alert1.wav","vj_piv/revenan
 ENT.SoundTbl_BeforeMeleeAttack = {"vj_piv/revenant/crimhead_frenzy.wav"}
 ENT.SoundTbl_Pain = {"vj_piv/revenant/crimhead_pain.wav"}
 ENT.SoundTbl_Death = {"vj_piv/revenant/crimhead_die.wav"}
-	
-ENT.AnimTbl_IdleStand = {ACT_IDLE_AIM_STEALTH}
-
-ENT.AnimTbl_Walk = {ACT_RUN}
-ENT.AnimTbl_Run = {ACT_RUN_RELAXED}
 
 ENT.PIV_LegHP = 100 
 ENT.BreathSoundLevel = 60
@@ -50,6 +49,15 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 	else
 		dmginfo:ScaleDamage(0.75)
     end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Zombie_CustomOnAlert()
+	if GetConVar("vj_piv_alert_anim"):GetInt() == 1 && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Resting == 0 && self:GetSequence() != self:LookupSequence(ACT_OPEN_DOOR) then
+		if math.random(1,GetConVar("vj_piv_alert_anim_chance"):GetInt()) == 1 then
+			local tbl = VJ.PICK({"vjseq_nz_taunt_1","vjseq_nz_taunt_2","vjseq_nz_taunt_3","vjseq_nz_taunt_4","vjseq_nz_taunt_5","vjseq_nz_taunt_6","vjseq_nz_taunt_7","vjseq_nz_taunt_8","vjseq_nz_taunt_9","vjseq_stand_threaten_0"})
+			self:VJ_ACT_PLAYACTIVITY(tbl,true,false,true)
+		end
+	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:PIV_CustomMutate()

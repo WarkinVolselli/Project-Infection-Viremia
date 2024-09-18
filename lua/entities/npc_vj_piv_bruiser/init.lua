@@ -10,11 +10,16 @@ ENT.StartHealth = 600
 
 ENT.PIV_IsSpecial = true
 
-ENT.VJ_IsHugeMonster = true
+ENT.PIV_HasSubclasses = false
+ENT.PIV_CanBeCrippled = false
+ENT.PIV_CanBreakDoors = false
+ENT.PIV_AllowedToClimb = false
+ENT.PIV_HasWeapons = false
+ENT.PIV_CanBeThrower = false
+ENT.PIV_AllowedToRest = false
 
-ENT.AnimTbl_Walk = {ACT_WALK}
-ENT.AnimTbl_Run = {ACT_WALK}
-		
+ENT.PIV_IsHugeZombie = true
+
 ENT.SoundTbl_Idle = {"vj_piv/bruiser/zombie_mutant_get_up_00_0.wav","vj_piv/bruiser/zombie_mutant_get_up_01_0.wav","vj_piv/bruiser/zombie_mutant_get_up_02_0.wav","vj_piv/bruiser/zombie_mutant_idle_calm_00_0.wav","vj_piv/bruiser/zombie_mutant_idle_calm_01_0.wav","vj_piv/bruiser/zombie_mutant_idle_calm_02_0.wav"}
 ENT.SoundTbl_CombatIdle = {"vj_piv/bruiser/zombie_mutant_get_up_00_0.wav","vj_piv/bruiser/zombie_mutant_get_up_01_0.wav","vj_piv/bruiser/zombie_mutant_get_up_02_0.wav","vj_piv/bruiser/zombie_mutant_idle_calm_00_0.wav","vj_piv/bruiser/zombie_mutant_idle_calm_01_0.wav","vj_piv/bruiser/zombie_mutant_idle_calm_02_0.wav"}
 ENT.SoundTbl_Alert = {"vj_piv/bruiser/zombie_mutant_enemy_spotted_00_0.wav","vj_piv/bruiser/zombie_mutant_enemy_spotted_01_0.wav","vj_piv/bruiser/zombie_mutant_enemy_spotted_02_0.wav"}
@@ -55,9 +60,8 @@ ENT.HitGroupFlinching_Values = {
 function ENT:Zombie_CustomOnInitialize()
 	self:SetSkin(math.random(0,15))
 	self.NextRunT = CurTime() + math.random(6,12)
-	self.PIV_LegHP = self.PIV_LegHP *2
+	self.NextAngryT = CurTime()
 	self:SetModelScale(1.1)
-	self.ChargeAnim = (ACT_RUN_AIM_RELAXED)
 	self.StopChargingT = CurTime()
 	self.Charging = false	
 end
@@ -81,7 +85,7 @@ function ENT:Zombie_CustomOnThink()
 			if IsValid(tr.Entity) && (tr.Entity != self.VJ_TheController && tr.Entity != self.VJ_TheControllerBullseye) then
 		      if self:Disposition(tr.Entity) != D_LI then			
 					hitEnt = tr.Entity
-					VJ_EmitSound(self,self.SoundTbl_ChargeHit,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
+					VJ.EmitSound(self,self.SoundTbl_ChargeHit,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
 					local dmginfo = DamageInfo()
 					dmginfo:SetDamage(math.random(30,35))
 					dmginfo:SetDamageType(DMG_CLUB)
@@ -122,15 +126,12 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		-- get angy
 	
 		self.Angry = true
-		self.Running = false -- precaution
+		self.Running = true
 		self.Angry_Amount = 0
 		self.Angry_Time = CurTime() + math.random(10,20) -- how long we're angy for
 
 		-- play beforemelee sound to audibly let them know we're angy
-		VJ_EmitSound(self,self.SoundTbl_AngyBitch,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
-
-        self.AnimTbl_Walk = {ACT_WALK}
-        self.AnimTbl_Run = {ACT_RUN}
+		VJ.EmitSound(self,self.SoundTbl_AngyBitch,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
 		self.SoundTbl_CombatIdle = {"vj_piv/bruiser/zombie_mutant_taunt_00_0.wav","vj_piv/bruiser/zombie_mutant_taunt_01_0.wav","vj_piv/bruiser/zombie_mutant_taunt_02_0.wav"}
 
 	end
@@ -140,15 +141,13 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 			-- calm down cause we lost them
 			self.NextRunT = CurTime() + math.random(5,10)
 			self.Angry = false
-		    self.AnimTbl_Walk = {ACT_WALK}
-			self.AnimTbl_Run = {ACT_WALK}
+			self.Running = false
 			self.SoundTbl_CombatIdle = {"vj_piv/bruiser/zombie_mutant_get_up_00_0.wav","vj_piv/bruiser/zombie_mutant_get_up_01_0.wav","vj_piv/bruiser/zombie_mutant_get_up_02_0.wav","vj_piv/bruiser/zombie_mutant_idle_calm_00_0.wav","vj_piv/bruiser/zombie_mutant_idle_calm_01_0.wav","vj_piv/bruiser/zombie_mutant_idle_calm_02_0.wav"}
 		end
 		if self.Angry_Time < CurTime() then -- if the angy timer has run out
 			self.NextRunT = CurTime() + math.random(5,10)
 			self.Angry = false
-		    self.AnimTbl_Walk = {ACT_WALK}
-			self.AnimTbl_Run = {ACT_WALK}
+			self.Running = false
 			self.SoundTbl_CombatIdle = {"vj_piv/bruiser/zombie_mutant_get_up_00_0.wav","vj_piv/bruiser/zombie_mutant_get_up_01_0.wav","vj_piv/bruiser/zombie_mutant_get_up_02_0.wav","vj_piv/bruiser/zombie_mutant_idle_calm_00_0.wav","vj_piv/bruiser/zombie_mutant_idle_calm_01_0.wav","vj_piv/bruiser/zombie_mutant_idle_calm_02_0.wav"}
 		end
 	end
@@ -159,14 +158,11 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		local controlled = IsValid(self.VJ_TheController)
 		
 		if ((controlled && self.VJ_TheController:KeyDown(IN_ATTACK2)) or !controlled) && dist <= self.ChargeDistance && dist > self.MinChargeDistance && (self:GetForward():Dot((ent:GetPos() -self:GetPos()):GetNormalized()) > math.cos(math.rad(10))) && !self:BusyWithActivity() && CurTime() > self.NextChargeT && !self.Charging && ent:Visible(self)then
-			VJ_EmitSound(self,self.SoundTbl_StartCharge,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
+			VJ.EmitSound(self,self.SoundTbl_StartCharge,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
 			self.HasMeleeAttack = false
 			self.HasMeleeAttackKnockBack = true
 			self.StopChargingT = CurTime() +math.random(6,8)
 			self.Charging = true
-			self.AnimTbl_IdleStand = {self.ChargeAnim}
-			self.AnimTbl_Walk = {self.ChargeAnim}
-			self.AnimTbl_Run = {self.ChargeAnim}
 			self:SetState(VJ_STATE_ONLY_ANIMATION)
 		end
 	end
@@ -185,8 +181,8 @@ function ENT:StopCharging(crash)
 	self.NextChargeT = CurTime() +math.Rand(10,15)
 	if crash then
 		util.ScreenShake(self:GetPos(),16,100,1,150)
-	    VJ_EmitSound(self,self.SoundTbl_Crash,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
-		VJ_EmitSound(self,self.SoundTbl_Pain,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
+	    VJ.EmitSound(self,self.SoundTbl_Crash,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
+		VJ.EmitSound(self,self.SoundTbl_Pain,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
 	    self:VJ_ACT_PLAYACTIVITY(crash && "vjseq_shoved_backward",true,false,false)		
 end	
 	self.AnimTbl_IdleStand = {ACT_IDLE}
@@ -212,7 +208,7 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 	
 	if self.CanDoTheFunny == false then return end
 	
-	local stumble = VJ_PICK({"vjseq_shoved_backward","vjseq_shoved_rightward","vjseq_shoved_leftward","vjseq_shoved_forward",})
+	local stumble = VJ.PICK({"vjseq_shoved_backward","vjseq_shoved_rightward","vjseq_shoved_leftward","vjseq_shoved_forward",})
 	
 	if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SNIPER) then
 		if hitgroup == HITGROUP_HEAD or hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH then
@@ -241,7 +237,7 @@ function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
 
 	if dmginfo:IsExplosionDamage() then
 		if self.NextSplodeStumbleT < CurTime() then
-			self:VJ_ACT_PLAYACTIVITY(stumble,true,VJ_GetSequenceDuration(self,tbl),false)
+			self:VJ_ACT_PLAYACTIVITY(stumble,true,VJ.AnimDuration(self,tbl),false)
 			self.NextSplodeStumbleT = CurTime() + 5
 			self:StopCharging()
 		end
@@ -277,7 +273,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		}
 		
 		timer.Simple(0.7,function() if IsValid(self) then
-			VJ_EmitSound(self,self.SoundTbl_Crash,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
+			VJ.EmitSound(self,self.SoundTbl_Crash,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
 			util.ScreenShake(self:GetPos(), 300, 500, 1.6, 1200) end end)
 			local pos = self:LocalToWorld(Vector(50,0,0))
 			timer.Simple(0.7,function() if IsValid(self) then
@@ -288,7 +284,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 			effectdata:SetScale( 50 )
 			
 			util.Effect( "ThumperDust", effectdata )
-			util.VJ_SphereDamage(self, self, pos, 100, math.random(5,10), DMG_GENERIC, true, true, {DisableVisibilityCheck=true, Force=80})
+			VJ.ApplyRadiusDamage(self, self, pos, 100, math.random(5,10), DMG_GENERIC, true, true, {DisableVisibilityCheck=true, Force=80})
 			util.ScreenShake(pos, 300, 500, 1.6, 1200)
 		end end)
 		

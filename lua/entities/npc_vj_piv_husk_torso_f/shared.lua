@@ -1,0 +1,6 @@
+ENT.Base 			= "npc_vj_piv_husk_torso"
+ENT.Type 			= "ai"
+ENT.PrintName 		= "Husk Torso (Female)"
+ENT.Author 			= "Warkin"
+ENT.Purpose 		= "Spawn it and fight with it!"
+ENT.Instructions 	= "Click on the spawnicon to spawn it."

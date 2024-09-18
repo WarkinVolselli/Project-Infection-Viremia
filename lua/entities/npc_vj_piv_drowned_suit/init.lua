@@ -10,7 +10,8 @@ ENT.StartHealth = 200
 
 ENT.PIV_IsSpecial = true
 
-ENT.PIV_Infection_IsDrowned = true
+ENT.PIV_HasWeapons = false
+ENT.PIV_CanBeThrower = false
 
 ENT.SoundTbl_Idle = {"vj_piv/drowned/suit/deepsea_suit_idle_001.wav","vj_piv/drowned/suit/deepsea_suit_idle_002.wav","vj_piv/drowned/suit/deepsea_suit_idle_003.wav","vj_piv/drowned/suit/deepsea_suit_idle_004.wav","vj_piv/drowned/suit/deepsea_suit_idle_005.wav","vj_piv/drowned/suit/deepsea_suit_idle_006.wav","vj_piv/drowned/suit/deepsea_suit_idle_007.wav","vj_piv/drowned/suit/deepsea_suit_idle_008.wav","vj_piv/drowned/suit/deepsea_suit_idle_009.wav","vj_piv/drowned/suit/deepsea_suit_idle_010.wav","vj_piv/drowned/suit/deepsea_suit_idle_011.wav","vj_piv/drowned/suit/deepsea_suit_idle_012.wav","vj_piv/drowned/suit/deepsea_suit_idle_013.wav"}
 ENT.SoundTbl_Alert = {"vj_piv/drowned/suit/deepsea_suit_hears_something_001.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_002.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_003.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_004.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_005.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_006.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_007.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_008.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_009.wav"}
@@ -113,7 +114,7 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 			self.DamageSpark1:Fire("StopSpark", "", 0.001)
 			self:DeleteOnRemove(self.DamageSpark1)
 		end
-		if self.HasSounds == true && self.HasImpactSounds == true then VJ_EmitSound(self,"vj_impact_metal/bullet_metal/metalsolid"..math.random(1,10)..".wav",70) 
+		if self.HasSounds == true && self.HasImpactSounds == true then VJ.EmitSound(self,"vj_impact_metal/bullet_metal/metalsolid"..math.random(1,10)..".wav",70) 
 	end	
 
 end

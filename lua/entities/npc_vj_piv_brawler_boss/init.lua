@@ -7,7 +7,7 @@ include('shared.lua')
 -----------------------------------------------*/
 ENT.Model = {"models/vj_piv/specials/brawler/male_01.mdl","models/vj_piv/specials/brawler/male_02.mdl","models/vj_piv/specials/brawler/male_03.mdl","models/vj_piv/specials/brawler/male_04.mdl","models/vj_piv/specials/brawler/male_05.mdl","models/vj_piv/specials/brawler/male_07.mdl","models/vj_piv/specials/brawler/male_09.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.StartHealth = 2000
-ENT.VJ_IsHugeMonster = true
+ENT.PIV_IsHugeZombie = true
 
 ENT.PIV_IsBoss = true
 
@@ -33,7 +33,7 @@ ENT.PIV_SpawnCoolDownT = 0
 function ENT:Zombie_CustomOnInitialize()
 
 self.PIV_SpawnCoolDownT = CurTime() + 10
- 
+--[[
 if GetConVar("vj_piv_lights"):GetInt() == 1 then 
 
 self.Light2 = ents.Create("light_dynamic")
@@ -50,7 +50,7 @@ self.Light2:Fire("TurnOn", "", 0)
 self:DeleteOnRemove(self.Light2)
 
 end
-
+--]]
 	self:SetModelScale(1.3)
 	
 	self.ExtraGunModel1 = ents.Create("prop_physics")
@@ -217,7 +217,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
     if IsValid(self:GetEnemy()) == true && self.MeleeAttacking == false && self.VJ_IsBeingControlled == false && CurTime() > self.PIV_NextStrafeT && self:GetPos():Distance(self:GetEnemy():GetPos()) < 200 && self:GetPos():Distance(self:GetEnemy():GetPos()) > 50 then
         self:StopMoving()
         self:VJ_ACT_PLAYACTIVITY({"vjseq_sway_b","vjseq_sway_f","vjseq_sway_l","vjseq_sway_r"}, true, false, false)
-		VJ_EmitSound(self,"vj_piv/Miss"..math.random(1,5)..".wav",70,100)
+		VJ.EmitSound(self,"vj_piv/Miss"..math.random(1,5)..".wav",70,100)
 		util.ScreenShake(self:GetPos(), 100, 200, 1, 1000)
         self.PIV_NextRunT = CurTime() + 2
         self.PIV_NextStrafeT = CurTime() + math.random(3,6)

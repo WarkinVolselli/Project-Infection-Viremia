@@ -10,6 +10,12 @@ ENT.StartHealth = 200
 ENT.HullType = HULL_HUMAN
 
 ENT.PIV_IsSpecial = true
+ENT.PIV_Shambler = true
+ENT.PIV_Jogger = true
+
+ENT.PIV_HasSubclasses = false
+ENT.PIV_HasWeapons = false
+ENT.PIV_CanBeThrower = false
 
 ENT.AnimTbl_IdleStand = {ACT_IDLE_AIM_RELAXED}
 ENT.AnimTbl_Walk = {ACT_WALK_RELAXED}

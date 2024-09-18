@@ -133,13 +133,13 @@ self.SoundTbl_Death = {
 	"vj_piv/nmr_zomb_runner_male/zomb_runner_male1-death-20.wav"
 }
 
-self.IdleSoundPitch = VJ_Set(120, 120)
-self.CombatIdleSoundPitch = VJ_Set(120, 120)
-self.AlertSoundPitch = VJ_Set(120, 120)
-self.CallForHelpSoundPitch = VJ_Set(120, 120)
-self.BeforeMeleeAttackSoundPitch = VJ_Set(120, 120)
-self.PainSoundPitch = VJ_Set(120, 120)
-self.DeathSoundPitch = VJ_Set(120, 120)
+self.IdleSoundPitch = VJ.SET(120, 120)
+self.CombatIdleSoundPitch = VJ.SET(120, 120)
+self.AlertSoundPitch = VJ.SET(120, 120)
+self.CallForHelpSoundPitch = VJ.SET(120, 120)
+self.BeforeMeleeAttackSoundPitch = VJ.SET(120, 120)
+self.PainSoundPitch = VJ.SET(120, 120)
+self.DeathSoundPitch = VJ.SET(120, 120)
 
 elseif self.Voice == 2 then
 
@@ -512,13 +512,13 @@ self.SoundTbl_Death = {
 
 elseif self.Voice == 4 then
 
-	self.IdleSoundPitch = VJ_Set(120, 120)
-	self.CombatIdleSoundPitch = VJ_Set(120, 120)
-	self.AlertSoundPitch = VJ_Set(120, 120)
-	self.CallForHelpSoundPitch = VJ_Set(120, 120)
-	self.BeforeMeleeAttackSoundPitch = VJ_Set(120, 120)
-	self.PainSoundPitch = VJ_Set(120, 120)
-	self.DeathSoundPitch = VJ_Set(120, 120)
+	self.IdleSoundPitch = VJ.SET(120, 120)
+	self.CombatIdleSoundPitch = VJ.SET(120, 120)
+	self.AlertSoundPitch = VJ.SET(120, 120)
+	self.CallForHelpSoundPitch = VJ.SET(120, 120)
+	self.BeforeMeleeAttackSoundPitch = VJ.SET(120, 120)
+	self.PainSoundPitch = VJ.SET(120, 120)
+	self.DeathSoundPitch = VJ.SET(120, 120)
 
     local ContagionVoice = math.random(1,4)
 	

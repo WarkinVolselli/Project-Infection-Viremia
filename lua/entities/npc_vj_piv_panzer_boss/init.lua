@@ -7,26 +7,25 @@ include('shared.lua')
 -----------------------------------------------*/
 ENT.Model = {"models/vj_piv/specials/military/juggernaut.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.StartHealth = 3000
-ENT.VJ_IsHugeMonster = true
+ENT.PIV_IsHugeZombie = true
 ENT.PIV_HasArmor = true
 ENT.Berserk = false
 ENT.PIV_CanMutate = false
 ENT.PIV_Tank = true
+ENT.PIV_Jogger = true
 
 ENT.PIV_IsBoss = true
-
-ENT.AnimTbl_Run = {ACT_RUN_PROTECTED}	
 
 ENT.GeneralSoundPitch1 = 50
 ENT.GeneralSoundpitch2 = 50
 
 ENT.HasSoundTrack = true
-ENT.SoundTrackVolume = 0.3
-ENT.SoundTbl_SoundTrack = {"vj_piv/music/yakuzads_that_man.mp3"}
+ENT.SoundTrackVolume = 0.75
+ENT.SoundTbl_SoundTrack = {"vj_piv/music/megapanzer.mp3"}
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
-	self.NextSoundTime_Breath = VJ_Set(7,20)
+	self.NextSoundTime_Breath = VJ.SET(7,20)
 	self:SetSkin(math.random(0,1))
 	self:SetModelScale(1.4)
 
@@ -37,7 +36,7 @@ function ENT:Zombie_CustomOnInitialize()
 		self.Light2:SetKeyValue("distance", "75")
 		self.Light2:SetLocalPos(self:GetPos())
 		self.Light2:SetLocalAngles(self:GetAngles())
-		self.Light2:Fire("Color", "216 255 0 255")
+		self.Light2:Fire("Color", "255 175 0 255")
 		self.Light2:SetParent(self)
 		self.Light2:Spawn()
 		self.Light2:Activate()
@@ -50,13 +49,12 @@ function ENT:Zombie_CustomOnInitialize()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
-
 	if self.Berserk == false && (self:Health() <= (self:GetMaxHealth() / 3)) then
 		self.Berserk = true
 		self.AnimTbl_Run = {ACT_RUN_RELAXED}
         self:PlaySoundSystem("Alert")	
-		local tbl = VJ_PICK({"nz_taunt_9"})
-		self:VJ_ACT_PLAYACTIVITY(tbl,true,VJ_GetSequenceDuration(self,tbl),false)		
+		local tbl = VJ.PICK({"nz_taunt_9"})
+		self:VJ_ACT_PLAYACTIVITY(tbl,true,VJ.AnimDuration(self,tbl),false)		
 	end   
 
 		if (dmginfo:IsBulletDamage()) then
@@ -74,13 +72,12 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 			self.DamageSpark1:Fire("StopSpark", "", 0.001)
 			self:DeleteOnRemove(self.DamageSpark1)
 		end
-		if self.HasSounds == true && self.HasImpactSounds == true then VJ_EmitSound(self,"vj_impact_metal/bullet_metal/metalsolid"..math.random(1,10)..".wav",70) 
+		if self.HasSounds == true && self.HasImpactSounds == true then VJ.EmitSound(self,"vj_impact_metal/bullet_metal/metalsolid"..math.random(1,10)..".wav",70) 
 	end	
 	
 	if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 then
 		dmginfo:ScaleDamage(GetConVarNumber("vj_piv_headshot_damage_mult"))
     end
-
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
@@ -181,7 +178,7 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 			"vjges_melee_moving06",
 		}
 	
-		if self.Berserk == true and math.random(1,4) == 1 then
+		if self.Berserk == true && math.random(1,4) == 1 then
 		
 			self.MeleeAttackAnimationAllowOtherTasks = false
 	

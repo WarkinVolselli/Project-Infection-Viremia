@@ -10,11 +10,19 @@ ENT.StartHealth = 200
 
 ENT.PIV_IsSpecial = true
 
+ENT.PIV_HasSubclasses = false
+ENT.PIV_AllowedToClimb = false
+ENT.PIV_CanBeThrower = false
+
+ENT.PIV_HasWeapons = false
+
 ENT.NextRunT = 0
 ENT.Running = false
 ENT.RunT = 0
 ENT.PIV_MovementAnims = 0
 ENT.PIV_Husk_Explode = false
+
+ENT.TorsoEntity = "npc_vj_piv_husk_torso"
  
 ENT.PIV_LegHP = 100
 ENT.PIV_Husk_Headless = false
@@ -75,6 +83,10 @@ function ENT:Zombie_CustomOnPreInitialize()
 		self.PIV_Husk_Headless = true
 	end
 	
+	if self:GetClass() == "npc_vj_piv_husk_f" then
+		self.TorsoEntity = "npc_vj_piv_husk_torso_f"
+	end
+	
 	if GetConVar("vj_piv_husk_explode"):GetInt() == 1 && math.random(1,GetConVar("vj_piv_husk_explode_chance"):GetInt()) == 1 then
 		self.PIV_Husk_Explode = true
 		self.HasDeathAnimation = true
@@ -101,7 +113,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		self.PIV_Mutated == false
     then
 
-        VJ_EmitSound(self,self.SoundTbl_Charge,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
+        VJ.EmitSound(self,self.SoundTbl_Charge,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
 
         self.Running = true
         self.RunT = CurTime() + math.random(5,10)
@@ -137,9 +149,9 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 	
         if self:IsMoving() && self:GetSequence() == self:LookupSequence(ACT_RUN) then
 
-			local stop = VJ_PICK({"vjseq_running_to_standing","vjseq_running_to_standing_02","vjseq_shove_forward_01"})
-		    self:VJ_ACT_PLAYACTIVITY(stop,true,VJ_GetSequenceDuration(self,tbl),false)
-			VJ_EmitSound(self,self.SoundTbl_Pain,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
+			local stop = VJ.PICK({"vjseq_running_to_standing","vjseq_running_to_standing_02","vjseq_shove_forward_01"})
+		    self:VJ_ACT_PLAYACTIVITY(stop,true,VJ.AnimDuration(self,tbl),false)
+			VJ.EmitSound(self,self.SoundTbl_Pain,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
 
         end
 
@@ -158,31 +170,30 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnKilled(dmginfo,hitgroup)
    	if self.PIV_Husk_Explode == true then
-			util.VJ_SphereDamage(self,self,self:GetPos(),150,math.random(0,0),DMG_BLAST,true,true,{Force=20})
+			VJ.ApplyRadiusDamage(self,self,self:GetPos(),150,math.random(0,0),DMG_BLAST,true,true,{Force=20})
 		for k,v in ipairs(ents.FindInSphere(self:GetPos(),150)) do
 			v:TakeDamage(math.random(20,30))
 		end
 			util.ScreenShake(self:GetPos(),44,600,1.5,2000)
-		end
 	end
-
+end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnPriorToKilled(dmginfo,hitgroup)
 	if self.PIV_Husk_Explode == true then
-		VJ_EmitSound(self,{"vj_piv/gore/PreExplode1.wav","vj_piv/gore/PreExplode2.wav","vj_piv/gore/PreExplode3.wav"},75,math.random(100,100))
+		VJ.EmitSound(self,{"vj_piv/gore/PreExplode1.wav","vj_piv/gore/PreExplode2.wav","vj_piv/gore/PreExplode3.wav"},75,math.random(100,100))
 	timer.Simple(0.25,function() if IsValid(self) then
-		VJ_EmitSound(self,{"vj_piv/gore/HeadshotDevestate3.wav","vj_piv/gore/HeadshotDevestate4.wav","vj_piv/gore/HeadshotDevestate5.wav"},75,math.random(100,100))
+		VJ.EmitSound(self,{"vj_piv/gore/HeadshotDevestate3.wav","vj_piv/gore/HeadshotDevestate4.wav","vj_piv/gore/HeadshotDevestate5.wav"},75,math.random(100,100))
 	timer.Simple(0.70,function() if IsValid(self) then
-		VJ_EmitSound(self,{"vj_piv/gore/Explode1.wav","vj_piv/gore/Explode2.wav","vj_piv/gore/Explode3.wav"},100,math.random(100,100))
+		VJ.EmitSound(self,{"vj_piv/gore/Explode1.wav","vj_piv/gore/Explode2.wav","vj_piv/gore/Explode3.wav"},100,math.random(100,100))
         local bloodeffect = EffectData()
 		bloodeffect:SetOrigin(self:GetPos()+ self:GetUp()*80)
-		bloodeffect:SetColor(VJ_Color2Byte(Color(127,0,0,255)))
+		bloodeffect:SetColor(VJ.Color2Byte(Color(127,0,0,255)))
 		bloodeffect:SetScale(250)
 		util.Effect("VJ_Blood1",bloodeffect)
 		
 		local bloodspray = EffectData()
 			bloodspray:SetOrigin(self:GetPos() +self:OBBCenter())
-			bloodspray:SetColor(VJ_Color2Byte(Color(127,0,0,255)))
+			bloodspray:SetColor(VJ.Color2Byte(Color(127,0,0,255)))
 			bloodspray:SetScale(1)
 			bloodspray:SetFlags(3)
 			bloodspray:SetColor(1)
@@ -494,6 +505,54 @@ self:DeleteOnRemove(self.Light2)
 
 end
 
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Cripple()
+	self.PIV_Crippled = true
+	self.PIV_Husk_Explode = false
+	self.HasDeathAnimation = false
+	if self.PIV_Husk_Headless == true then
+		self.DeathCorpseModel = {"models/vj_piv/specials/husk/zombie_legs_beta.mdl"} 		
+	else
+		self.DeathCorpseModel = {"models/vj_piv/specials/husk/zombie_legs.mdl"} 
+	end
+	self:TakeDamage(1000)
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
+	if IsValid(GetCorpse) && self.PIV_Crippled == true then
+		
+		local TheDude = ents.Create(self.TorsoEntity)
+		TheDude:SetPos(GetCorpse:GetPos())
+		TheDude:SetAngles(GetCorpse:GetAngles())
+		TheDude:Spawn()
+		TheDude:Activate()
+		TheDude:SetMaterial()
+		TheDude:SetSkin(GetCorpse:GetSkin())
+		TheDude:VJ_ACT_PLAYACTIVITY("vjseq_fall",true,VJ.AnimDuration(self,tbl),false)
+		TheDude:SetVelocity(dmginfo:GetDamageForce()/58)
+		
+		undo.ReplaceEntity(self,TheDude)
+		
+		VJ.EmitSound(TheDude,{"vj_piv/gore/GutExplosion-1.wav","vj_piv/gore/GutExplosion-2.wav","vj_piv/gore/GutExplosion-3.wav"},70,math.random(100,100))
+		local bloodspray = EffectData()
+		bloodspray:SetOrigin(TheDude:GetPos())
+		bloodspray:SetScale(10)
+		bloodspray:SetFlags(3)
+		bloodspray:SetColor(0)
+		util.Effect("bloodspray",bloodspray)
+		util.Effect("bloodspray",bloodspray)
+
+		local bloodeffect = EffectData()
+		bloodeffect:SetOrigin(TheDude:GetPos())
+		bloodeffect:SetColor(VJ.Color2Byte(Color(127,0,0,255)))
+		bloodeffect:SetScale(125)
+		util.Effect("VJ_Blood1",bloodeffect)
+		
+		if self:IsOnFire()then 
+			TheDude:Ignite(math.random(5,20))
+		end
+	end
 end
 /*-----------------------------------------------
 	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***

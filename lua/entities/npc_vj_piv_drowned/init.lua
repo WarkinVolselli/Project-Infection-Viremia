@@ -6,15 +6,20 @@ include('shared.lua')
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
 ENT.Model = {"models/vj_piv/specials/drowned/drowned.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
-ENT.StartHealth = 125
+ENT.StartHealth = 100
 
 ENT.PIV_IsSpecial = true
+ENT.PIV_IsAquatic = true
 
-ENT.PIV_Infection_IsDrowned = true
+ENT.PIV_CanBeThrower = false
+ENT.PIV_HasWeapons = false
+ENT.PIV_CanBeCrawler = false
 
-ENT.HasEntitiesToNoCollide = true
-ENT.EntitiesToNoCollide = {"obj_vj_piv_boil"}
-
+ENT.Aquatic_SwimmingSpeed_Calm = 100
+ENT.Aquatic_SwimmingSpeed_Alerted = 300
+ENT.Aquatic_AnimTbl_Calm = {"swimming_all_calm"}
+ENT.Aquatic_AnimTbl_Alerted = {"swimming_all"}
+		
 ENT.SoundTbl_Idle = {"vj_piv/drowned/zmb_vox_spr_spawn_01.wav","vj_piv/drowned/zmb_vox_spr_spawn_02.wav","vj_piv/drowned/zmb_vox_spr_spawn_03.wav","vj_piv/drowned/zmb_vox_spr_spawn_04.wav","vj_piv/drowned/zmb_vox_spr_spawn_05.wav","vj_piv/drowned/zmb_vox_spr_spawn_06.wav","vj_piv/drowned/zmb_vox_spr_spawn_07.wav","vj_piv/drowned/zmb_vox_spr_spawn_08.wav","vj_piv/drowned/zmb_vox_spr_spawn_09.wav"}
 ENT.SoundTbl_Alert = {"vj_piv/drowned/zmb_vox_spr_charge_01.wav","vj_piv/drowned/zmb_vox_spr_charge_02.wav","vj_piv/drowned/zmb_vox_spr_charge_03.wav","vj_piv/drowned/zmb_vox_spr_charge_04.wav","vj_piv/drowned/zmb_vox_spr_charge_05.wav","vj_piv/drowned/zmb_vox_spr_charge_06.wav"}
 ENT.SoundTbl_CombatIdle = {"vj_piv/drowned/zmb_vox_spr_charge_01.wav","vj_piv/drowned/zmb_vox_spr_charge_02.wav","vj_piv/drowned/zmb_vox_spr_charge_03.wav","vj_piv/drowned/zmb_vox_spr_charge_04.wav","vj_piv/drowned/zmb_vox_spr_charge_05.wav","vj_piv/drowned/zmb_vox_spr_charge_06.wav"}
@@ -27,17 +32,12 @@ function ENT:Zombie_CustomOnInitialize()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnThink_AIEnabled()
+	if self.PIV_Crippled == true or self.PIV_FuckingCrawlingLittleCunt == true then return end
 	if self:WaterLevel() > 2 && self:WaterLevel() < 12 then
-		self.MovementType = VJ_MOVETYPE_AQUATIC
-		self.Aquatic_SwimmingSpeed_Calm = 100
-		self.Aquatic_SwimmingSpeed_Alerted = 300
-		self.AnimTbl_IdleStand = {ACT_HL2MP_SWIM_IDLE}
-		self.Aquatic_AnimTbl_Calm = {"swimming_all_calm"}
-		self.Aquatic_AnimTbl_Alerted = {"swimming_all"}
+		self:DoChangeMovementType(VJ_MOVETYPE_AQUATIC)
 		self.PIV_CanRest = false
 		else
-		self.MovementType = VJ_MOVETYPE_GROUND
-		self.AnimTbl_IdleStand = {ACT_IDLE_ON_FIRE}
+		self:DoChangeMovementType(VJ_MOVETYPE_GROUND)
 		if GetConVar("vj_piv_resting"):GetInt() == 1 then
 			self.PIV_CanRest = true
 		end

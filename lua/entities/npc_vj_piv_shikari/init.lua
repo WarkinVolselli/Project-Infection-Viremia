@@ -10,6 +10,12 @@ ENT.StartHealth = 100
 
 ENT.PIV_IsSpecial = true
 
+ENT.PIV_HasSubclasses = false
+ENT.PIV_AllowedToClimb = false
+ENT.PIV_HasWeapons = false
+ENT.PIV_CanBeThrower = false
+ENT.PIV_CanBeCrippled = false
+
 ENT.AnimTbl_IdleStand = {ACT_IDLE}
 ENT.AnimTbl_Walk = {ACT_WALK} -- Set the walking animations | Put multiple to let the base pick a random animation when it moves
 ENT.AnimTbl_Run = {ACT_RUN} -- Set the running animations | Put multiple to let the base pick a random animation when it moves
@@ -28,6 +34,8 @@ ENT.LeapAttackDamage = 0
 ENT.LeapAttackDamageDistance = 0 -- How far does the damage go?
 ENT.TimeUntilLeapAttackDamage = false
 
+ENT.TorsoEntity = "npc_vj_piv_shikari_torso"
+
 	-- ====== Flinching Code ====== --
 ENT.CanFlinch = 1 -- 0 = Don't flinch | 1 = Flinch at any damage | 2 = Flinch only from certain damages
 ENT.AnimTbl_Flinch = {ACT_FLINCH_PHYSICS} -- If it uses normal based animation, use this
@@ -42,7 +50,6 @@ ENT.SoundTbl_Death = {"vj_piv/shikari/die1.wav","vj_piv/shikari/die2.wav","vj_pi
 ENT.SoundTbl_LeapAttackJump = {"vj_piv/shikari/leap1.wav"}
 
 ENT.AlertSoundLevel = 85
-ENT.BeforeMeleeAttackSoundLevel = 85
 ENT.LeapAttackJumpSoundLevel = 85
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -54,7 +61,7 @@ end
 function ENT:Zombie_CustomOnAlert()
 	if GetConVar("vj_piv_alert_anim"):GetInt() == 1 && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Resting == 0 && self:GetSequence() != self:LookupSequence(ACT_OPEN_DOOR) then
 		if math.random(1,GetConVar("vj_piv_alert_anim_chance"):GetInt()) == 1 then
-			local tbl = VJ_PICK({"vjseq_idle_angry","vjseq_br2_roar"})
+			local tbl = VJ.PICK({"vjseq_idle_angry","vjseq_br2_roar"})
 			self:VJ_ACT_PLAYACTIVITY(tbl,true,false,true)
 		end
 	end
@@ -115,6 +122,71 @@ self:DeleteOnRemove(self.Light2)
 
 end
 
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
+	if GetConVarNumber("vj_piv_cripple") == 1 then  -- if the convars not on don't run this
+		if hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then -- are we hitting the leg?
+			self.PIV_LegHP = self.PIV_LegHP -dmginfo:GetDamage() -- take away leg hp
+		end
+	end
+
+	if self.PIV_LegHP <= 0 then -- we're out of leg hp
+		self.PIV_Crippled = true -- aw fuck we're crippled now
+		local anim = {"vjseq_nz_death_1","vjseq_nz_death_f_7","vjseq_nz_death_f_8"} -- falling animations
+		self:VJ_ACT_PLAYACTIVITY(anim,true,false,false) -- play a fall animation 
+		self:Cripple() -- crippled
+	end
+	
+	if hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH or hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then
+		if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsExplosionDamage() then
+			if dmginfo:GetDamage() > 49 or dmginfo:GetDamageForce():Length() > 10000 then
+				self:Cripple()
+			end
+		end
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:Cripple()
+	self.PIV_Crippled = true
+	self.HasDeathAnimation = false
+	self.DeathCorpseModel = {"models/vj_piv/specials/shikari/Fast_Legs.mdl"} 
+	self:TakeDamage(1000)
+end
+---------------------------------------------------------------------------------------------------------------------------------------------
+function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
+	if IsValid(GetCorpse) && self.PIV_Crippled == true then
+		
+		local TheDude = ents.Create(self.TorsoEntity)
+		TheDude:SetPos(GetCorpse:GetPos())
+		TheDude:SetAngles(GetCorpse:GetAngles())
+		TheDude:Spawn()
+		TheDude:Activate()
+		TheDude:SetMaterial()
+		TheDude:SetSkin(GetCorpse:GetSkin())
+		TheDude:SetVelocity(dmginfo:GetDamageForce()/58)
+		
+		undo.ReplaceEntity(self,TheDude)
+		
+		VJ.EmitSound(TheDude,{"vj_piv/gore/GutExplosion-1.wav","vj_piv/gore/GutExplosion-2.wav","vj_piv/gore/GutExplosion-3.wav"},70,math.random(100,100))
+		local bloodspray = EffectData()
+		bloodspray:SetOrigin(TheDude:GetPos())
+		bloodspray:SetScale(10)
+		bloodspray:SetFlags(3)
+		bloodspray:SetColor(0)
+		util.Effect("bloodspray",bloodspray)
+		util.Effect("bloodspray",bloodspray)
+
+		local bloodeffect = EffectData()
+		bloodeffect:SetOrigin(TheDude:GetPos())
+		bloodeffect:SetColor(VJ.Color2Byte(Color(127,0,0,255)))
+		bloodeffect:SetScale(125)
+		util.Effect("VJ_Blood1",bloodeffect)
+		
+		if self:IsOnFire()then 
+			TheDude:Ignite(math.random(5,20))
+		end
+	end
 end
 /*-----------------------------------------------
 	*** Copyright (c) 2012-2021 by DrVrej, All rights reserved. ***
