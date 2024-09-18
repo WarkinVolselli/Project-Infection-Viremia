@@ -13,61 +13,11 @@ local AutorunFile = "autorun/vj_piv_autorun.lua"
 local VJExists = file.Exists("lua/autorun/vj_base_autorun.lua","GAME")
 if VJExists == true then
 	include('autorun/vj_controls.lua')
-	
-	/* -- Comment box start
-	NOTE: The following code is commented out so the game doesn't run it! When copying one of the options below, make sure to put it outside of the comment box!
-	
-	VJ.AddNPC("Dummy SNPC","npc_vj_dum_dummy",vCat) -- Adds a NPC to the spawnmenu
-		-- Parameters:
-			-- First is the name, second is the class name
-			-- Third is the category that it should be in
-			-- Fourth is optional, which is a boolean that defines whether or not it's an admin-only entity
-	VJ.AddNPC_HUMAN("Dummy Human SNPC","npc_vj_dum_dummy",{"weapon_vj_dummy"},vCat) -- Adds a NPC to the spawnmenu but with a list of weapons it spawns with
-		-- Parameters:
-			-- First is the name, second is the class name
-			-- Third is a table of weapon, the base will pick a random one from the table and give it to the SNPC when "Default Weapon" is selected
-			-- Fourth is the category that it should be in
-			-- Fifth is optional, which is a boolean that defines whether or not it's an admin-only entity
-	VJ.AddWeapon("Dummy Weapon","weapon_vj_dummy",false,vCat) -- Adds a weapon to the spawnmenu
-		-- Parameters:
-			-- First is the name, second is the class name
-			-- Third is a boolean that defines whether or not it's an admin-only entity
-			-- And the last parameter is the category that it should be in
-	VJ.AddNPCWeapon("VJ_Dummy", "weapon_vj_dummy") -- Adds a weapon to the NPC weapon list
-		-- Parameters:
-			-- First is the name, second is the class name
-	VJ.AddEntity("Dummy Kit","sent_vj_dummykit","Author Name",false,0,true,vCat) -- Adds an entity to the spawnmenu
-		-- Parameters: 
-			-- First is the name, second is the class name and the third is its class name	
-			-- Fourth is a boolean that defines whether or not it's an admin-only entity
-			-- Fifth is an integer that defines the offset of the entity (When it spawns)
-			-- Sixth is a boolean that defines whether or not it should drop to the floor when it spawns
-			-- And the last parameter is the category that it should be in
 
-	-- Particles --
-	VJ.AddParticle("particles/example_particle.pcf",{
-		"example_particle_name1",
-		"example_particle_name2",
-	})
-	
-	-- Precache Models --
-	util.PrecacheModel("models/example_model.mdl")
-	
-	-- ConVars --
-	VJ.AddConVar("vj_dum_dummy_h",100) -- Example 1
-	VJ.AddConVar("vj_dum_dummy_d",20) -- Example 2
-	
-	*/  -- Comment box end
-	
 	-- Precache Models --
 	util.PrecacheModel("models/vj_piv/hl2/charple.mdl")
 	util.PrecacheModel("models/vj_piv/hl2/corpse1.mdl")
 
-	local vCat = "Project Infection: Viremia"
-
-	VJ.AddNPC("Walker Base","npc_vj_piv_walker_base",vCat)
-	VJ.AddNPC("Runner Base","npc_vj_piv_runner_base",vCat)
-	
 	local vCat = "Project Infection: Viremia - Citizens"
 	
 	VJ.AddNPC("Civilian Walker (Female)","npc_vj_piv_walker_civ_f",vCat)
@@ -101,6 +51,9 @@ if VJExists == true then
 
 	VJ.AddNPC("Overwatch Elite Walker","npc_vj_piv_walker_combine_e",vCat)
 	VJ.AddNPC("Overwatch Elite Runner","npc_vj_piv_runner_combine_e",vCat)
+	
+	VJ.AddNPC("Stripped Overwatch Walker","npc_vj_piv_walker_combine_st",vCat)
+	VJ.AddNPC("Stripped Overwatch Runner","npc_vj_piv_runner_combine_st",vCat)
 	
 	local vCat = "Project Infection: Viremia - Military"
 	
@@ -151,7 +104,10 @@ if VJExists == true then
 	VJ.AddNPC("Revenant (Female)","npc_vj_piv_revenant_f",vCat)
 	VJ.AddNPC("Husk (Male)","npc_vj_piv_husk",vCat)
 	VJ.AddNPC("Husk (Female)","npc_vj_piv_husk_f",vCat)
+	VJ.AddNPC("Husk Torso (Male)","npc_vj_piv_husk_torso",vCat)
+	VJ.AddNPC("Husk Torso (Female)","npc_vj_piv_husk_torso_f",vCat)
 	VJ.AddNPC("Shikari","npc_vj_piv_shikari",vCat)
+	VJ.AddNPC("Shikari Torso","npc_vj_piv_shikari_torso",vCat)
 	VJ.AddNPC("Virulent","npc_vj_piv_virulent",vCat)
 	VJ.AddNPC("Phorid","npc_vj_piv_phorid",vCat)
 
@@ -194,8 +150,8 @@ if VJExists == true then
 	VJ.AddConVar("vj_piv_headshot_damage_mult", 2, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_spawnanim", 0, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_deathanim", 1, {FCVAR_ARCHIVE}) 
-	VJ.AddConVar("vj_piv_deathanim_chance", 4, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_resting", 0, {FCVAR_ARCHIVE}) 
+	VJ.AddConVar("vj_piv_deathanim_chance", 3, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_resting", 1, {FCVAR_ARCHIVE}) 
 	VJ.AddConVar("vj_piv_alt_idle_walk", 1, {FCVAR_ARCHIVE}) 
 	VJ.AddConVar("vj_piv_alt_runner_anims", 1, {FCVAR_ARCHIVE}) 
 	VJ.AddConVar("vj_piv_alert_anim", 1, {FCVAR_ARCHIVE}) 
@@ -218,7 +174,7 @@ if VJExists == true then
 	VJ.AddConVar("vj_piv_weapons_dropping_chance", 3, {FCVAR_ARCHIVE})
 	
 	VJ.AddConVar("vj_piv_throwing", 1, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_throwing_chance", 10, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_thrower_chance", 10, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_throwing_min", 1, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_throwing_max", 3, {FCVAR_ARCHIVE})
 	
@@ -234,12 +190,11 @@ if VJExists == true then
 	VJ.AddConVar("vj_piv_rusher_chance", 8, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_leaper_chance", 10, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_crawler_chance", 12, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_diseased_chance", 10, {FCVAR_ARCHIVE})
 
-	VJ.AddConVar("vj_piv_elementals", 1, {FCVAR_ARCHIVE})
-
-	VJ.AddConVar("vj_piv_blazing_chance", 10, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_electra_chance", 10, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_toxic_chance", 10, {FCVAR_ARCHIVE})
+	-- misc --
+	
+	VJ.AddConVar("vj_piv_burntexture", 1, {FCVAR_ARCHIVE})
 	
 	-- models/skins -- 
 	
@@ -324,11 +279,11 @@ if VJExists == true then
 			
 			vj_piv_spawnanim = "0",
 			vj_piv_deathanim = "1",
-			vj_piv_deathanim_chance = "4",
+			vj_piv_deathanim_chance = "3",
 			
 			vj_piv_alt_idle_walk = "1",
-			vj_piv_resting = "0",
 			vj_piv_alt_runner_anims = "1",
+			vj_piv_resting = "1",
 			
 			vj_piv_alert_anim = "1",
 			vj_piv_alert_anim_chance = "4",
@@ -348,14 +303,13 @@ if VJExists == true then
 			vj_piv_boss_summon = "1",
 			
 			vj_piv_subclasses = "1",
-			vj_piv_elementals = "1",
 			
 			vj_piv_weapons_dropping = "1",
 			vj_piv_weapons_dropping_stumble = "1",
 			vj_piv_weapons_dropping_chance = "3",
 			
 			vj_piv_throwing = "1",
-			vj_piv_throwing_chance = "10",
+			vj_piv_thrower_chance = "10",
 			vj_piv_throwing_min = "1",
 			vj_piv_throwing_max = "3",			
 
@@ -367,10 +321,9 @@ if VJExists == true then
 			vj_piv_rusher_chance = "8",
 			vj_piv_leaper_chance = "10",
 			vj_piv_crawler_chance = "12",
-			
-			vj_piv_blazing_chance = "10",
-			vj_piv_electra_chance = "10",
-			vj_piv_toxic_chance = "10",
+			vj_piv_diseased_chance = "10",
+					
+			vj_piv_burntexture = "1",
 
 			vj_piv_extramodels = "1",	
 			vj_piv_extraclothes = "1",
@@ -464,8 +417,8 @@ if VJExists == true then
 	Panel:ControlHelp("When enabled, zombies will have a more passive walk animation when idle.")
 	Panel:AddControl("Checkbox", {Label = "Enable Alternate Runner Animations?", Command = "vj_piv_alt_runner_anims"})
 	Panel:ControlHelp("When enabled, Runners will use more aggressive walking and idle animations.")
-	Panel:AddControl("Checkbox", {Label = "Enable Resting? [EXPERIMENTAL]", Command = "vj_piv_resting"})
-	Panel:ControlHelp("When enabled, zombies will sometimes sit or lay down when idle. (Disabled by default due to bug.)")
+	Panel:AddControl("Checkbox", {Label = "Enable Resting?", Command = "vj_piv_resting"})
+	Panel:ControlHelp("When enabled, zombies will sometimes sit or lay down when idle.")
 
 	Panel:AddControl("Checkbox", {Label = "Enable Headshot Damage Multiplier?", Command = "vj_piv_headshot_damage"})
 	Panel:ControlHelp("When enabled, zombies will take increased damage from headshots. (Certain enemies are exempt.)	")
@@ -488,17 +441,17 @@ if VJExists == true then
 	Panel:AddControl("Checkbox", {Label = "Enable Weapon Dropping?", Command = "vj_piv_weapons_dropping"})
 	Panel:ControlHelp("When enabled, zombies will drop their weapons when killed or crippled.")
 	Panel:AddControl("Checkbox", {Label = "Zombies Drop Weapons on Stumble?", Command = "vj_piv_weapons_dropping_stumble"})
-	Panel:ControlHelp("When enabled, zombies will sometimes drop their weapons when stumbling or etc. (Requires Enable Weapon Dropping,.)")
+	Panel:ControlHelp("When enabled, zombies will sometimes drop their weapons when stumbling or etc. (Requires Enable Weapon Dropping.)")
 	Panel:AddControl("Slider", {Label = "Drop Weapon On Stumble Chance", Command = "vj_piv_weapons_dropping_chance", Min = 1, Max = 100})
 	
 	Panel:AddControl("Checkbox", {Label = "Enable Thrower Zombies?", Command = "vj_piv_throwing"})
 	Panel:ControlHelp("When enabled, zombies can sometimes spawn with throwing items.")
-	Panel:AddControl("Slider", {Label = "Thrower Chance", Command = "vj_piv_throwing_chance", Min = 1, Max = 100})
+	Panel:AddControl("Slider", {Label = "Thrower Chance", Command = "vj_piv_thrower_chance", Min = 1, Max = 100})
 	Panel:AddControl("Slider", {Label = "Min Throwing Items", Command = "vj_piv_throwing_min", Min = 1, Max = 100})
 	Panel:AddControl("Slider", {Label = "Max Throwing Items", Command = "vj_piv_throwing_max", Min = 1, Max = 100})
 
 	Panel:AddControl("Checkbox", {Label = "Enable Subclasses?", Command = "vj_piv_subclasses"})
-	Panel:ControlHelp("When enabled, zombies will sometimes spawn as stronger variants.")
+	Panel:ControlHelp("When enabled, zombies will sometimes spawn with different traits.")
 
 	Panel:AddControl("Slider", {Label = "Crawler Chance", Command = "vj_piv_crawler_chance", Min = 1, Max = 100})
 	Panel:AddControl("Slider", {Label = "Shambler Chance", Command = "vj_piv_shambler_chance", Min = 1, Max = 100})
@@ -508,21 +461,15 @@ if VJExists == true then
 	Panel:AddControl("Slider", {Label = "Super Sprinter Chance", Command = "vj_piv_super_sprinter_chance", Min = 1, Max = 100})
 	Panel:AddControl("Slider", {Label = "Rusher Chance", Command = "vj_piv_rusher_chance", Min = 1, Max = 100})
 	Panel:AddControl("Slider", {Label = "Leaper Chance", Command = "vj_piv_leaper_chance", Min = 1, Max = 100})
-
-	Panel:AddControl("Checkbox", {Label = "Enable Elementals?", Command = "vj_piv_elementals"})
-	Panel:ControlHelp("When enabled, some zombies can spawn with elemental effects that grant them additional abilities.")
+	Panel:AddControl("Slider", {Label = "Diseased Chance", Command = "vj_piv_diseased_chance", Min = 1, Max = 100})
 	
-	Panel:AddControl("Slider", {Label = "Blazing Mutation Chance", Command = "vj_piv_blazing_chance", Min = 1, Max = 100})
-	Panel:AddControl("Slider", {Label = "Electra Mutation Chance", Command = "vj_piv_electra_chance", Min = 1, Max = 100})
-	Panel:AddControl("Slider", {Label = "Toxic Mutation Chance", Command = "vj_piv_toxic_chance", Min = 1, Max = 100})
+	Panel:AddControl("Checkbox", {Label = "Burning Corpse Texture?", Command = "vj_piv_burntexture"})
+	Panel:ControlHelp("Applies a burnt texture to NPCs killed by fire/while on fire.")
 
 	Panel:AddControl("Checkbox", {Label = "HL2 Skins Only?", Command = "vj_piv_hl2skins"})
 	Panel:ControlHelp("When enabled, Citizen zombies will only use HL2 skins.")
 	Panel:AddControl("Checkbox", {Label = "Enable Extra Citizen Models?", Command = "vj_piv_extramodels"})
 	Panel:ControlHelp("When enabled, Citizen zombies will have more models instead of just the default ones.")
-	--Panel:AddControl("Checkbox", {Label = "Enable Extra Citizen Clothes?", Command = "vj_piv_extraclothes"})
-	
-	-- walker voice
 	
 	local combobox_walkervoice = {Options = {}, CVars = {}, Label = "Walker Voice", MenuButton = "0"}
 	combobox_walkervoice.Options["No More Room In Hell"] = {vj_piv_walk_voice = 0}
@@ -533,8 +480,6 @@ if VJExists == true then
 	Panel:AddControl("ComboBox", combobox_walkervoice)
 	Panel:ControlHelp("Changes the sounds of Walkers.")
 	
-	-- runner voice
-	
 	local combobox_runnervoice = {Options = {}, CVars = {}, Label = "Runner Voice", MenuButton = "0"}
 	combobox_runnervoice.Options["No More Room In Hell"] = {vj_piv_run_voice = 0}
 	combobox_runnervoice.Options["Dying Light"] = {vj_piv_run_voice = 1}
@@ -543,22 +488,10 @@ if VJExists == true then
 	combobox_runnervoice.Options["Random"] = {vj_piv_run_voice = 4}
 	Panel:AddControl("ComboBox", combobox_runnervoice)
 	Panel:ControlHelp("Changes the sounds of Runners.")
-	
-	-- giant voice
---[[	
-	local combobox_giantvoice = {Options = {}, CVars = {}, Label = "Giant Voice", MenuButton = "0"}
-	combobox_giantvoice.Options["Dying Light Demolisher"] = {vj_piv_giant_voice = 0}
-	combobox_giantvoice.Options["Left 4 Dead 2 Tank"] = {vj_piv_giant_voice = 1}
-	combobox_giantvoice.Options["Left 4 Dead 2 Charger"] = {vj_piv_giant_voice = 2}
-	combobox_giantvoice.Options["Random"] = {vj_piv_giant_voice = 3}
-	Panel:AddControl("ComboBox", combobox_giantvoice)
---]]
 
-	-- specific zombie options
+	-- specific zombie options --
 	
 	-- military 
-	
-	-- military skin
 	
 	local combobox_militaryskin = {Options = {}, CVars = {}, Label = "Military Skin", MenuButton = "0"}
 	combobox_militaryskin.Options["National Guard"] = {vj_piv_militaryskin = 0}
@@ -654,7 +587,7 @@ hook.Add("OnNPCKilled","PIV_Infection_NPC",function(victim,inflictor,attacker)
 end	  
         if attacker.PIV_Infection_IsWalker == true && GetConVar("vj_piv_infection_type"):GetInt() == 1 then
                     zombie = ents.Create("npc_vj_piv_walker_inf")		
-	elseif attacker.PIV_Infection_IsDrowned == true then
+		elseif victim:WaterLevel() > 2 && victim:WaterLevel() < 12 then
                     zombie = ents.Create("npc_vj_piv_drowned_inf")
 
 end
@@ -690,9 +623,9 @@ hook.Add("PlayerDeath","PIV_Infection_Player",function(victim,inflictor,attacker
 	  for i = 0,18 do
 		bg[i] = victim:GetBodygroup(i)
 end	 	  
-    if attacker.PIV_Infection_IsWalker == true && GetConVar("vj_piv_infection_type"):GetInt() == 1  == true then
+    if attacker.PIV_Infection_IsWalker == true && GetConVar("vj_piv_infection_type"):GetInt() == 1 then
                     zombie = ents.Create("npc_vj_piv_walker_inf")		
-	elseif attacker.PIV_Infection_IsDrowned == true then
+	elseif victim:WaterLevel() > 2 && victim:WaterLevel() < 12 then
                     zombie = ents.Create("npc_vj_piv_drowned_inf")
 	end
 			zombie:SetMaterial("hud/killicons/default")
