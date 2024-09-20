@@ -444,113 +444,124 @@ function ENT:CustomOnPreInitialize()
 
 			self.PIV_WeHaveAWeapon = true
 			self.PIV_CanBeThrower = false
-
-			local weapon = math.random(1,12)
 			self.ExtraGunModel1 = ents.Create("prop_physics")
-
-			if weapon == 1 then	
 			
-				self.PIV_WeaponType = 2
-				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/mattpipe.mdl")
-				self.SoundTbl_MeleeAttack = {"vj_piv/wrenchhit1.wav","vj_piv/wrenchhit2.wav","vj_piv/wrenchhit3.wav","vj_piv/wrenchhit4.wav"}
-				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_blunt_01.wav","vj_piv/swing_heavy_blunt_02.wav","vj_piv/swing_heavy_blunt_03.wav"}
+			if self.PIV_IsMilitary == true then
+				local weapon = math.random(1,3)
 
-			end
+				if weapon == 1 then	
+					self.PIV_WeaponType = 1
+					self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_baton.mdl")
+					self.SoundTbl_MeleeAttack = {"vj_piv/wrenchhit1.wav","vj_piv/wrenchhit2.wav","vj_piv/wrenchhit3.wav","vj_piv/wrenchhit4.wav"}
+					self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_light_blunt_01.wav","vj_piv/swing_light_blunt_02.wav","vj_piv/swing_light_blunt_03.wav"}
+				end
+				if weapon == 2 then
+					self.PIV_WeaponType = 1
+					self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_knife_t.mdl")
+					self.SoundTbl_MeleeAttack = {"vj_piv/knife_hit_01.wav","vj_piv/knife_hit_02.wav","vj_piv/knife_hit_03.wav","vj_piv/knife_hit_04.wav","vj_piv/knife_hit_05.wav","vj_piv/knife_hit_06.wav"}
+					self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_light_sharp_01.wav","vj_piv/swing_light_sharp_02.wav","vj_piv/swing_light_sharp_03.wav"}
+				end
+				if weapon == 3 then	
+					self.PIV_WeaponType = 2
+					self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_me_fubar.mdl")
+					self.SoundTbl_MeleeAttack = {"vj_piv/HammerSkullPenetrate.wav"}
+					self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_blunt_01.wav","vj_piv/swing_heavy_blunt_02.wav","vj_piv/swing_heavy_blunt_03.wav"}
+				end
+			elseif self.PIV_IsZombine == true or self.PIV_IsMetropolice == true then
+				local weapon = math.random(1,2)
 
-			if weapon == 2 then
+				if weapon == 1 then
+					self.PIV_WeaponType = 1
+					self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_knife_t.mdl")
+					self.SoundTbl_MeleeAttack = {"vj_piv/knife_hit_01.wav","vj_piv/knife_hit_02.wav","vj_piv/knife_hit_03.wav","vj_piv/knife_hit_04.wav","vj_piv/knife_hit_05.wav","vj_piv/knife_hit_06.wav"}
+					self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_light_sharp_01.wav","vj_piv/swing_light_sharp_02.wav","vj_piv/swing_light_sharp_03.wav"}
+				end
+				if weapon == 2 then	
+					self.PIV_WeaponType = 2
+					self.ExtraGunModel1:SetModel("models/weapons/w_stunbaton.mdl")
+					self.SoundTbl_MeleeAttack = {"weapons/stunstick/stunstick_fleshhit1.wav","weapons/stunstick/stunstick_fleshhit2.wav","weapons/stunstick/stunstick_impact1.wav"}
+					self.SoundTbl_MeleeAttackMiss = {"weapons/stunstick/stunstick_swing1.wav","weapons/stunstick/stunstick_swing2.wav"}
+				end
+			else
+				local weapon = math.random(1,12)
 
-				self.PIV_WeaponType = 1
-				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_knife_t.mdl")
-				self.SoundTbl_MeleeAttack = {"vj_piv/knife_hit_01.wav","vj_piv/knife_hit_02.wav","vj_piv/knife_hit_03.wav","vj_piv/knife_hit_04.wav","vj_piv/knife_hit_05.wav","vj_piv/knife_hit_06.wav"}
-				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_light_sharp_01.wav","vj_piv/swing_light_sharp_02.wav","vj_piv/swing_light_sharp_03.wav"}
+				if weapon == 1 then	
+					self.PIV_WeaponType = 2
+					self.ExtraGunModel1:SetModel("models/vj_piv/weapons/mattpipe.mdl")
+					self.SoundTbl_MeleeAttack = {"vj_piv/wrenchhit1.wav","vj_piv/wrenchhit2.wav","vj_piv/wrenchhit3.wav","vj_piv/wrenchhit4.wav"}
+					self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_blunt_01.wav","vj_piv/swing_heavy_blunt_02.wav","vj_piv/swing_heavy_blunt_03.wav"}
+				end
+				if weapon == 2 then
+					self.PIV_WeaponType = 1
+					self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_knife_t.mdl")
+					self.SoundTbl_MeleeAttack = {"vj_piv/knife_hit_01.wav","vj_piv/knife_hit_02.wav","vj_piv/knife_hit_03.wav","vj_piv/knife_hit_04.wav","vj_piv/knife_hit_05.wav","vj_piv/knife_hit_06.wav"}
+					self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_light_sharp_01.wav","vj_piv/swing_light_sharp_02.wav","vj_piv/swing_light_sharp_03.wav"}
+				end
 
-			end
+				if weapon == 3 then
+					self.PIV_WeaponType = 2
+					self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_crowbar.mdl")			
+					self.SoundTbl_MeleeAttack = {"vj_piv/HammerWhack-1.wav","vj_piv/HammerWhack-2.wav","vj_piv/HammerWhack-3.wav"}
+					self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_blunt_01.wav","vj_piv/swing_heavy_blunt_02.wav","vj_piv/swing_heavy_blunt_03.wav"}
+				end
+				if weapon == 4 then
+					self.PIV_WeaponType = 2
+					self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_axe.mdl")			
+					self.SoundTbl_MeleeAttack = {"vj_piv/HatchetIn-1.wav","vj_piv/HatchetIn-2.wav","vj_piv/HatchetIn-3.wav"}
+					self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_sharp_01.wav","vj_piv/swing_heavy_sharp_02.wav","vj_piv/swing_heavy_sharp_03.wav"}
+				end
 
-			if weapon == 3 then
-				self.PIV_WeaponType = 2
-				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_crowbar.mdl")			
-				self.SoundTbl_MeleeAttack = {"vj_piv/HammerWhack-1.wav","vj_piv/HammerWhack-2.wav","vj_piv/HammerWhack-3.wav"}
-				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_blunt_01.wav","vj_piv/swing_heavy_blunt_02.wav","vj_piv/swing_heavy_blunt_03.wav"}
-
-			end
-
-			if weapon == 4 then
-
-				self.PIV_WeaponType = 2
-				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_axe.mdl")			
-				self.SoundTbl_MeleeAttack = {"vj_piv/HatchetIn-1.wav","vj_piv/HatchetIn-2.wav","vj_piv/HatchetIn-3.wav"}
-				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_sharp_01.wav","vj_piv/swing_heavy_sharp_02.wav","vj_piv/swing_heavy_sharp_03.wav"}
+				if weapon == 5 then	
+					self.PIV_WeaponType = 2
+					self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_shovel.mdl")
+					self.SoundTbl_MeleeAttack = {"vj_piv/ShovelSmack-1.wav","vj_piv/ShovelSmack-2.wav","vj_piv/ShovelSmack-3.wav"}
+					self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_blunt_01.wav","vj_piv/swing_heavy_blunt_02.wav","vj_piv/swing_heavy_blunt_03.wav"}
+				end
+				if weapon == 6 then	
+					self.PIV_WeaponType = 1
+					self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_pan.mdl")		
+					self.SoundTbl_MeleeAttack = {"vj_piv/fryingpan1.wav","vj_piv/fryingpan2.wav","vj_piv/fryingpan3.wav","vj_piv/fryingpan4.wav"}
+					self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_light_blunt_01.wav","vj_piv/swing_light_blunt_02.wav","vj_piv/swing_light_blunt_03.wav"}
+				end
 				
-			end
+				if weapon == 7 then	
 
-			if weapon == 5 then	
-
-				self.PIV_WeaponType = 2
-				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_shovel.mdl")
-				self.SoundTbl_MeleeAttack = {"vj_piv/ShovelSmack-1.wav","vj_piv/ShovelSmack-2.wav","vj_piv/ShovelSmack-3.wav"}
-				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_blunt_01.wav","vj_piv/swing_heavy_blunt_02.wav","vj_piv/swing_heavy_blunt_03.wav"}
-			end
-
-			if weapon == 6 then	
-			
-				self.PIV_WeaponType = 1
-				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_pan.mdl")		
-				self.SoundTbl_MeleeAttack = {"vj_piv/fryingpan1.wav","vj_piv/fryingpan2.wav","vj_piv/fryingpan3.wav","vj_piv/fryingpan4.wav"}
-				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_light_blunt_01.wav","vj_piv/swing_light_blunt_02.wav","vj_piv/swing_light_blunt_03.wav"}
-
-			end
-			
-			if weapon == 7 then	
-
-				self.PIV_WeaponType = 2
-				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_me_bat_metal.mdl")
-				self.SoundTbl_MeleeAttack = {"vj_piv/MetalBat1.wav","vj_piv/MetalBat2.wav","vj_piv/MetalBat3.wav","vj_piv/MetalBat4.wav"}
-				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_blunt_01.wav","vj_piv/swing_heavy_blunt_02.wav","vj_piv/swing_heavy_blunt_03.wav"}
-			end
-			
-			if weapon == 8 then	
-
-				self.PIV_WeaponType = 2
-				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_me_machete.mdl")
-				self.SoundTbl_MeleeAttack = {"vj_piv/SwordHit-1.wav","vj_piv/SwordHit-2.wav","vj_piv/SwordHit-3.wav","vj_piv/SwordHit-4.wav","vj_piv/SwordHit-5.wav","vj_piv/SwordHit-6.wav","vj_piv/SwordHit-7.wav","vj_piv/SwordHit-8.wav","vj_piv/SwordHit-9.wav"}
-				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_sharp_01.wav","vj_piv/swing_heavy_sharp_02.wav","vj_piv/swing_heavy_sharp_03.wav"}
+					self.PIV_WeaponType = 2
+					self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_me_bat_metal.mdl")
+					self.SoundTbl_MeleeAttack = {"vj_piv/MetalBat1.wav","vj_piv/MetalBat2.wav","vj_piv/MetalBat3.wav","vj_piv/MetalBat4.wav"}
+					self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_blunt_01.wav","vj_piv/swing_heavy_blunt_02.wav","vj_piv/swing_heavy_blunt_03.wav"}
+				end
 				
-			end
-			
-			if weapon == 9 then	
-
-				self.PIV_WeaponType = 1
-				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_me_wrench.mdl")
-				self.SoundTbl_MeleeAttack = {"vj_piv/wrenchhit1.wav","vj_piv/wrenchhit2.wav","vj_piv/wrenchhit3.wav","vj_piv/wrenchhit4.wav"}
-				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_light_blunt_01.wav","vj_piv/swing_light_blunt_02.wav","vj_piv/swing_light_blunt_03.wav"}
-				
-			end
-			
-			if weapon == 10 then	
-
-				self.PIV_WeaponType = 2
-				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_me_fubar.mdl")
-				self.SoundTbl_MeleeAttack = {"vj_piv/HammerSkullPenetrate.wav"}
-				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_blunt_01.wav","vj_piv/swing_heavy_blunt_02.wav","vj_piv/swing_heavy_blunt_03.wav"}
-				
-			end
-			
-			if weapon == 11 then	
-
-				self.PIV_WeaponType = 2
-				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_me_sledge.mdl")
-				self.SoundTbl_MeleeAttack = {"vj_piv/HammerSkullPenetrate.wav"}
-				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_blunt_01.wav","vj_piv/swing_heavy_blunt_02.wav","vj_piv/swing_heavy_blunt_03.wav"}
-				
-			end
-			
-			if weapon == 12 then	
-
-				self.PIV_WeaponType = 1
-				self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_hammer.mdl")
-				self.SoundTbl_MeleeAttack = {"vj_piv/HammerWhack-1.wav","vj_piv/HammerWhack-2.wav","vj_piv/HammerWhack-3.wav"}
-				self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_light_blunt_01.wav","vj_piv/swing_light_blunt_02.wav","vj_piv/swing_light_blunt_03.wav"}
-				
+				if weapon == 8 then	
+					self.PIV_WeaponType = 2
+					self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_me_machete.mdl")
+					self.SoundTbl_MeleeAttack = {"vj_piv/SwordHit-1.wav","vj_piv/SwordHit-2.wav","vj_piv/SwordHit-3.wav","vj_piv/SwordHit-4.wav","vj_piv/SwordHit-5.wav","vj_piv/SwordHit-6.wav","vj_piv/SwordHit-7.wav","vj_piv/SwordHit-8.wav","vj_piv/SwordHit-9.wav"}
+					self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_sharp_01.wav","vj_piv/swing_heavy_sharp_02.wav","vj_piv/swing_heavy_sharp_03.wav"}
+				end
+				if weapon == 9 then	
+					self.PIV_WeaponType = 1
+					self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_me_wrench.mdl")
+					self.SoundTbl_MeleeAttack = {"vj_piv/wrenchhit1.wav","vj_piv/wrenchhit2.wav","vj_piv/wrenchhit3.wav","vj_piv/wrenchhit4.wav"}
+					self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_light_blunt_01.wav","vj_piv/swing_light_blunt_02.wav","vj_piv/swing_light_blunt_03.wav"}
+				end
+				if weapon == 10 then	
+					self.PIV_WeaponType = 2
+					self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_me_fubar.mdl")
+					self.SoundTbl_MeleeAttack = {"vj_piv/HammerSkullPenetrate.wav"}
+					self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_blunt_01.wav","vj_piv/swing_heavy_blunt_02.wav","vj_piv/swing_heavy_blunt_03.wav"}
+				end
+				if weapon == 11 then
+					self.PIV_WeaponType = 2
+					self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_me_sledge.mdl")
+					self.SoundTbl_MeleeAttack = {"vj_piv/HammerSkullPenetrate.wav"}
+					self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_heavy_blunt_01.wav","vj_piv/swing_heavy_blunt_02.wav","vj_piv/swing_heavy_blunt_03.wav"}
+				end
+				if weapon == 12 then	
+					self.PIV_WeaponType = 1
+					self.ExtraGunModel1:SetModel("models/vj_piv/weapons/w_hammer.mdl")
+					self.SoundTbl_MeleeAttack = {"vj_piv/HammerWhack-1.wav","vj_piv/HammerWhack-2.wav","vj_piv/HammerWhack-3.wav"}
+					self.SoundTbl_MeleeAttackMiss = {"vj_piv/swing_light_blunt_01.wav","vj_piv/swing_light_blunt_02.wav","vj_piv/swing_light_blunt_03.wav"}
+				end
 			end
 
 			self.ExtraGunModel1:SetOwner(self)
@@ -1246,8 +1257,6 @@ function ENT:CustomOnMeleeAttack_Miss()
         self:GetSequence() == self:LookupSequence("standing_melee_4")
 		) 
 	then
-
-		
         self:VJ_ACT_PLAYACTIVITY("vjseq_choke_miss",true,false,true)
     end
 end
