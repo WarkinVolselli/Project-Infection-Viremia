@@ -1,0 +1,7 @@
+"Teeth"
+{
+	"$basetexture" "models/vj_piv/hl2/main/gman/tongue"
+	"$model" 1
+	"$clientshader" "MouthShader"
+	"$halflambert" 1
+}

@@ -1,0 +1,13 @@
+"vertexlitgeneric"
+{
+	"$basetexture" "models/vj_piv/hl2/main/alyx/alyx_faceandhair2"
+	"$bumpmap" "models/vj_piv/hl2/main/alyx/alyx_head_normal"
+	"$halflambert" 1
+	"$model" "1"
+	"$phong" "1"
+	"$ambientocclusiontexture" "models/vj_piv/hl2/main/alyx/alyx_occlusion"
+	"$phongexponent" 33
+	"$phongexponenttexture" "models/vj_piv/hl2/main/alyx/alyx_head_exponent"
+	"$phongboost"	"6"
+	"$phongfresnelranges"	"[0.05 0.5 1]"
+}

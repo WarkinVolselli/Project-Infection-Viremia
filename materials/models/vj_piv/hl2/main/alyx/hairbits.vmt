@@ -1,0 +1,9 @@
+"VertexLitGeneric"
+{
+	// Original shader: VertexLitTranslucentTexture
+	"$translucent" 1
+	"$basetexture" "models/vj_piv/hl2/main/alyx/hairbits"
+	"$halflambert" 1
+	"$nodecal" "1"
+	"$nocull" "1"
+}

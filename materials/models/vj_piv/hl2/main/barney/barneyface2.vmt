@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	// Original shader: VertexLitTexture
+	"$basetexture" "models/vj_piv/hl2/main/barney/barneyface2"
+	"$bumpmap" "models/vj_piv/hl2/main/barney/barney_head_normal"
+	"$halflambert" 1
+	"$phong" "1"
+	"$phongboost" "1"	
+	"$phongexponent" "32"
+	"$phongfresnelranges"	"[.05 .4  1]"
+}

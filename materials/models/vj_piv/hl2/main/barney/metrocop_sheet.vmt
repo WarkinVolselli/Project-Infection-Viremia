@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "Models/vj_piv/hl2/police/metrocop_sheet"
+	"$bumpmap" "Models/vj_piv/hl2/police/metrocop_sheet_normal"
+	"$halflambert" 1
+	"$phong" "1"
+	"$phongexponent" "20"
+	"$phongboost" "0.05"
+	"$phongfresnelranges" "[0.1 0.4 0.6]"
+}

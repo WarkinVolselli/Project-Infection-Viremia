@@ -1,0 +1,11 @@
+"vertexlitgeneric"
+{
+	"$basetexture" "models/vj_piv/hl2/main/alyx/alyx_sheet"
+	"$bumpmap" "models/vj_piv/hl2/main/alyx/alyx_sheet_normal"
+	"$halflambert" 1
+	"$model" "1"
+	"$phong" "1"	
+	"$phongexponent" "5"
+	"$phongboost"	"5"
+	"$phongfresnelranges"	"[0.05 0.5 1]"
+}

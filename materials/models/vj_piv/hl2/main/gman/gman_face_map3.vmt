@@ -1,0 +1,11 @@
+// envmaptint_fix
+"VertexLitGeneric"
+{
+	// Original shader: VertexLitTexture
+	"$basetexture" "models/vj_piv/hl2/main/gman/gman_face_map3"
+	"$bumpmap" "models/vj_piv/hl2/main/gman/gman_normal"
+	"$halflambert" 1
+	"$phongexponent" "34"
+	"$phongboost"	"6"
+	"$phongfresnelranges"	"[0.1 0.5 1]"
+}
