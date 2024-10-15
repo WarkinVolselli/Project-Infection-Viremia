@@ -55,6 +55,14 @@ if VJExists == true then
 	VJ.AddNPC("Stripped Overwatch Walker","npc_vj_piv_walker_combine_st",vCat)
 	VJ.AddNPC("Stripped Overwatch Runner","npc_vj_piv_runner_combine_st",vCat)
 	
+	
+	local vCat = "Project Infection: Viremia - HL2 Misc"
+	
+	VJ.AddNPC("Main Character Walker (Female)","npc_vj_piv_walker_main_f",vCat)
+	VJ.AddNPC("Main Character Walker (Male)","npc_vj_piv_walker_main_m",vCat)
+	VJ.AddNPC("Main Character Runner (Female)","npc_vj_piv_runner_main_f",vCat)
+	VJ.AddNPC("Main Character Runner (Male)","npc_vj_piv_runner_main_m",vCat)
+
 	local vCat = "Project Infection: Viremia - Military"
 	
 	VJ.AddNPC("Military Walker","npc_vj_piv_walker_mil",vCat)
@@ -205,8 +213,8 @@ if VJExists == true then
 	
 	-- sounds --
 
-	VJ.AddConVar("vj_piv_walk_voice", 0, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_run_voice", 0, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_walk_voice", 4, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_run_voice", 4, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_giant_voice", 0, {FCVAR_ARCHIVE})
 	
     -- specific npcs --
@@ -330,9 +338,8 @@ if VJExists == true then
 			vj_piv_hl2skins = "0",
 			vj_piv_militaryskin = "0",
 
-			vj_piv_walk_voice = "0",
-			vj_piv_run_voice = "0",
-			vj_piv_giant_voice = "0",
+			vj_piv_walk_voice = "4",
+			vj_piv_run_voice = "4",
 			
 			vj_piv_mil_flakarmor = "1",
 			vj_piv_mil_flakarmor_chance = "4",
