@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	// Original shader: VertexLitTexture
+	"$basetexture" "models/vj_piv/hl2/main/monk/grigori_head"
+ 	"$bumpmap" "models/vj_piv/hl2/main/monk/monk_head_normal"
+	"$halflambert" 1
+	"$phong" "1"
+	"$phongboost" "1"	
+	"$phongexponent" "32"
+	"$phongfresnelranges"	"[.05 .4  1]"
+}

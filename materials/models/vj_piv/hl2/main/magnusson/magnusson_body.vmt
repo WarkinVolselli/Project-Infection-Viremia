@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "Models/vj_piv/hl2/main/magnusson/magnusson_body"
+	"$bumpmap" "models/vj_piv/hl2/main/magnusson/magnusson_body_normal"
+	"$halflambert" 1
+	"$model" "1"
+	"$phong" "1"
+	"$phongboost" "4"
+	"$phongfresnelranges"	"[0.1 0.5 1]"
+	"$halflambert" 1
+}

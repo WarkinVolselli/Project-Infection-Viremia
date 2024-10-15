@@ -1,0 +1,15 @@
+"VertexLitGeneric"
+{
+	"$basetexture"	"Models/vj_piv/hl2/main/magnusson/magnusson_face"
+	"$surfaceprop"	"default"
+	"$bumpmap"	"Models/vj_piv/hl2/main/magnusson/magnusson_face_normal"
+	"$halflambert"	1
+	"$model"	1
+	
+	"$phong" "1"
+	"$phongboost" "8"
+	//"$phongexponent" "10"
+	"$phongexponenttexture" "models/vj_piv/hl2/main/magnusson/magnusson_face_phong"
+	//"$phongalbedotint" "1"										
+	"$phongfresnelranges"	"[.01 .4 1]"
+}

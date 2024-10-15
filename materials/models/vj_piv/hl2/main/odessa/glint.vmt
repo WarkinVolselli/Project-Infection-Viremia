@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	// Original shader: AddTexture
+	"$basetexture" "models/vj_piv/hl2/police/glint"
+	"$additive" 1
+	"$model" 1
+}

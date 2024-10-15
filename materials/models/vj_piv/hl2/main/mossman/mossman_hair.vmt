@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "Models/vj_piv/hl2/main/mossman/mossman_hair"
+	"$translucent" "1"
+	"$halflambert" 1
+	"$nodecal" "1"
+}

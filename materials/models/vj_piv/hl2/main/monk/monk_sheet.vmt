@@ -1,0 +1,10 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/vj_piv/hl2/main/monk/monk_sheet"
+	"$basetexture" "models/vj_piv/hl2/main/monk/monk_sheet_normal"
+	"$phong" "1"
+	"$phongboost" "2"
+	"$phongexponent" "5"									
+	"$phongfresnelranges"	"[.2 .6  1]"
+    "$halflambert" 1
+}
