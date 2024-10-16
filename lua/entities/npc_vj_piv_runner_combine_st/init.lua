@@ -8,6 +8,8 @@ include('shared.lua')
 ENT.Model = {"models/vj_piv/hl2/combine/soldier_stripped.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.StartHealth = 100
 
+ENT.PIV_AllowedToVomit = true
+ENT.PIV_CanBeBiter = true
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
 	self:SetSkin(math.random(0,1))

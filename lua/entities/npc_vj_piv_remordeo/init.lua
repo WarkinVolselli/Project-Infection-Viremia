@@ -33,6 +33,8 @@ ENT.PIV_CanBeCrawler = false
 ENT.PIV_CanBeDiseased = false
 ENT.PIV_CanBeThrower = false
 
+ENT.PIV_AllowedToVomit = false
+ENT.PIV_CanBeBiter = false
 	-- ====== Sound File Paths ====== --
 -- Leave blank if you don't want any sounds to play
 

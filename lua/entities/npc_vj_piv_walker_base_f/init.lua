@@ -7,6 +7,7 @@ include('shared.lua')
 -----------------------------------------------*/
 ENT.Model = {"models/vj_piv/hl2/citizens/female_01.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
 ENT.Voice = 1
+ENT.PIV_Gender = 2
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnInitialize()
 

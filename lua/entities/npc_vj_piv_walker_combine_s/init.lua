@@ -18,6 +18,8 @@ ENT.SoundTbl_Pain = {"vj_piv/combinezombie/zombine_pain1.wav","vj_piv/combinezom
 ENT.SoundTbl_Death = {"vj_piv/combinezombie/zombine_die1.wav","vj_piv/combinezombie/zombine_die2.wav","vj_piv/combinezombie/zombine_die3.wav","vj_piv/combinezombie/zombine_die4.wav"}
 
 ENT.Immune_AcidPoisonRadiation = true -- Immune to Acid, Poison and Radiation
+ENT.PIV_AllowedToVomit = false
+ENT.PIV_CanBeBiter = false
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
 	self:SetSkin(math.random(0,1))

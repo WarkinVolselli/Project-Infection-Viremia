@@ -68,6 +68,8 @@ function ENT:Zombie_CustomOnInitialize()
 			self.SoundTbl_Pain = {"vj_piv/mil_zomb/gasmask/pain_1.wav","vj_piv/mil_zomb/gasmask/pain_2.wav","vj_piv/mil_zomb/gasmask/pain_3.wav","vj_piv/mil_zomb/gasmask/pain_4.wav","vj_piv/mil_zomb/gasmask/pain_5.wav","vj_piv/mil_zomb/gasmask/pain_6.wav"}
 			self.SoundTbl_Death = {"vj_piv/mil_zomb/gasmask/death_1.wav","vj_piv/mil_zomb/gasmask/death_2.wav","vj_piv/mil_zomb/gasmask/death_3.wav"}
 			self.SoundTbl_BeforeMeleeAttack = {"vj_piv/mil_zomb/gasmask/attack_1.wav","vj_piv/mil_zomb/gasmask/attack_2.wav","vj_piv/mil_zomb/gasmask/attack_3.wav","vj_piv/mil_zomb/gasmask/attack_4.wav"}
+			self.PIV_AllowedToVomit = false
+			self.PIV_CanBeBiter = false
 		end
 	end
 end

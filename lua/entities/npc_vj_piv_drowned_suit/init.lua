@@ -13,6 +13,9 @@ ENT.PIV_IsSpecial = true
 ENT.PIV_HasWeapons = false
 ENT.PIV_CanBeThrower = false
 
+ENT.PIV_AllowedToVomit = false
+ENT.PIV_CanBeBiter = false
+
 ENT.SoundTbl_Idle = {"vj_piv/drowned/suit/deepsea_suit_idle_001.wav","vj_piv/drowned/suit/deepsea_suit_idle_002.wav","vj_piv/drowned/suit/deepsea_suit_idle_003.wav","vj_piv/drowned/suit/deepsea_suit_idle_004.wav","vj_piv/drowned/suit/deepsea_suit_idle_005.wav","vj_piv/drowned/suit/deepsea_suit_idle_006.wav","vj_piv/drowned/suit/deepsea_suit_idle_007.wav","vj_piv/drowned/suit/deepsea_suit_idle_008.wav","vj_piv/drowned/suit/deepsea_suit_idle_009.wav","vj_piv/drowned/suit/deepsea_suit_idle_010.wav","vj_piv/drowned/suit/deepsea_suit_idle_011.wav","vj_piv/drowned/suit/deepsea_suit_idle_012.wav","vj_piv/drowned/suit/deepsea_suit_idle_013.wav"}
 ENT.SoundTbl_Alert = {"vj_piv/drowned/suit/deepsea_suit_hears_something_001.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_002.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_003.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_004.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_005.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_006.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_007.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_008.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_009.wav"}
 ENT.SoundTbl_CombatIdle = {"vj_piv/drowned/suit/deepsea_suit_search_001.wav","vj_piv/drowned/suit/deepsea_suit_search_002.wav","vj_piv/drowned/suit/deepsea_suit_search_003.wav","vj_piv/drowned/suit/deepsea_suit_search_004.wav","vj_piv/drowned/suit/deepsea_suit_search_005.wav","vj_piv/drowned/suit/deepsea_suit_search_006.wav","vj_piv/drowned/suit/deepsea_suit_search_007.wav","vj_piv/drowned/suit/deepsea_suit_search_008.wav","vj_piv/drowned/suit/deepsea_suit_search_009.wav","vj_piv/drowned/suit/deepsea_suit_search_010.wav","vj_piv/drowned/suit/deepsea_suit_search_011.wav"}

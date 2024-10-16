@@ -54,6 +54,8 @@ function ENT:Zombie_CustomOnInitialize()
 		self.SoundTbl_Pain = {"vj_piv/mil_zomb/gasmask/pain_1.wav","vj_piv/mil_zomb/gasmask/pain_2.wav","vj_piv/mil_zomb/gasmask/pain_3.wav","vj_piv/mil_zomb/gasmask/pain_4.wav","vj_piv/mil_zomb/gasmask/pain_5.wav","vj_piv/mil_zomb/gasmask/pain_6.wav"}
 		self.SoundTbl_Death = {"vj_piv/mil_zomb/gasmask/death_1.wav","vj_piv/mil_zomb/gasmask/death_2.wav","vj_piv/mil_zomb/gasmask/death_3.wav"}
 		self.SoundTbl_BeforeMeleeAttack = {"vj_piv/mil_zomb/gasmask/attack_1.wav","vj_piv/mil_zomb/gasmask/attack_2.wav","vj_piv/mil_zomb/gasmask/attack_3.wav","vj_piv/mil_zomb/gasmask/attack_4.wav"}
+		self.PIV_AllowedToVomit = false
+		self.PIV_CanBeBiter = false
 	end
 	
 	if GetConVar("vj_piv_mil_ghillie_stealth"):GetInt() == 1 && math.random(1,GetConVar("vj_piv_mil_ghillie_stealth_chance"):GetInt()) == 1 && self.PIV_WeHaveAWeapon == false && self.PIV_Thrower == false && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false then

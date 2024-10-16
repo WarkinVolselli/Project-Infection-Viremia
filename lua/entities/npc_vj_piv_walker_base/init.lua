@@ -91,6 +91,12 @@ ENT.PIV_Resting = 0
 	-- 2 = Lying
 	
 ENT.PIV_AllowedToRest = false
+
+ENT.PIV_Gender = 0
+	-- 1 = Male
+	-- 2 = Female
+
+ENT.PIV_AllowedToVomit = true
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.VJ_NPC_Class = {"CLASS_ZOMBIE"} -- NPCs with the same class with be allied to each other
 ENT.BloodColor = "Red" -- The blood type, this will determine what it should use (decal, particle, etc.)
@@ -861,6 +867,15 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 		VJ.EmitSound(self,"vj_piv/slammer/woosh.wav",75,math.random(100,110))
     end
 	
+	if key == "vomit" && self.PIV_AllowedToVomit then
+		ParticleEffectAttach("vomit_barnacle_b",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("mouth"))
+		if self.PIV_Gender == 2 then
+			VJ.EmitSound(self,"vj_piv/spitter/pain"..math.random(1,5)..".mp3",60,math.random(120,130))
+		else
+			VJ.EmitSound(self,"vj_piv/spitter/pain"..math.random(1,5)..".mp3",60,math.random(90,100))
+		end
+	end
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnIsJumpLegal(startPos, apex, endPos)
@@ -1492,7 +1507,7 @@ function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 
 	end
 
-    if dmginfo:IsDamageType(DMG_SHOCK) or (Attacker:GetActiveWeapon():GetClass() == "arc9_go_zeus" or Attacker:GetActiveWeapon():GetClass() == "arc9_go_akimbo_taser") then -- When killed by shock damage or a taser
+    if dmginfo:IsDamageType(DMG_SHOCK) or Attacker:GetActiveWeapon():GetClass() == "arc9_go_zeus" or Attacker:GetActiveWeapon():GetClass() == "arc9_go_akimbo_taser" then -- When killed by shock damage or a taser
 
 	   self.AnimTbl_Death = {
 			"vjseq_nz_death_elec_1",
@@ -1878,13 +1893,17 @@ function ENT:PIV_CustomMutate()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:TranslateActivity(act)
+	if act == ACT_IDLE && !self.PIV_WeHaveAWeapon && !self.PIV_Shambler && GetConVar("vj_piv_classic_animations"):GetInt() == 0 then
+		return ACT_IDLE_RELAXED
+	end
+
 	if act == ACT_RUN && !self.PIV_Jogger && !self.Running then
 		return ACT_WALK
 	elseif act == ACT_RUN && self.Running && self:GetClass() == "npc_vj_piv_phorid" then
 		return ACT_RUN_AIM
 	end
 
-	if act == ACT_WALK && !self.Alerted && GetConVar("vj_piv_alt_idle_walk"):GetInt() == 1 then
+	if act == ACT_WALK && !self.Alerted && GetConVar("vj_piv_classic_animations"):GetInt() == 0 then
 		return ACT_WALK_AIM_STEALTH
 	end
 
@@ -1895,7 +1914,7 @@ function ENT:TranslateActivity(act)
 	end
 
 	if self.PIV_Shambler then
-		if act == ACT_IDLE then
+		if !self.PIV_WeHaveAWeapon && (act == ACT_IDLE or act == ACT_IDLE_RELAXED) then
 			return ACT_IDLE_AIM_RELAXED
 		end
 		if act == ACT_WALK or act == ACT_WALK_AIM_STEALTH then
@@ -2012,7 +2031,7 @@ function ENT:TranslateActivity(act)
 	end
 
 	if self.PIV_WeHaveAWeapon && self.PIV_WeaponType == 2  then
-		if act == ACT_IDLE or act == ACT_IDLE_AIM_RELAXED then
+		if act == ACT_IDLE or act == ACT_IDLE_AIM_RELAXED or act == ACT_IDLE_RELAXED then
 			return ACT_HL2MP_IDLE_MELEE
 		end
 		if self.PIV_Shambler then
@@ -2033,7 +2052,7 @@ function ENT:TranslateActivity(act)
 	end
 		
 	if self.PIV_HasShield then
-		if act == ACT_IDLE or act == ACT_IDLE_AIM_RELAXED then
+		if act == ACT_IDLE or act == ACT_IDLE_AIM_RELAXED or act == ACT_IDLE_RELAXED then
 			return ACT_IDLE_AIM_AGITATED
 		end
 		if act == ACT_WALK or act == ACT_WALK_RELAXED or act == ACT_WALK_AIM_STEALTH then
@@ -2045,7 +2064,7 @@ function ENT:TranslateActivity(act)
 	end
 
 	if self.PIV_GoblinMode then
-		if act == ACT_IDLE or act == ACT_IDLE_AIM_RELAXED then
+		if act == ACT_IDLE or act == ACT_IDLE_AIM_RELAXED or act == ACT_IDLE_RELAXED then
 			return ACT_CROUCHIDLE_STIMULATED
 		end
 		if act == ACT_WALK or act == ACT_WALK_RELAXED or act == ACT_WALK_AIM_STEALTH or act == ACT_WALK_ANGRY or act == ACT_RUN then
@@ -2054,7 +2073,7 @@ function ENT:TranslateActivity(act)
 	end
 
 	if self.Apeshit then
-		if act == ACT_IDLE then
+		if act == ACT_IDLE or act == ACT_IDLE_RELAXED then
 			return ACT_IDLE_AIM_STEALTH
 		end
 		if act == ACT_WALK or act == ACT_WALK_AIM_STEALTH or act == ACT_RUN then
@@ -2063,17 +2082,17 @@ function ENT:TranslateActivity(act)
 	end
 	
 	if self.PIV_Resting == 1 then
-		if act == ACT_IDLE or act == ACT_IDLE_AIM_RELAXED or act == ACT_IDLE_AIM_STIMULATED or act == ACT_IDLE_AIM_STEALTH then
+		if act == ACT_IDLE or act == ACT_IDLE_AIM_RELAXED or act == ACT_IDLE_AIM_STIMULATED or act == ACT_IDLE_AIM_STEALTH or act == ACT_IDLE_RELAXED then
 			return ACT_BUSY_SIT_GROUND
 		end
 	elseif self.PIV_Resting == 2 then
-		if act == ACT_IDLE or act == ACT_IDLE_AIM_RELAXED or act == ACT_IDLE_AIM_STIMULATED or act == ACT_IDLE_AIM_STEALTH then
+		if act == ACT_IDLE or act == ACT_IDLE_AIM_RELAXED or act == ACT_IDLE_AIM_STIMULATED or act == ACT_IDLE_AIM_STEALTH or act == ACT_IDLE_RELAXED then
 			return ACT_BUSY_LEAN_BACK
 		end
 	end
 
 	if self.PIV_Crippled or self.PIV_FuckingCrawlingLittleCunt then
-		if act == ACT_IDLE or act == ACT_IDLE_AIM_RELAXED or act == ACT_IDLE_AIM_STIMULATED then
+		if act == ACT_IDLE or act == ACT_IDLE_AIM_RELAXED or act == ACT_IDLE_AIM_STIMULATED or act == ACT_IDLE_RELAXED then
 			return ACT_IDLE_STIMULATED
 		end
 		if act == ACT_WALK or act == ACT_WALK_RELAXED or act == ACT_WALK_AIM_STEALTH then

@@ -88,8 +88,14 @@ ENT.PIV_Resting = 0
 	-- 0 = Not Resting
 	-- 1 = Sitting
 	-- 2 = Lying
-	
+
 ENT.PIV_AllowedToRest = false
+
+ENT.PIV_Gender = 0
+	-- 1 = Male
+	-- 2 = Female
+	
+ENT.PIV_AllowedToVomit = true
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ENT.VJ_NPC_Class = {"CLASS_ZOMBIE"} -- NPCs with the same class with be allied to each other
 ENT.BloodColor = "Red" -- The blood type, this will determine what it should use (decal, particle, etc.)
@@ -795,6 +801,15 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 		VJ.EmitSound(self, "vj_piv/sickler/twitch"..math.random(1,3)..".wav", 65, 100)	
 	end
 	
+	if key == "vomit" && self.PIV_AllowedToVomit then
+		ParticleEffectAttach("vomit_barnacle_b",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("mouth"))
+		if self.PIV_Gender == 2 then
+			VJ.EmitSound(self,"vj_piv/spitter/pain"..math.random(1,5)..".mp3",60,math.random(120,130))
+		else
+			VJ.EmitSound(self,"vj_piv/spitter/pain"..math.random(1,5)..".mp3",60,math.random(90,100))
+		end
+	end
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnIsJumpLegal(startPos, apex, endPos)
@@ -1362,7 +1377,7 @@ function ENT:CustomDeathAnimationCode(dmginfo,hitgroup)
 
 	end
 
-    if dmginfo:IsDamageType(DMG_SHOCK) or (Attacker:GetActiveWeapon():GetClass() == "arc9_go_zeus" or Attacker:GetActiveWeapon():GetClass() == "arc9_go_akimbo_taser") then -- When killed by shock damage or a taser
+    if dmginfo:IsDamageType(DMG_SHOCK) or Attacker:GetActiveWeapon():GetClass() == "arc9_go_zeus" or Attacker:GetActiveWeapon():GetClass() == "arc9_go_akimbo_taser" then -- When killed by shock damage or a taser
 
 	   self.AnimTbl_Death = {
 			"vjseq_nz_death_elec_1",
@@ -1759,7 +1774,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:TranslateActivity(act)
 
-	if act == ACT_IDLE && GetConVar("vj_piv_alt_runner_anims"):GetInt() == 1 && self.PIV_WeaponType != 2 && !self.PIV_Rusher && self:GetClass() != "npc_vj_piv_shocker" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_brawler"  && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_boss" then
+	if act == ACT_IDLE && GetConVar("vj_piv_classic_animations"):GetInt() == 0 && self.PIV_WeaponType != 2 && !self.PIV_Rusher && self:GetClass() != "npc_vj_piv_shocker" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_brawler"  && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_boss" then
 		return ACT_IDLE_ON_FIRE
 	end
 	
@@ -1793,9 +1808,7 @@ function ENT:TranslateActivity(act)
 	end
 
 	if act == ACT_WALK then
-		if GetConVar("vj_piv_alt_idle_walk"):GetInt() == 1 && GetConVar("vj_piv_alt_runner_anims"):GetInt() == 0 && !self.Alerted then
-			return ACT_WALK_AIM_STEALTH
-		elseif GetConVar("vj_piv_alt_runner_anims"):GetInt() == 1 then
+		if GetConVar("vj_piv_classic_animations"):GetInt() == 0 then
 			return ACT_WALK_ON_FIRE
 		end
 	end
