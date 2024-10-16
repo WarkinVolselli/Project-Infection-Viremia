@@ -160,8 +160,9 @@ if VJExists == true then
 	VJ.AddConVar("vj_piv_deathanim", 1, {FCVAR_ARCHIVE}) 
 	VJ.AddConVar("vj_piv_deathanim_chance", 3, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_resting", 1, {FCVAR_ARCHIVE}) 
-	VJ.AddConVar("vj_piv_alt_idle_walk", 1, {FCVAR_ARCHIVE}) 
-	VJ.AddConVar("vj_piv_alt_runner_anims", 1, {FCVAR_ARCHIVE}) 
+	
+	VJ.AddConVar("vj_piv_classic_animations", 0, {FCVAR_ARCHIVE}) 
+
 	VJ.AddConVar("vj_piv_alert_anim", 1, {FCVAR_ARCHIVE}) 
 	VJ.AddConVar("vj_piv_alert_anim_chance", 4, {FCVAR_ARCHIVE}) 
 	VJ.AddConVar("vj_piv_lights", 1, {FCVAR_ARCHIVE})
@@ -289,8 +290,7 @@ if VJExists == true then
 			vj_piv_deathanim = "1",
 			vj_piv_deathanim_chance = "3",
 			
-			vj_piv_alt_idle_walk = "1",
-			vj_piv_alt_runner_anims = "1",
+			vj_piv_classic_animations = "0",
 			vj_piv_resting = "1",
 			
 			vj_piv_alert_anim = "1",
@@ -420,10 +420,8 @@ if VJExists == true then
 	Panel:ControlHelp("When enabled, zombies will sometimes play 'taunt' animations when alerted.")
 	Panel:AddControl("Slider", {Label = "Alert Animation Chance", Command = "vj_piv_alert_anim_chance", Min = 1, Max = 100})
 	
-	Panel:AddControl("Checkbox", {Label = "Enable Alternate Idle Walk?", Command = "vj_piv_alt_idle_walk"})
-	Panel:ControlHelp("When enabled, zombies will have a more passive walk animation when idle.")
-	Panel:AddControl("Checkbox", {Label = "Enable Alternate Runner Animations?", Command = "vj_piv_alt_runner_anims"})
-	Panel:ControlHelp("When enabled, Runners will use more aggressive walking and idle animations.")
+	Panel:AddControl("Checkbox", {Label = "Enable Classic Animations?", Command = "vj_piv_classic_animations"})
+	Panel:ControlHelp("When enabled, zombies will use the original NMRiH idle animations and default walking animations when idle.")
 	Panel:AddControl("Checkbox", {Label = "Enable Resting?", Command = "vj_piv_resting"})
 	Panel:ControlHelp("When enabled, zombies will sometimes sit or lay down when idle.")
 
