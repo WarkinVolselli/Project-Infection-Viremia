@@ -63,6 +63,9 @@ if VJExists == true then
 	VJ.AddNPC("Main Character Runner (Female)","npc_vj_piv_runner_main_f",vCat)
 	VJ.AddNPC("Main Character Runner (Male)","npc_vj_piv_runner_main_m",vCat)
 
+	VJ.AddNPC("HEV Walker","npc_vj_piv_walker_hev",vCat)
+	VJ.AddNPC("HEV Runner","npc_vj_piv_runner_hev",vCat)
+
 	local vCat = "Project Infection: Viremia - Military"
 	
 	VJ.AddNPC("Military Walker","npc_vj_piv_walker_mil",vCat)
@@ -197,7 +200,7 @@ if VJExists == true then
 	VJ.AddConVar("vj_piv_biter_chance", 7, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_super_sprinter_chance", 5, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_rusher_chance", 8, {FCVAR_ARCHIVE})
-	VJ.AddConVar("vj_piv_leaper_chance", 10, {FCVAR_ARCHIVE})
+	VJ.AddConVar("vj_piv_leaper_chance", 12, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_crawler_chance", 12, {FCVAR_ARCHIVE})
 	VJ.AddConVar("vj_piv_diseased_chance", 10, {FCVAR_ARCHIVE})
 
@@ -327,7 +330,7 @@ if VJExists == true then
 			vj_piv_brute_chance = "10",
 			vj_piv_super_sprinter_chance = "5",
 			vj_piv_rusher_chance = "8",
-			vj_piv_leaper_chance = "10",
+			vj_piv_leaper_chance = "12",
 			vj_piv_crawler_chance = "12",
 			vj_piv_diseased_chance = "10",
 					
