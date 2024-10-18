@@ -56,6 +56,7 @@ ENT.PIV_CanBeCrawler = true
 ENT.PIV_IsZombine = false
 ENT.PIV_IsMetropolice = false
 ENT.PIV_IsMilitary = false
+ENT.PIV_IsHEV = false
 
 ENT.PIV_CanMutate = false
 ENT.PIV_Mutated = false
@@ -639,6 +640,10 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 		
 	    if self.PIV_IsMilitary == true && self.PIV_IsHugeZombie == false then
 			VJ.EmitSound(self, "vj_piv/mil_zomb/gear"..math.random(1,6)..".wav", 70, 100)
+		end
+		
+		if self.PIV_IsHEV == true then
+			VJ.EmitSound(self, "physics/metal/metal_box_footstep"..math.random(1,4)..".wav", 70, 100)
 		end
 
 		if self:GetClass() == "npc_vj_piv_sickler" then
@@ -1774,11 +1779,11 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:TranslateActivity(act)
 
-	if act == ACT_IDLE && GetConVar("vj_piv_classic_animations"):GetInt() == 0 && self.PIV_WeaponType != 2 && !self.PIV_Rusher && self:GetClass() != "npc_vj_piv_shocker" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_brawler"  && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_boss" then
+	if act == ACT_IDLE && GetConVar("vj_piv_classic_animations"):GetInt() == 0 && !self.PIV_WeHaveAWeapon && !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt && !self.PIV_Rusher && self:GetClass() != "npc_vj_piv_shocker" && self:GetClass() != "npc_vj_piv_creep" && self:GetClass() != "npc_vj_piv_shikari" && self:GetClass() != "npc_vj_piv_shikari_torso" && self:GetClass() != "npc_vj_piv_brawler"  && self:GetClass() != "npc_vj_piv_brawler" && self:GetClass() != "npc_vj_piv_brawler_boss" && self:GetClass() != "npc_vj_piv_sickler" then
 		return ACT_IDLE_ON_FIRE
 	end
-	
-	if act == ACT_IDLE && self.PIV_Rusher then
+
+	if act == ACT_IDLE && self.PIV_Rusher && self:GetClass() != "npc_vj_piv_creep" then
 		return ACT_IDLE_AIM_STEALTH
 	end
 	
@@ -1848,6 +1853,12 @@ function ENT:TranslateActivity(act)
 		end
 	end
 
+	if self:GetClass() == "npc_vj_piv_creep" then
+		if act == ACT_IDLE or act == ACT_IDLE_AIM_STEALTH or act == ACT_IDLE_ON_FIRE then
+			return ACT_IDLE_HURT
+		end
+	end
+	
 	if self.PIV_GoblinMode then
 		if self:GetClass() == "npc_vj_piv_creep" then
 			if act == ACT_IDLE or act == ACT_IDLE_AIM_STEALTH or act == ACT_IDLE_ON_FIRE then

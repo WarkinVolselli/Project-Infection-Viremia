@@ -112,7 +112,7 @@ if self.PIV_HasArmor == true then
 		self.DamageSpark1:Fire("StopSpark", "", 0.001)
 		self:DeleteOnRemove(self.DamageSpark1)
 	end
-	if self.HasSounds == true && self.HasImpactSounds == true then VJ.EmitSound(self,"vj_impact_metal/bullet_metal/metalsolid"..math.random(1,10)..".wav",70) end
+	if self.HasSounds == true && self.HasImpactSounds == true then VJ.EmitSound(self,"vj_base/impact/armor"..math.random(1,10)..".wav",70) end
 		dmginfo:ScaleDamage(0.50)
     end
 

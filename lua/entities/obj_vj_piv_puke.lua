@@ -16,7 +16,7 @@ if !SERVER then return end
 
 ENT.Model = {"models/spitball_large.mdl"} -- The models it should spawn with | Picks a random one from the table
 ENT.DecalTbl_DeathDecals = {"VJ_AcidSlime1"}
-ENT.SoundTbl_Idle = {"vj_acid/acid_idle1.wav"}
+ENT.SoundTbl_Idle = {"vj_base/ambience/acid_idle.wav"}
 ENT.SoundTbl_OnCollide = {"vj_piv/spewer/projectileimpact.wav","vj_piv/spewer/projectileexplosion.wav"}
 ENT.OnCollideSoundPitch = VJ_Set(90,120) 
 ENT.DoesRadiusDamage = true -- Should it do a blast damage when it hits something?

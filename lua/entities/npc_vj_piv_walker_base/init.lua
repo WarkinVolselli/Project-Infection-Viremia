@@ -57,6 +57,7 @@ ENT.PIV_CanBeDiseased = true
 ENT.PIV_IsZombine = false
 ENT.PIV_IsMetropolice = false
 ENT.PIV_IsMilitary = false
+ENT.PIV_IsHEV = false
 
 ENT.PIV_CanMutate = false
 ENT.PIV_Mutated = false
@@ -635,6 +636,10 @@ function ENT:CustomOnAcceptInput(key,activator,caller,data)
 			VJ.EmitSound(self, "vj_piv/mil_zomb/gear"..math.random(1,6)..".wav", 70, 100)
 		end
 		
+	    if self.PIV_IsHEV == true then
+			VJ.EmitSound(self, "physics/metal/metal_box_footstep"..math.random(1,4)..".wav", 70, 100)
+		end
+	
 		if self:GetClass() == "npc_vj_piv_phorid" then
 			VJ.EmitSound(self, "vj_piv/phorid/brut_fs_walk_heel_01_"..math.random(0,20)..".wav", 70, 100)
 		end
@@ -1893,7 +1898,7 @@ function ENT:PIV_CustomMutate()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:TranslateActivity(act)
-	if act == ACT_IDLE && !self.PIV_WeHaveAWeapon && !self.PIV_Shambler && GetConVar("vj_piv_classic_animations"):GetInt() == 0 then
+	if act == ACT_IDLE && !self.PIV_WeHaveAWeapon && !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt && !self.PIV_Shambler && GetConVar("vj_piv_classic_animations"):GetInt() == 0 && self:GetClass() != "npc_vj_piv_panzer" && self:GetClass() != "npc_vj_piv_panzer_boss" && self:GetClass() != "npc_vj_piv_husk" && self:GetClass() != "npc_vj_piv_husk_f" && self:GetClass() != "npc_vj_piv_husk_torso" && self:GetClass() != "npc_vj_piv_husk_torso_f" && self:GetClass() != "npc_vj_piv_virulent" && self:GetClass() != "npc_vj_piv_exploder" && self:GetClass() != "npc_vj_piv_cremator" then
 		return ACT_IDLE_RELAXED
 	end
 
@@ -1908,7 +1913,7 @@ function ENT:TranslateActivity(act)
 	end
 
 	if self.PIV_IsAquatic && self:WaterLevel() > 2 && self:WaterLevel() < 12 && !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt then
-		if act == ACT_IDLE or act == ACT_IDLE_AIM_STEALTH or act == ACT_IDLE_ON_FIRE then
+		if act == ACT_IDLE or act == ACT_IDLE_AIM_STEALTH or act == ACT_IDLE_ON_FIRE or act == ACT_IDLE_RELAXED then
 			return ACT_HL2MP_SWIM_IDLE
 		end
 	end
@@ -1938,6 +1943,9 @@ function ENT:TranslateActivity(act)
 	end
 	
 	if self:GetClass() == "npc_vj_piv_cremator" then
+		if act == ACT_IDLE then
+			return ACT_IDLE_HURT
+		end
 		if act == ACT_WALK or act == ACT_WALK_AIM_STEALTH then
 			return ACT_WALK_AIM
 		end
@@ -1947,7 +1955,7 @@ function ENT:TranslateActivity(act)
 	end
 	
 	if self:GetClass() == "npc_vj_piv_panzer" or self:GetClass() == "npc_vj_piv_panzer_boss" then
-		if act == ACT_IDLE && !self.PIV_Shambler then
+		if act == ACT_IDLE or act == ACT_IDLE_RELAXED && !self.PIV_Shambler then
 			if self.Berserk then
 				return ACT_IDLE_AIM_STEALTH
 			else

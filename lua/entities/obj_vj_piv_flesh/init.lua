@@ -11,7 +11,7 @@ ENT.DoesDirectDamage = true -- Should it do a direct damage when it hits somethi
 ENT.DirectDamage = 10 -- How much damage should it do when it hits something
 ENT.DirectDamageType = DMG_POISON -- Damage type
 ENT.DecalTbl_DeathDecals = {"YellowBlood"}
-ENT.SoundTbl_OnCollide = {"vj_acid/acid_splat.wav"}
+ENT.SoundTbl_OnCollide = {"vj_base/ambience/acid_splat.wav"}
 ENT.OnCollideSoundLevel = 70
 ENT.OnCollideSoundPitch = VJ.SET(90,120) 
 ---------------------------------------------------------------------------------------------------------------------------------------------

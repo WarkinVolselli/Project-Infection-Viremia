@@ -18,6 +18,7 @@ ENT.SoundTbl_Death = {"vj_piv/mil_zomb/gasmask/death_1.wav","vj_piv/mil_zomb/gas
 ENT.SoundTbl_BeforeMeleeAttack = {"vj_piv/mil_zomb/gasmask/attack_1.wav","vj_piv/mil_zomb/gasmask/attack_2.wav","vj_piv/mil_zomb/gasmask/attack_3.wav","vj_piv/mil_zomb/gasmask/attack_4.wav","vj_piv/mil_zomb/gasmask/attack_5.wav","vj_piv/mil_zomb/gasmask/attack_6.wav","vj_piv/mil_zomb/gasmask/attack_7.wav","vj_piv/mil_zomb/gasmask/attack_8.wav"}
 
 ENT.Immune_AcidPoisonRadiation = true -- Immune to Acid, Poison and Radiation
+ENT.ImmuneDamagesTable = {DMG_PARALYZE,DMG_NERVEGAS}
 ENT.PIV_AllowedToVomit = false
 ENT.PIV_CanBeBiter = false
 ---------------------------------------------------------------------------------------------------------------------------------------------

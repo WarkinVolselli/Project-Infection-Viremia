@@ -5,19 +5,42 @@ include('shared.lua')
 	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
 	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
 -----------------------------------------------*/
-ENT.Model = {"models/vj_piv/hl2/combine/soldier_stripped.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
-ENT.StartHealth = 100
+ENT.Model = {"models/vj_piv/hl2/hev_helmet.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
+ENT.PIV_IsHEV = true
+ENT.StartHealth = 200
 
-ENT.PIV_AllowedToVomit = true
-ENT.PIV_CanBeBiter = true
+ENT.SoundTbl_Idle = {"vj_piv/hev/idle1.wav","vj_piv/hev/idle2.wav","vj_piv/hev/idle3.wav","vj_piv/hev/idle4.wav","vj_piv/hev/idle5.wav","vj_piv/hev/idle6.wav","vj_piv/hev/idle7.wav","vj_piv/hev/idle8.wav","vj_piv/hev/idle9.wav","vj_piv/hev/idle10.wav"}
+ENT.SoundTbl_Alert = {"vj_piv/hev/alert1.wav","vj_piv/hev/alert2.wav","vj_piv/hev/alert3.wav","vj_piv/hev/alert4.wav","vj_piv/hev/alert5.wav"}
+ENT.SoundTbl_BeforeMeleeAttack = {"vj_piv/hev/alert3.wav","vj_piv/hev/alert4.wav"}
+ENT.SoundTbl_Pain = {"vj_piv/hev/pain1.wav","vj_piv/hev/pain2.wav","vj_piv/hev/pain3.wav","vj_piv/hev/pain4.wav","vj_piv/hev/pain5.wav","vj_piv/hev/pain6.wav","vj_piv/hev/pain7.wav","vj_piv/hev/pain8.wav"}
+ENT.SoundTbl_Death = {"vj_piv/hev/death1.wav","vj_piv/hev/death2.wav","vj_piv/hev/death3.wav","vj_piv/hev/death4.wav","vj_piv/hev/death5.wav","vj_piv/hev/death6.wav"}
+
+ENT.Immune_AcidPoisonRadiation = true
+ENT.Immune_Electricity = true
+ENT.Immune_Fire = true
+ENT.ImmuneDamagesTable = {DMG_PARALYZE,DMG_NERVEGAS}
+ENT.PIV_AllowedToVomit = false
+ENT.PIV_CanBeBiter = false
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnInitialize()
-	self:SetSkin(math.random(0,1))
-	self.NextSoundTime_Breath = VJ.SET(15,60)
+	if GetConVar("vj_piv_lights"):GetInt() == 1 then 
+		self.Light2 = ents.Create("light_dynamic")
+		self.Light2:SetKeyValue("brightness", "1")
+		self.Light2:SetKeyValue("distance", "64")
+		self.Light2:SetLocalPos(self:GetPos())
+		self.Light2:SetLocalAngles(self:GetAngles())
+		self.Light2:Fire("Color", "255 227 153 255")
+		self.Light2:SetParent(self)
+		self.Light2:Spawn()
+		self.Light2:Activate()
+		self.Light2:Fire("SetParentAttachment","eyes")
+		self.Light2:Fire("TurnOn", "", 0)
+		self:DeleteOnRemove(self.Light2)
+	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
-	if (hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG) && (dmginfo:IsBulletDamage()) then
+	if (dmginfo:IsBulletDamage()) then
 		local attacker = dmginfo:GetAttacker()
 		self.DamageSpark1 = ents.Create("env_spark")
 		self.DamageSpark1:SetKeyValue("Magnitude","1")

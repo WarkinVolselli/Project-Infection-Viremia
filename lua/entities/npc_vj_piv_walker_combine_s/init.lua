@@ -18,6 +18,7 @@ ENT.SoundTbl_Pain = {"vj_piv/combinezombie/zombine_pain1.wav","vj_piv/combinezom
 ENT.SoundTbl_Death = {"vj_piv/combinezombie/zombine_die1.wav","vj_piv/combinezombie/zombine_die2.wav","vj_piv/combinezombie/zombine_die3.wav","vj_piv/combinezombie/zombine_die4.wav"}
 
 ENT.Immune_AcidPoisonRadiation = true -- Immune to Acid, Poison and Radiation
+ENT.ImmuneDamagesTable = {DMG_PARALYZE,DMG_NERVEGAS}
 ENT.PIV_AllowedToVomit = false
 ENT.PIV_CanBeBiter = false
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -41,7 +42,7 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 		self.DamageSpark1:Fire("StartSpark", "", 0)
 		self.DamageSpark1:Fire("StopSpark", "", 0.001)
 		self:DeleteOnRemove(self.DamageSpark1)
-		if self.HasSounds == true && self.HasImpactSounds == true then VJ.EmitSound(self,"vj_impact_metal/bullet_metal/metalsolid"..math.random(1,10)..".wav",70) end
+		if self.HasSounds == true && self.HasImpactSounds == true then VJ.EmitSound(self,"vj_base/impact/armor"..math.random(1,10)..".wav",70) end
 		dmginfo:ScaleDamage(0.50)
 	end
 end
