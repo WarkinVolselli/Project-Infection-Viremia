@@ -1,0 +1,11 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\vj_piv\hl2\HEV/HEV_helmet"
+	"$Nocull" 1
+	"$bumpmap" "models\vj_piv\hl2\HEV/HEV_helmet_normal"
+	"$halflambert" "1"
+	"$phong" "1"
+	"$phongexponent" "25"
+	"$phongboost"	".5"
+	"$phongfresnelranges"	"[0.25 0.5 1]"
+}

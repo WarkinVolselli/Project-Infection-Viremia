@@ -1,0 +1,13 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\vj_piv\hl2\HEV/glassvisor"
+	"$surfaceprop" "glass"
+	"$model" 1
+	"$envmap" "env_cubemap"
+	"$envmapconstrast" "5"
+	"$normalmapalphaenvmapmask" 0
+	"$envmapsaturation" .5
+	"$envmaptint" "[ .65 .65 .64]"
+	"$Nocull" 1
+	"$selfillum" 1
+}
