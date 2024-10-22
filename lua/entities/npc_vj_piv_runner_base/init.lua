@@ -1281,7 +1281,7 @@ function ENT:CustomOnMeleeAttack_Miss()
     end
 end
 -------------------------------------------------------------------------------------------------------------------
-function ENT:OnDeath(dmginfo, hitgroup, status)
+function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
 	self:DropTheFuckignWeaponGoddamn()
 	self:DropTheShield()
 end

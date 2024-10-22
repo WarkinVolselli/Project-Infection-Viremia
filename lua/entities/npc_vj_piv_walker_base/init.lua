@@ -1123,7 +1123,7 @@ function ENT:CustomOnAlert(ent)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:Zombie_CustomOnAlert()
-	if GetConVar("vj_piv_alert_anim"):GetInt() == 1 && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Resting == 0 && self:GetSequence() != self:LookupSequence(ACT_OPEN_DOOR) && !self.PIV_WeHaveAWeapon && self.PIV_HasShield == false && self.PIV_GoblinMode == true
+	if GetConVar("vj_piv_alert_anim"):GetInt() == 1 && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Resting == 0 && self:GetSequence() != self:LookupSequence(ACT_OPEN_DOOR) && self.PIV_WeHaveAWeapon == false && self.PIV_HasShield == false && self.PIV_GoblinMode == true
 	&& self:GetClass() != "npc_vj_piv_slammer"
 	&& self:GetClass() != "npc_vj_piv_bruiser"
 	&& self:GetClass() != "npc_vj_piv_exploder"
@@ -1411,7 +1411,7 @@ function ENT:CustomOnMeleeAttack_Miss()
     end
 end
 -------------------------------------------------------------------------------------------------------------------
-function ENT:OnDeath(dmginfo, hitgroup, status)
+function ENT:CustomOnPriorToKilled(dmginfo, hitgroup)
 	self:DropTheFuckignWeaponGoddamn()
 	self:DropTheShield()
 end
