@@ -3,6 +3,8 @@ AddCSLuaFile("shared.lua")
 include('shared.lua')
 --------------------
 ENT.Model = {"models/vj_piv/hl2/corpse1.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
+ENT.GeneralSoundPitch1 = 60
+ENT.GeneralSoundPitch2 = 70
 --------------------
 function ENT:Zombie_CustomOnPreInitialize()
 	self.PIV_IsRunner = true
