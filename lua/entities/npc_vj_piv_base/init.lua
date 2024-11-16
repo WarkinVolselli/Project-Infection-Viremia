@@ -305,6 +305,7 @@ ENT.PIV_NextShoveT = 0
 ENT.PIV_LegHP = 50
 ENT.IsDigging = false
 ENT.Voice = 1
+ENT.PIV_MakeCrispyCorpse = false
 --------------------
 function ENT:Zombie_CustomOnPreInitialize() end
 --------------------
@@ -2953,149 +2954,60 @@ function ENT:CustomOnRangeAttack_AfterStartTimer(seed)
 	end
 end
 --------------------
-function ENT:OnDeath(dmginfo, hitgroup, status)
+function ENT:DropTheFuckignWeaponGoddamn()
 
-	if status == "Initial" then
-		self:DropTheFuckignWeaponGoddamn()
-		self:DropTheShield()
+	if GetConVar("vj_piv_weapons_dropping"):GetInt() == 0 or self.PIV_WeHaveAWeapon == false then return end
+
+	if IsValid(self.ExtraGunModel1) then
+		self.PIV_WeHaveAWeapon = false
+		self.MeleeAttackDamageType = DMG_CLUB
+		self:CreateGibEntity("prop_physics",self.ExtraGunModel1:GetModel(),{Pos=self:GetAttachment(self:LookupAttachment("anim_attachment_RH")).Pos,Ang=self:GetAngles()}) self.ExtraGunModel1:SetMaterial("nodraw") self.ExtraGunModel1:DrawShadow(false) self.PIV_WeHaveAWeapon = false
+		self.ExtraGunModel1:Remove()
 	end
 
-	if status == "DeathAnim" then
-		if self:IsMoving() then
-			-- We're Running
-			if self:GetActivity() == ACT_SPRINT || self:GetActivity() == ACT_RUN_AIM || self:GetActivity() == ACT_RUN_RELAXED then
-				self.AnimTbl_Death = {
-					"vjseq_witch_death",
-					"vjseq_sonic_death_2",
-					"vjseq_sonic_death_3",
-					"vjseq_deathrunning_01",
-					"vjseq_deathrunning_03",
-					"vjseq_deathrunning_04",
-					"vjseq_deathrunning_05",
-					"vjseq_deathrunning_06",
-					"vjseq_deathrunning_07",
-					"vjseq_deathrunning_08",
-					"vjseq_deathrunning_09",
-					"vjseq_deathrunning_10",
-					"vjseq_deathrunning_11",
-					"vjseq_deathrunning_11a",
-					"vjseq_deathrunning_11b",
-					"vjseq_deathrunning_11c",
-					"vjseq_deathrunning_11d",
-					"vjseq_deathrunning_11e",
-					"vjseq_death03",
-					"vjseq_nz_sonic_death_1",
-					"vjseq_nz_sonic_death_3",
-					"vjseq_nz_sonic_death_2"
-				}
-			else
-			-- We're Walking
-				self.AnimTbl_Death = {
-					"vjseq_witch_death",
-					"vjseq_nz_death_f_1",
-					"vjseq_nz_death_f_2",
-					"vjseq_nz_death_f_3",
-					"vjseq_nz_death_f_4",
-					"vjseq_nz_death_f_5",
-					"vjseq_nz_death_f_6",
-					"vjseq_nz_death_f_7",
-					"vjseq_nz_death_f_8",
-					"vjseq_nz_death_f_9",
-					"vjseq_nz_death_f_10",
-					"vjseq_nz_death_f_11",
-					"vjseq_nz_death_f_12",
-					"vjseq_nz_death_f_13"
-				}
-			end
-		end
+end
+--------------------
+function ENT:DropTheShield()
 
-		if hitgroup == HITGROUP_HEAD then -- When killed by a headshot
-			self.AnimTbl_Death = {
-				"vjseq_deathheadshotback",
-				"vjseq_deathheadshotfront",
-				"vjseq_death_shotgun_backward_collapse",
-				"vjseq_death01",
-				"vjseq_death02",
-				"vjseq_death04",
-				"vjseq_death_02a",
-				"vjseq_death_05"
-			}
-		end
+	if GetConVar("vj_piv_weapons_dropping"):GetInt() == 0 or !self.PIV_HasShield then return end
 
-		if self:IsOnFire() && !self.Immune_Fire then -- When killed by fire damage
-			self.AnimTbl_Death = {
-				"vjseq_witch_death",
-				"vjseq_nz_death_fire_1",
-				"vjseq_nz_death_fire_2",
-				"vjseq_death04",
-				"vjseq_infectiondeath"
-			} 
-		end	
-
-		if dmginfo:IsExplosionDamage() then -- When killed by explosion damage
-			self.AnimTbl_Death = {
-				"vjseq_nz_death_expl_f_1",
-				"vjseq_nz_death_expl_f_2",
-				"vjseq_nz_death_expl_f_3",
-				"vjseq_nz_death_expl_b_1",
-				"vjseq_nz_death_expl_l_1",
-				"vjseq_nz_death_expl_r_1"
-			}
-		end
-
-		if
-			dmginfo:IsDamageType(DMG_SHOCK)
-			-- dmginfo:GetAttacker():IsPlayer()
-			-- dmginfo:GetAttacker():GetActiveWeapon():GetClass() == "arc9_go_zeus" or
-			-- dmginfo:GetAttacker():GetActiveWeapon():GetClass() == "arc9_go_akimbo_taser"
-		then -- When killed by shock damage or a taser
-		   self.AnimTbl_Death = {
-				"vjseq_nz_death_elec_1",
-				"vjseq_nz_death_elec_2",
-				"vjseq_nz_death_elec_3",
-				"vjseq_nz_death_elec_4",
-				"vjseq_nz_death_elec_5"
-			}
-		end
-
-		if dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:GetDamage() > 100 && dmginfo:GetDamageForce():Length() > 10000 && !dmginfo:IsExplosionDamage() then -- When killed by a shotgun or attack with high force
-
-			self.AnimTbl_Death = {
-				"vjseq_death_shotgun_backward_03",
-				"vjseq_death_shotgun_backward_04",
-				"vjseq_death_shotgun_backward_05",
-				"vjseq_death_shotgun_backward_06",
-				"vjseq_death_shotgun_backward_07",
-				"vjseq_death_shotgun_backward_08",
-				"vjseq_death_shotgun_backward_09",
-				"vjseq_death_shotgun_backward_collapse",
-				"vjseq_death03"
-			}
-
-		end
-
-		if dmginfo:IsDamageType(DMG_DISSOLVE) then -- When killed by dissolving
-
-			self.AnimTbl_Death = {
-				"vjseq_nz_death_deathray_1",
-				"vjseq_nz_death_deathray_2",
-				"vjseq_nz_death_deathray_3",
-				"vjseq_nz_death_deathray_4"
-			}
-
-		end
-
-		if dmginfo:IsDamageType(DMG_PARALYZE) then -- When killed by a paralyzing damage
-
-			self.AnimTbl_Death = {
-				"vjseq_nz_death_freeze_1",
-				"vjseq_nz_death_freeze_2",
-				"vjseq_nz_death_freeze_3",
-				"vjseq_nz_death_freeze_4"
-			}
-
+	if IsValid(self.ZombieShield) then
+		self.PIV_HasShield = false
+		self:CreateGibEntity("prop_physics",self.ZombieShield:GetModel(),{Pos=self:GetAttachment(self:LookupAttachment("shield")).Pos,Ang=self:GetAngles()}) self.ZombieShield:SetMaterial("nodraw") self.ZombieShield:DrawShadow(false)
+		self.ZombieShield:Remove()	
+		self.AttackProps = true
+		self.PushProps = true
+		local ShieldPlacement = self:LookupBone("ValveBiped.Bip01_L_Forearm")
+        self:ManipulateBoneAngles(ShieldPlacement, Angle(0,0,0))	
+		if GetConVar("vj_piv_climbing"):GetInt() == 2 && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Crippled == false then
+			self.PIV_CanClimb = true
 		end
 	end
+end
+--------------------
+function ENT:Cripple()
+	self.PIV_Jogger = false
+	self.PIV_Shambler = false
+	self.PIV_Biter = false
+	self.PIV_CanMutate = false
+    self.FireRun = false
+	self:DropTheFuckignWeaponGoddamn()
+	self:DropTheShield()
+
+	self.CanTurnWhileStationary = false
+	
+    self:SetCollisionBounds(Vector(13,13,20),Vector(-13,-13,0))
+	self.VJC_Data = {
+	CameraMode = 1, 
+	ThirdP_Offset = Vector(30, 25, -20), 
+	FirstP_Bone = "ValveBiped.Bip01_Head1", 
+	FirstP_Offset = Vector(5, 0, -1), 
+    }
+    self:CapabilitiesRemove(bit.bor(CAP_MOVE_JUMP))
+	self:CapabilitiesRemove(bit.bor(CAP_MOVE_CLIMB))
+	self.HasDeathAnimation = false
+	self.HasRangeAttack = false
+	self.HasLeapAttack = false
 end
 --------------------
 function ENT:OnDamaged(dmginfo,hitgroup,status)
@@ -3197,31 +3109,6 @@ function ENT:OnDamaged(dmginfo,hitgroup,status)
 	end
 end
 --------------------
-function ENT:Cripple()
-	self.PIV_Jogger = false
-	self.PIV_Shambler = false
-	self.PIV_Biter = false
-	self.PIV_CanMutate = false
-    self.FireRun = false
-	self:DropTheFuckignWeaponGoddamn()
-	self:DropTheShield()
-
-	self.CanTurnWhileStationary = false
-	
-    self:SetCollisionBounds(Vector(13,13,20),Vector(-13,-13,0))
-	self.VJC_Data = {
-	CameraMode = 1, 
-	ThirdP_Offset = Vector(30, 25, -20), 
-	FirstP_Bone = "ValveBiped.Bip01_Head1", 
-	FirstP_Offset = Vector(5, 0, -1), 
-    }
-    self:CapabilitiesRemove(bit.bor(CAP_MOVE_JUMP))
-	self:CapabilitiesRemove(bit.bor(CAP_MOVE_CLIMB))
-	self.HasDeathAnimation = false
-	self.HasRangeAttack = false
-	self.HasLeapAttack = false
-end
---------------------
 function ENT:OnFlinch(dmginfo,hitgroup,status)
 
 	if status == "PriorExecution" then
@@ -3253,45 +3140,162 @@ function ENT:OnFlinch(dmginfo,hitgroup,status)
 
 end
 --------------------
-function ENT:DropTheFuckignWeaponGoddamn()
+function ENT:OnDeath(dmginfo, hitgroup, status)
 
-	if GetConVar("vj_piv_weapons_dropping"):GetInt() == 0 or self.PIV_WeHaveAWeapon == false then return end
-
-	if IsValid(self.ExtraGunModel1) then
-		self.PIV_WeHaveAWeapon = false
-		self.MeleeAttackDamageType = DMG_CLUB
-		self:CreateGibEntity("prop_physics",self.ExtraGunModel1:GetModel(),{Pos=self:GetAttachment(self:LookupAttachment("anim_attachment_RH")).Pos,Ang=self:GetAngles()}) self.ExtraGunModel1:SetMaterial("nodraw") self.ExtraGunModel1:DrawShadow(false) self.PIV_WeHaveAWeapon = false
-		self.ExtraGunModel1:Remove()
+	if status == "Initial" then
+		self:DropTheFuckignWeaponGoddamn()
+		self:DropTheShield()
+		if self:IsOnFire() && !self.Immune_Fire then
+			self.PIV_MakeCrispyCorpse = true
+		end
 	end
 
-end
---------------------
-function ENT:DropTheShield()
+	if status == "DeathAnim" then
+		if self:IsMoving() then
+			-- We're Running
+			if self:GetActivity() == ACT_SPRINT || self:GetActivity() == ACT_RUN_AIM || self:GetActivity() == ACT_RUN_RELAXED then
+				self.AnimTbl_Death = {
+					"vjseq_witch_death",
+					"vjseq_sonic_death_2",
+					"vjseq_sonic_death_3",
+					"vjseq_deathrunning_01",
+					"vjseq_deathrunning_03",
+					"vjseq_deathrunning_04",
+					"vjseq_deathrunning_05",
+					"vjseq_deathrunning_06",
+					"vjseq_deathrunning_07",
+					"vjseq_deathrunning_08",
+					"vjseq_deathrunning_09",
+					"vjseq_deathrunning_10",
+					"vjseq_deathrunning_11",
+					"vjseq_deathrunning_11a",
+					"vjseq_deathrunning_11b",
+					"vjseq_deathrunning_11c",
+					"vjseq_deathrunning_11d",
+					"vjseq_deathrunning_11e",
+					"vjseq_death03",
+					"vjseq_nz_sonic_death_1",
+					"vjseq_nz_sonic_death_3",
+					"vjseq_nz_sonic_death_2"
+				}
+			else
+			-- We're Walking
+				self.AnimTbl_Death = {
+					"vjseq_witch_death",
+					"vjseq_nz_death_f_1",
+					"vjseq_nz_death_f_2",
+					"vjseq_nz_death_f_3",
+					"vjseq_nz_death_f_4",
+					"vjseq_nz_death_f_5",
+					"vjseq_nz_death_f_6",
+					"vjseq_nz_death_f_7",
+					"vjseq_nz_death_f_8",
+					"vjseq_nz_death_f_9",
+					"vjseq_nz_death_f_10",
+					"vjseq_nz_death_f_11",
+					"vjseq_nz_death_f_12",
+					"vjseq_nz_death_f_13"
+				}
+			end
+		end
 
-	if GetConVar("vj_piv_weapons_dropping"):GetInt() == 0 or !self.PIV_HasShield then return end
+		if hitgroup == HITGROUP_HEAD then -- When killed by a headshot
+			self.AnimTbl_Death = {
+				"vjseq_deathheadshotback",
+				"vjseq_deathheadshotfront",
+				"vjseq_death_shotgun_backward_collapse",
+				"vjseq_death01",
+				"vjseq_death02",
+				"vjseq_death04",
+				"vjseq_death_02a",
+				"vjseq_death_05"
+			}
+		end
 
-	if IsValid(self.ZombieShield) then
-		self.PIV_HasShield = false
-		self:CreateGibEntity("prop_physics",self.ZombieShield:GetModel(),{Pos=self:GetAttachment(self:LookupAttachment("shield")).Pos,Ang=self:GetAngles()}) self.ZombieShield:SetMaterial("nodraw") self.ZombieShield:DrawShadow(false)
-		self.ZombieShield:Remove()	
-		self.AttackProps = true
-		self.PushProps = true
-		local ShieldPlacement = self:LookupBone("ValveBiped.Bip01_L_Forearm")
-        self:ManipulateBoneAngles(ShieldPlacement, Angle(0,0,0))	
-		if GetConVar("vj_piv_climbing"):GetInt() == 2 && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Crippled == false then
-			self.PIV_CanClimb = true
+		if self:IsOnFire() && !self.Immune_Fire then -- When killed by fire damage
+			self.AnimTbl_Death = {
+				"vjseq_witch_death",
+				"vjseq_nz_death_fire_1",
+				"vjseq_nz_death_fire_2",
+				"vjseq_death04",
+				"vjseq_infectiondeath"
+			} 
+		end	
+
+		if dmginfo:IsExplosionDamage() then -- When killed by explosion damage
+			self.AnimTbl_Death = {
+				"vjseq_nz_death_expl_f_1",
+				"vjseq_nz_death_expl_f_2",
+				"vjseq_nz_death_expl_f_3",
+				"vjseq_nz_death_expl_b_1",
+				"vjseq_nz_death_expl_l_1",
+				"vjseq_nz_death_expl_r_1"
+			}
+		end
+
+		-- disabled until it's fixed
+		-- if
+			-- dmginfo:IsDamageType(DMG_SHOCK)
+			-- dmginfo:GetAttacker():IsPlayer()
+			-- dmginfo:GetAttacker():GetActiveWeapon():GetClass() == "arc9_go_zeus" or
+			-- dmginfo:GetAttacker():GetActiveWeapon():GetClass() == "arc9_go_akimbo_taser"
+		-- then -- When killed by shock damage or a taser
+		   -- self.AnimTbl_Death = {
+				-- "vjseq_nz_death_elec_1",
+				-- "vjseq_nz_death_elec_2",
+				-- "vjseq_nz_death_elec_3",
+				-- "vjseq_nz_death_elec_4",
+				-- "vjseq_nz_death_elec_5"
+			-- }
+		-- end
+
+		if dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:GetDamage() > 100 && dmginfo:GetDamageForce():Length() > 10000 && !dmginfo:IsExplosionDamage() then -- When killed by a shotgun or attack with high force
+
+			self.AnimTbl_Death = {
+				"vjseq_death_shotgun_backward_03",
+				"vjseq_death_shotgun_backward_04",
+				"vjseq_death_shotgun_backward_05",
+				"vjseq_death_shotgun_backward_06",
+				"vjseq_death_shotgun_backward_07",
+				"vjseq_death_shotgun_backward_08",
+				"vjseq_death_shotgun_backward_09",
+				"vjseq_death_shotgun_backward_collapse",
+				"vjseq_death03"
+			}
+
+		end
+
+		if dmginfo:IsDamageType(DMG_DISSOLVE) then -- When killed by dissolving
+
+			self.AnimTbl_Death = {
+				"vjseq_nz_death_deathray_1",
+				"vjseq_nz_death_deathray_2",
+				"vjseq_nz_death_deathray_3",
+				"vjseq_nz_death_deathray_4"
+			}
+
+		end
+
+		if dmginfo:IsDamageType(DMG_PARALYZE) then -- When killed by a paralyzing damage
+
+			self.AnimTbl_Death = {
+				"vjseq_nz_death_freeze_1",
+				"vjseq_nz_death_freeze_2",
+				"vjseq_nz_death_freeze_3",
+				"vjseq_nz_death_freeze_4"
+			}
+
 		end
 	end
 end
+--------------------
+function ENT:Zombie_CustomOnCreateDeathCorpse(dmginfo, hitgroup, corpseEnt) end
 --------------------
 function ENT:OnCreateDeathCorpse(dmginfo, hitgroup, corpseEnt)
-	if GetConVarNumber("vj_piv_burntexture") == 1 then
-		if self:IsOnFire() && !self.Immune_Fire then
-			-- self.Corpse:SetMaterial("models/vj_piv/shared/burning")
-			-- self.Corpse:SetKeyValue("rendercolor","255 255 255 255")
-			corpseEnt:SetMaterial("models/vj_piv/shared/burning")
-			corpseEnt:SetKeyValue("rendercolor","255 255 255 255")
-		end
+	self:Zombie_CustomOnCreateDeathCorpse(dmginfo, hitgroup, corpseEnt)
+	if GetConVar("vj_piv_burntexture"):GetInt() == 1 && self.PIV_MakeCrispyCorpse then
+		corpseEnt:SetMaterial("models/vj_piv/shared/burning/burning")
+		corpseEnt:SetKeyValue("rendercolor","255 255 255 255")
 	end
 end
 --------------------

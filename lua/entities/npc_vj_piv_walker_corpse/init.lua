@@ -3,10 +3,11 @@ AddCSLuaFile("shared.lua")
 include('shared.lua')
 --------------------
 ENT.Model = {"models/vj_piv/hl2/corpse1.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
-ENT.GeneralSoundPitch1 = 60
-ENT.GeneralSoundPitch2 = 70
 --------------------
 function ENT:Zombie_CustomOnPreInitialize()
+	self.GeneralSoundPitch1 = 60
+	self.GeneralSoundPitch2 = 70
+	self.MeleeAttackSoundPitch = VJ.SET(90, 100)
 	-- Increase our odds of being a Shambler or Diseased
 	if !self.PIV_Shambler then
 		if math.random(1,GetConVar("vj_piv_shambler_chance"):GetInt()) == 1 && self.PIV_CanBeShambler then
