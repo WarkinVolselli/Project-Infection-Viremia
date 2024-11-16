@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\vj_piv\shared\burning"
+    "$bumpmap"     "models\vj_piv\shared\burning_n"
+	"$nocull" 1 		
+}
