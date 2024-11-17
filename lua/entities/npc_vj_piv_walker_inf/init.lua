@@ -47,10 +47,10 @@ function ENT:Zombie_CustomOnCreateDeathCorpse(dmginfo, hitgroup, corpseEnt)
 	corpseEnt:VJ_PIV_CreateBoneMerge(corpseEnt,self.Bonemerge:GetModel(),self.Bonemerge:GetSkin(),self.Bonemerge:GetColor(),self.Bonemerge:GetMaterial(),self.Bonemerge:GetPlayerColor())
 end
 --------------------
-function ENT:BonemergeCorpse(dmginfo,hitgroup,GetCorpse)    
-   if IsValid(self.Bonemerge) then    
-        GetCorpse:VJ_LNRCreateBoneMerge(GetCorpse,self.Bonemerge:GetModel(),self.Bonemerge:GetSkin(),self.Bonemerge:GetColor(),self.Bonemerge:GetMaterial(),self.Bonemerge:GetPlayerColor())    
-        GetCorpse:SetMaterial("hud/killicons/default")
-    end    
-end    
+-- function ENT:BonemergeCorpse(dmginfo,hitgroup,GetCorpse)    
+   -- if IsValid(self.Bonemerge) then    
+        -- GetCorpse:VJ_LNRCreateBoneMerge(GetCorpse,self.Bonemerge:GetModel(),self.Bonemerge:GetSkin(),self.Bonemerge:GetColor(),self.Bonemerge:GetMaterial(),self.Bonemerge:GetPlayerColor())    
+        -- GetCorpse:SetMaterial("hud/killicons/default")
+    -- end    
+-- end    
 --------------------

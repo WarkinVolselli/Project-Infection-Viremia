@@ -1,18 +1,33 @@
+include("entities/npc_vj_piv_base/init.lua")
 AddCSLuaFile("shared.lua")
 include('shared.lua')
-/*-----------------------------------------------
-	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
-	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
-	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
------------------------------------------------*/
-ENT.Model = {"models/vj_piv/hl2/charple.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
-
----------------------------------------------------------------------------------------------------------------------------------------------
+--------------------
+ENT.Model = {"models/vj_piv/hl2/charple.mdl"}
+--------------------
+function ENT:Zombie_CustomOnPreInitialize()
+	self.GeneralSoundPitch1 = 80
+	self.GeneralSoundPitch2 = 90
+	self.MeleeAttackSoundPitch = VJ.SET(90, 100)
+	self.PIV_IsRunner = true
+end
+--------------------
 function ENT:Zombie_CustomOnInitialize()
 	self:SetSkin(math.random(0,5))
 end
-/*-----------------------------------------------
-	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
-	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
-	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
------------------------------------------------*/
+--------------------
+function ENT:Zombie_CustomOnTakeDamage(dmginfo,hitgroup,status)
+	-- take a little less damage from fire
+	if
+		dmginfo:IsDamageType(DMG_BURN) or
+		dmginfo:IsDamageType(DMG_SLOWBURN) or
+		(
+			self:IsOnFire() &&
+			IsValid(dmgInflictor) &&
+			IsValid(dmgAttacker) &&
+			dmgInflictor:GetClass() == "entityflame" &&
+			dmgAttacker:GetClass() == "entityflame"
+		)
+	then
+		dmginfo:ScaleDamage(0.80)
+	end
+end
