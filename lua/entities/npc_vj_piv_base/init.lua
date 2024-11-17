@@ -3024,6 +3024,18 @@ function ENT:OnDamaged(dmginfo,hitgroup,status)
 		if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 && self.PIV_IsBoss == false then
 			dmginfo:ScaleDamage(GetConVarNumber("vj_piv_headshot_damage_mult"))
 		end
+		-- have commons/non-specials take extra damage from explosives
+		if
+			!self.PIV_IsSpecial &&
+			(
+				dmginfo:IsExplosionDamage() or
+				dmginfo:IsDamageType(DMG_BLAST_SURFACE) or
+				dmginfo:IsDamageType(DMG_MISSILEDEFENSE) or
+				dmginfo:IsDamageType(DMG_ALWAYSGIB)
+			)
+		then
+			dmginfo:ScaleDamage(1.5)
+		end
 		self:Zombie_CustomOnTakeDamage(dmginfo,hitgroup,status)
 	end
 
