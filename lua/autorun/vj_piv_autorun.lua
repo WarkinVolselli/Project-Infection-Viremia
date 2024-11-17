@@ -18,6 +18,19 @@ if VJExists == true then
 	util.PrecacheModel("models/vj_piv/hl2/charple.mdl")
 	util.PrecacheModel("models/vj_piv/hl2/corpse1.mdl")
 
+	VJ.AddNPC("Base Zombie","npc_vj_piv_base",vCat)
+
+	-- examples of new entname ideas
+	-- npc_vj_piv_walker_civ_m --> npc_vj_piv_civilian_walker
+	-- npc_vj_piv_walker_civ_f --> npc_vj_piv_civilian_walker_female
+	-- npc_vj_piv_runner_corpse --> npc_vj_piv_civilian_corpse_runner
+	-- npc_vj_piv_walker_combine_p --> npc_vj_piv_combine_prospekt_walker
+	-- npc_vj_piv_runner_hazmat --> npc_vj_piv_military_hazmat_runner
+	-- npc_vj_piv_blood_bomber --> npc_vj_piv_special_bloodbomber
+	-- npc_vj_piv_tank --> npc_vj_piv_special_heavy_tank
+	-- npc_vj_piv_phorid --> npc_vj_piv_boss_phorid
+
+
 	local vCat = "Project Infection: Viremia - Citizens"
 	
 	VJ.AddNPC("Civilian Walker (Female)","npc_vj_piv_walker_civ_f",vCat)
@@ -35,8 +48,8 @@ if VJExists == true then
 	VJ.AddNPC("Charple Walker","npc_vj_piv_walker_charple",vCat)
 	VJ.AddNPC("Charple Runner","npc_vj_piv_runner_charple",vCat)
 	
-	VJ.AddNPC("Fat Walker (Male)","npc_vj_piv_fat_walker_m",vCat)
-	VJ.AddNPC("Fat Runner (Male)","npc_vj_piv_fat_runner_m",vCat)
+	VJ.AddNPC("Fat Walker","npc_vj_piv_fat_walker_m",vCat)
+	VJ.AddNPC("Fat Runner","npc_vj_piv_fat_runner_m",vCat)
 
 	local vCat = "Project Infection: Viremia - Combine"
 	
