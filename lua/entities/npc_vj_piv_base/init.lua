@@ -306,6 +306,7 @@ ENT.PIV_LegHP = 50
 ENT.IsDigging = false
 ENT.Voice = 1
 ENT.PIV_MakeCrispyCorpse = false
+ENT.PIV_UseActIdleStimulated = false -- use ACT_IDLE_AIM_STIMULATED as our idle activity
 --------------------
 function ENT:Zombie_CustomOnPreInitialize() end
 --------------------
@@ -469,6 +470,7 @@ function ENT:PreInit()
 	end
 
 	-- Fire Runner
+	-- If you make changes to this, don't forget to update the Charple Walker
 	if math.random(1,GetConVar("vj_piv_firerunners_chance"):GetInt()) == 1 && GetConVar("vj_piv_firerunners"):GetInt() == 1 && self.PIV_CanBeFireRunner && !self.Immune_Fire then
 		self.FireRun = true
 	end
@@ -2232,6 +2234,10 @@ function ENT:Zombie_CustomOnThink_AIEnabled() end
 --------------------
 function ENT:TranslateActivity(act)
 
+	if self.PIV_UseActIdleStimulated && act == ACT_IDLE && !self.PIV_WeHaveAWeapon && !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt then
+		return ACT_IDLE_AIM_STIMULATED
+	end
+
 	if self.PIV_IsRunner then
 		if
 			act == ACT_IDLE &&
@@ -3010,12 +3016,15 @@ function ENT:Cripple()
 	self.HasLeapAttack = false
 end
 --------------------
+function ENT:Zombie_CustomOnTakeDamage(dmginfo,hitgroup,status) end
+--------------------
 function ENT:OnDamaged(dmginfo,hitgroup,status)
 
 	if status == "PreDamage" then
 		if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 && self.PIV_IsBoss == false then
 			dmginfo:ScaleDamage(GetConVarNumber("vj_piv_headshot_damage_mult"))
 		end
+		self:Zombie_CustomOnTakeDamage(dmginfo,hitgroup,status)
 	end
 
 	if status == "PostDamage" then
@@ -3298,4 +3307,3 @@ function ENT:OnCreateDeathCorpse(dmginfo, hitgroup, corpseEnt)
 		corpseEnt:SetKeyValue("rendercolor","255 255 255 255")
 	end
 end
---------------------
