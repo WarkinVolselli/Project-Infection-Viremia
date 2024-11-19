@@ -246,6 +246,9 @@ ENT.PIV_CanBeShambler = true
 ENT.PIV_CanBeCrawler = true
 ENT.PIV_CanBeBrute = true
 ENT.PIV_CanBeBiter = true
+ENT.PIV_CanBeSuperSprinter = true
+ENT.PIV_CanBeRusher = true
+ENT.PIV_CanBeLeaper = true
 ENT.PIV_CanBeDiseased = true
 
 ENT.PIV_IsZombine = false
@@ -312,6 +315,8 @@ function ENT:Zombie_CustomOnPreInitialize() end
 --------------------
 function ENT:PreInit()
 
+	self:Zombie_CustomOnPreInitialize()
+
 	if GetConVar("vj_piv_rebirth"):GetInt() == 1 && !self.PIV_IsBoss then
 		self.PIV_CanMutate = true
 		if GetConVar("vj_piv_rebirthall"):GetInt() == 1 then
@@ -345,10 +350,11 @@ function ENT:PreInit()
 
     self.PIV_LegHP = self.StartHealth / 2
 
+
 	if GetConVar("vj_piv_subclasses"):GetInt() == 1 && self.PIV_HasSubclasses && !self.PIV_IsBoss then
 
 		if self.PIV_IsRunner then
-			
+
 			-- Rushers
 			if math.random(1,GetConVar("vj_piv_rusher_chance"):GetInt()) == 1 && self.PIV_CanBeRusher then
 				self.PIV_Rusher = true
@@ -433,19 +439,19 @@ function ENT:PreInit()
 				self.PIV_HasWeapons = false
 				self.PIV_CanBeThrower = false
 			end
-			
-			-- Diseased
-			-- if you make any changes to this then remember to update the corpse zombies
-			if math.random(1,GetConVar("vj_piv_diseased_chance"):GetInt()) == 1 && self.PIV_CanBeDiseased then
-				self.PIV_Diseased = true
-				self.MeleeAttackBleedEnemyChance = 1
-				self.MeleeAttackBleedEnemyDamage = 1
-				self.MeleeAttackBleedEnemyTime = 1
-				self.MeleeAttackBleedEnemyReps = math.random(5,20)
-				self.MeleeAttackBleedEnemy = true
-				ParticleEffectAttach("embers_medium_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("origin"))
-			end
 		
+		end
+
+		-- Diseased
+		-- if you make any changes to this then remember to update the corpse zombies
+		if math.random(1,GetConVar("vj_piv_diseased_chance"):GetInt()) == 1 && self.PIV_CanBeDiseased then
+			self.PIV_Diseased = true
+			self.MeleeAttackBleedEnemyChance = 1
+			self.MeleeAttackBleedEnemyDamage = 1
+			self.MeleeAttackBleedEnemyTime = 1
+			self.MeleeAttackBleedEnemyReps = math.random(5,20)
+			self.MeleeAttackBleedEnemy = true
+			ParticleEffectAttach("embers_medium_01",PATTACH_POINT_FOLLOW,self,self:LookupAttachment("origin"))
 		end
 
 		-- Crawlers
@@ -620,7 +626,6 @@ function ENT:PreInit()
 		self.PIV_NextRestT = CurTime() + math.Rand(10, 120)
 	end
 
-	self:Zombie_CustomOnPreInitialize()
 end
 --------------------
 function ENT:Zombie_CustomOnInitialize() end
