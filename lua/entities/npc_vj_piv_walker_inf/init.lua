@@ -2,6 +2,10 @@ include("entities/npc_vj_piv_base/init.lua")
 AddCSLuaFile("shared.lua")
 include('shared.lua')
 --------------------
+function ENT:Zombie_CustomOnPreInitialize()
+	self.PIV_IsInfectee = true
+end
+--------------------
 function ENT:Zombie_CustomOnInitialize()
 	timer.Simple(0.1,function()
 		local death = VJ.PICK({"Infectiondeath","Infectiondeath2","Death_04"})

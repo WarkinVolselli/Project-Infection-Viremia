@@ -310,6 +310,7 @@ ENT.IsDigging = false
 ENT.Voice = 1
 ENT.PIV_MakeCrispyCorpse = false
 ENT.PIV_UseActIdleStimulated = false -- use ACT_IDLE_AIM_STIMULATED as our idle activity
+ENT.PIV_IsInfectee = false
 --------------------
 function ENT:Zombie_CustomOnPreInitialize() end
 --------------------
@@ -484,7 +485,7 @@ function ENT:PreInit()
 	self:Dig()
 	
 	-- Weapons
-	if GetConVar("vj_piv_weapons"):GetInt() == 1 && math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self.PIV_HasWeapons then
+	if GetConVar("vj_piv_weapons"):GetInt() == 1 && math.random(1,GetConVar("vj_piv_weapons_chance"):GetInt()) == 1 && self.PIV_HasWeapons && !self.PIV_IsInfectee then
 			
 		self.PIV_WeHaveAWeapon = true
 		self.PIV_CanBeThrower = false

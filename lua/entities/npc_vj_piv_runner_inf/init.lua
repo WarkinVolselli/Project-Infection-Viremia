@@ -4,6 +4,7 @@ include('shared.lua')
 --------------------
 function ENT:Zombie_CustomOnPreInitialize()
 	self.PIV_IsRunner = true
+	self.PIV_IsInfectee = true
 end
 --------------------
 function ENT:Zombie_CustomOnInitialize()
