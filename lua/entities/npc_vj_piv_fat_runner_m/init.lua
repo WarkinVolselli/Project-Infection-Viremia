@@ -7,6 +7,7 @@ ENT.StartHealth = 150
 --------------------
 function ENT:Zombie_CustomOnPreInitialize()
 	self.PIV_IsRunner = true
+	self.PIV_Infection_IsWalker = false
 	self.PIV_UseActIdleStimulated = true
 end
 --------------------

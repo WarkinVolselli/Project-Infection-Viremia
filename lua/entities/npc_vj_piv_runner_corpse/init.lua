@@ -9,6 +9,7 @@ function ENT:Zombie_CustomOnPreInitialize()
 	self.GeneralSoundPitch2 = 70
 	self.MeleeAttackSoundPitch = VJ.SET(90, 100)
 	self.PIV_IsRunner = true
+	self.PIV_Infection_IsWalker = false
 end
 --------------------
 function ENT:Zombie_CustomOnInitialize()
