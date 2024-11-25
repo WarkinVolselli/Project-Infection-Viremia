@@ -6,9 +6,15 @@ ENT.Model = {"models/vj_piv/specials/fat/fat_male.mdl"}
 ENT.StartHealth = 175
 --------------------
 function ENT:Zombie_CustomOnPreInitialize()
-	self.GeneralSoundPitch1 = 80
-	self.GeneralSoundPitch2 = 90
-	self.MeleeAttackSoundPitch = VJ.SET(90, 100)
+	if self:GetClass() == "npc_vj_piv_fat_runner_m" then
+		self.StartHealth = 150
+		self.PIV_IsRunner = true
+		self.PIV_Infection_IsWalker = false
+	else
+		self.GeneralSoundPitch1 = 80
+		self.GeneralSoundPitch2 = 90
+		self.MeleeAttackSoundPitch = VJ.SET(90, 100)
+	end
 	self.PIV_UseActIdleStimulated = true
 end
 --------------------

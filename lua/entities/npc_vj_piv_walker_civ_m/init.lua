@@ -19,6 +19,10 @@ ENT.Model = {
 }
 --------------------
 function ENT:Zombie_CustomOnPreInitialize()
+	if self:GetClass() == "npc_vj_piv_runner_civ_m" then
+		self.PIV_IsRunner = true
+		self.PIV_Infection_IsWalker = false
+	end
 	if GetConVar("vj_piv_extramodels"):GetInt() == 1 then -- if Extra Models is enabled, this will allow non-HL2 citizen models
 		if GetConVar("vj_piv_hl2skins"):GetInt() == 1 then -- if HL2 Skins Only is enabled, this will make the zombies only use HL2 skins
 			self:SetSkin(math.random(0,3))

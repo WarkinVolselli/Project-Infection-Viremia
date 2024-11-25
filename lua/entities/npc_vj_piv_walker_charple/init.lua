@@ -8,9 +8,14 @@ function ENT:Zombie_CustomOnPreInitialize()
 	self.GeneralSoundPitch1 = 80
 	self.GeneralSoundPitch2 = 90
 	self.MeleeAttackSoundPitch = VJ.SET(90, 100)
-	if !self.FireRun then -- run the fire runner check again so we're more likely to spawn as one
-		if math.random(1,GetConVar("vj_piv_firerunners_chance"):GetInt()) == 1 && GetConVar("vj_piv_firerunners"):GetInt() == 1 && self.PIV_CanBeFireRunner && !self.Immune_Fire then
-			self.FireRun = true
+	if self:GetClass() == "npc_vj_piv_runner_charple" then
+		self.PIV_IsRunner = true
+		self.PIV_Infection_IsWalker = false
+	else
+		if !self.FireRun then -- run the fire runner check again so we're more likely to spawn as one
+			if math.random(1,GetConVar("vj_piv_firerunners_chance"):GetInt()) == 1 && GetConVar("vj_piv_firerunners"):GetInt() == 1 && self.PIV_CanBeFireRunner && !self.Immune_Fire then
+				self.FireRun = true
+			end
 		end
 	end
 end

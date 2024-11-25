@@ -4026,6 +4026,7 @@ function ENT:Cripple()
 	self:DropTheShield()
 
 	self.CanTurnWhileStationary = false
+	self.CanFlinch = 0
 	
     self:SetCollisionBounds(Vector(13,13,20),Vector(-13,-13,0))
 	self.VJC_Data = {
@@ -4041,7 +4042,9 @@ function ENT:Cripple()
 	self.HasLeapAttack = false
 end
 --------------------
-function ENT:Zombie_CustomOnTakeDamage(dmginfo,hitgroup,status) end
+function ENT:Zombie_CustomOnTakeDamage_PreDamage(dmginfo,hitgroup) end
+--------------------
+function ENT:Zombie_CustomOnTakeDamage_PostDamage(dmginfo,hitgroup) end
 --------------------
 function ENT:OnDamaged(dmginfo,hitgroup,status)
 
@@ -4061,10 +4064,12 @@ function ENT:OnDamaged(dmginfo,hitgroup,status)
 		then
 			dmginfo:ScaleDamage(1.5)
 		end
-		self:Zombie_CustomOnTakeDamage(dmginfo,hitgroup,status)
+		self:Zombie_CustomOnTakeDamage_PreDamage(dmginfo,hitgroup)
 	end
 
 	if status == "PostDamage" then
+
+		self:Zombie_CustomOnTakeDamage_PostDamage(dmginfo,hitgroup)
 
 		-- Don't run any of this if "CanDoTheFunny" is false (what the hell does this do?), we're crippled, we're a crawler, we're raging, we're crawling on all fours, or we're a husk torso
 		if !self.CanDoTheFunny or self.PIV_Crippled or self.PIV_FuckingCrawlingLittleCunt or self.Apeshit or self.PIV_GoblinMode or self:GetClass() == "npc_vj_piv_husk_torso" or self:GetClass() == "npc_vj_piv_husk_torso_f" then return end
@@ -4344,3 +4349,4 @@ function ENT:OnCreateDeathCorpse(dmginfo, hitgroup, corpseEnt)
 		corpseEnt:SetKeyValue("rendercolor","255 255 255 255")
 	end
 end
+--------------------

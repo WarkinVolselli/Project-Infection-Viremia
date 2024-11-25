@@ -22,6 +22,10 @@ ENT.Model = {
 }
 --------------------
 function ENT:Zombie_CustomOnPreInitialize()
+	if self:GetClass() == "npc_vj_piv_runner_reb_f" then
+		self.PIV_IsRunner = true
+		self.PIV_Infection_IsWalker = false
+	end
 	self.PIV_Gender = 2
 	if GetConVar("vj_piv_extramodels"):GetInt() == 0 then
 		self.Model = {
@@ -50,6 +54,17 @@ function ENT:Zombie_CustomOnInitialize()
 	end
 	if math.random(1,5) == 5 then
 		self:SetBodygroup(5,1)
+	end
+end
+--------------------
+function ENT:Zombie_CustomOnTakeDamage_PreDamage(dmginfo,hitgroup)
+	if hitgroup == HITGROUP_CHEST then
+		if dmginfo:IsBulletDamage() then
+			dmginfo:ScaleDamage(0.9)
+		end
+		if self.HasSounds == true && self.HasImpactSounds == true then
+			VJ.EmitSound(self,"physics/flesh/flesh_impact_bullet"..math.random(1,5)..".wav",70)
+		end
 	end
 end
 --------------------
