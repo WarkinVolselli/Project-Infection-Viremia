@@ -59,8 +59,8 @@ if VJExists == true then
 	VJ.AddNPC("Overwatch Soldier Walker","npc_vj_piv_walker_combine_s",vCat)
 	VJ.AddNPC("Overwatch Soldier Runner","npc_vj_piv_runner_combine_s",vCat)
 	
-	VJ.AddNPC("Overwatch Prisonguard Walker","npc_vj_piv_walker_combine_p",vCat)
-	VJ.AddNPC("Overwatch Prisonguard Runner","npc_vj_piv_runner_combine_p",vCat)
+	VJ.AddNPC("Overwatch Prison Guard Walker","npc_vj_piv_walker_combine_p",vCat)
+	VJ.AddNPC("Overwatch Prison Guard Runner","npc_vj_piv_runner_combine_p",vCat)
 
 	VJ.AddNPC("Overwatch Elite Walker","npc_vj_piv_walker_combine_e",vCat)
 	VJ.AddNPC("Overwatch Elite Runner","npc_vj_piv_runner_combine_e",vCat)
