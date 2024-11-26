@@ -311,6 +311,19 @@ ENT.Voice = 1
 ENT.PIV_MakeCrispyCorpse = false
 ENT.PIV_UseActIdleStimulated = false -- use ACT_IDLE_AIM_STIMULATED as our idle activity
 ENT.PIV_IsInfectee = false
+ENT.PIV_Type = 0
+--[[
+1 = Barney Calhoun
+2 = Dr. Wallace Breen
+3 = Eli Vance
+4 = G-Man
+5 = Dr. Isaac Kleiner
+6 = Magnusson
+7 = Father Grigori
+8 = Colonel Odessa Cubbage
+9 = Alyx Vance
+10 = Judith Mossman
+--]]
 --------------------
 function ENT:Zombie_CustomOnPreInitialize() end
 --------------------
