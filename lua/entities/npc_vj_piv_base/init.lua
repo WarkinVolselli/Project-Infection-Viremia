@@ -239,6 +239,8 @@ ENT.PIV_Jogger = false
 ENT.PIV_Shambler = false
 ENT.PIV_Brute = false
 ENT.PIV_GoblinMode = false
+ENT.PIV_LittleBastard = false
+ENT.NextCrawlT = 0
 
 ENT.PIV_HasSubclasses = true
 ENT.PIV_CanBeJogger = true
@@ -324,12 +326,17 @@ ENT.PIV_Type = 0
 9 = Alyx Vance
 10 = Judith Mossman
 --]]
+ENT.PIV_Mil_SpawnWithGasmask = false
 --------------------
 function ENT:Zombie_CustomOnPreInitialize() end
 --------------------
 function ENT:PreInit()
 
 	self:Zombie_CustomOnPreInitialize()
+
+	if self.PIV_IsRunner && self.StartHealth == 125 then
+		self.StartHealth = 100 -- I don't really want to go into a ton of init files and set health values to 100, so we're just automating this.
+	end
 
 	if GetConVar("vj_piv_rebirth"):GetInt() == 1 && !self.PIV_IsBoss then
 		self.PIV_CanMutate = true
@@ -3059,6 +3066,27 @@ end
 	-- end
 -- end
 --------------------
+function ENT:StandTheFuckUp()
+	if self.PIV_GoblinMode == true then
+		self.NextCrawlT = CurTime() + math.random(5,10)
+		self.HasIdleSounds = true
+		self.HasAlertSounds = true		
+		local stop = VJ.PICK({"vjseq_crouch_to_stand"})
+		self:VJ_ACT_PLAYACTIVITY(stop,true,VJ.AnimDuration(self,tbl),false)
+		self.PIV_GoblinMode = false
+	end
+end
+--------------------
+function ENT:SitTheFuckDown()
+	if self.PIV_GoblinMode == false then
+		self.HasIdleSounds = false
+		self.HasAlertSounds = false
+		local start = VJ.PICK({"vjseq_stand_to_crouch"})
+		self:VJ_ACT_PLAYACTIVITY(start,true,VJ.AnimDuration(self,tbl),false)
+		self.PIV_GoblinMode = true
+	end
+end
+--------------------
 function ENT:OnThink()
 
 	self:Zombie_CustomOnThink()
@@ -3128,6 +3156,8 @@ function ENT:Zombie_CustomOnThink()
 end
 --------------------
 function ENT:OnThinkActive()
+
+	self:Zombie_CustomOnThink_AIEnabled()
 
 	if self.VJ_IsBeingControlled && !self.PIV_Mutated && self.PIV_CanMutate == true then
 		if self.VJ_TheController:KeyDown(IN_USE) && self.VJ_TheController:KeyDown(IN_RELOAD) then
@@ -3263,9 +3293,6 @@ function ENT:OnThinkActive()
 			end)
 		end
 	end
-	
-	self:Zombie_CustomOnThink_AIEnabled()
-	
 end
 --------------------
 function ENT:Zombie_CustomOnThink_AIEnabled() end
@@ -4057,7 +4084,7 @@ end
 --------------------
 function ENT:Zombie_CustomOnTakeDamage_PreDamage(dmginfo,hitgroup) end
 --------------------
-function ENT:Zombie_CustomOnTakeDamage_PostDamage(dmginfo,hitgroup) end
+function ENT:Zombie_CustomOnTakeDamage_PostDamage(dmginfo,hitgroup) end -- Just gonna leave this here incase it's used in the future.
 --------------------
 function ENT:OnDamaged(dmginfo,hitgroup,status)
 
