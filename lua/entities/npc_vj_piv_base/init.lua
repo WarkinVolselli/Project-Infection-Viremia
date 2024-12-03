@@ -334,7 +334,7 @@ function ENT:PreInit()
 
 	self:Zombie_CustomOnPreInitialize()
 
-	if self.PIV_IsRunner && self.StartHealth == 125 then
+	if self.PIV_IsRunner && self.StartHealth == 125 && !self.PIV_IsMilitary then
 		self.StartHealth = 100 -- I don't really want to go into a ton of init files and set health values to 100, so we're just automating this.
 	end
 
