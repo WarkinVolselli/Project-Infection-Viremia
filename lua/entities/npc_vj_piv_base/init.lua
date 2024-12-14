@@ -23,8 +23,8 @@ ENT.CanFlinch = 1
 ENT.FlinchChance = 8
 ENT.NextFlinchTime = 3
 -- ENT.AnimTbl_Flinch = {ACT_BIG_FLINCH}
-ENT.HasHitGroupFlinching = true 
-ENT.HitGroupFlinching_DefaultWhenNotHit = true 
+ENT.HasHitGroupFlinching = false
+ENT.HitGroupFlinching_DefaultWhenNotHit = false
 ENT.HitGroupFlinching_Values = {
 	{HitGroup = {HITGROUP_HEAD}, Animation = {"vjges_flinch_head_1","vjges_flinch_head_2","vjges_flinch_head_3"}}, 
 	{HitGroup = {HITGROUP_STOMACH}, Animation = {"vjges_flinch_stomach_01","vjges_flinch_stomach_02","vjges_ep_flinch_chest"}}, 
@@ -327,6 +327,12 @@ ENT.PIV_Type = 0
 10 = Judith Mossman
 --]]
 ENT.PIV_Mil_SpawnWithGasmask = false
+ENT.Combo = 0
+ENT.PIV_NextStrafeT = 0
+ENT.PIV_NextRunT = 0
+ENT.PIV_SpawnCoolDownT = 0
+ENT.PIV_IsBrawlerThugGuyYeah = false
+ENT.PIV_UseAgitatedCrawlerMovement = false
 --------------------
 function ENT:Zombie_CustomOnPreInitialize() end
 --------------------
@@ -2714,7 +2720,7 @@ end
 --------------------
 function ENT:Dig(forceRemove)
 
-	if GetConVarNumber("vj_piv_spawnanim") == 0 or self.PIV_Crippled == true or self.PIV_FuckingCrawlingLittleCunt == true then return end
+	if GetConVar("vj_piv_spawnanim"):GetInt() == 0 or self.PIV_Crippled == true or self.PIV_FuckingCrawlingLittleCunt == true then return end
 
 	if self:IsDirt(self:GetPos()) then
 		self:SetNoDraw(true)
@@ -3087,6 +3093,51 @@ function ENT:SitTheFuckDown()
 	end
 end
 --------------------
+function ENT:PIV_SummonHelp_Spawn() -- not really sure why i put these here tbh
+	-- if !IsValid(self.ThugHelp1) then
+		-- self.ThugHelp1 = self:PIV_SummonHelp()
+		-- return 15
+	-- elseif !IsValid(self.ThugHelp2) then
+		-- self.ThugHelp2 = self:PIV_SummonHelp()
+		-- return 15
+	-- elseif !IsValid(self.ThugHelp3) then
+		-- self.ThugHelp3 = self:PIV_SummonHelp()
+		-- return 15
+	-- elseif !IsValid(self.ThugHelp4) then
+		-- self.ThugHelp4 = self:PIV_SummonHelp()
+		-- return 15
+	-- end
+	-- return 15
+end
+--------------------
+function ENT:PIV_SummonHelp()
+    
+	-- if math.random(1,2) == 1 then
+		-- self.ThugMinion = "npc_vj_piv_brawler"
+	-- else
+		-- self.ThugMinion = "npc_vj_piv_brawler_f"
+    -- end
+	
+	-- local tr = util.TraceLine({
+		-- start = self:GetPos(),
+		-- endpos = self:GetPos() + self:GetForward() * math.Rand(-2000, 2000) + self:GetRight() * math.Rand(-2000, 2000) + self:GetUp() * 50,
+		-- filter = {self},
+		-- mask = MASK_ALL,
+	-- })
+
+	-- local spawnpos = tr.HitPos + tr.HitNormal*300
+
+	-- local ally = ents.Create(self.ThugMinion)
+
+	-- ally:SetPos(spawnpos)
+	-- ally:SetAngles(self:GetAngles())
+	-- ally:Spawn()
+	-- ally:Activate()
+	-- ally:ForceDig()
+	-- ally.VJ_NPC_Class = self.VJ_NPC_Class
+	-- return ally
+end
+--------------------
 function ENT:OnThink()
 
 	self:Zombie_CustomOnThink()
@@ -3316,9 +3367,7 @@ function ENT:TranslateActivity(act)
 			self:GetClass() != "npc_vj_piv_creep" && 
 			self:GetClass() != "npc_vj_piv_shikari" &&
 			self:GetClass() != "npc_vj_piv_shikari_torso" &&
-			self:GetClass() != "npc_vj_piv_brawler" &&
-			self:GetClass() != "npc_vj_piv_brawler" &&
-			self:GetClass() != "npc_vj_piv_brawler_boss" &&
+			!self.PIV_IsBrawlerThugGuyYeah &&
 			self:GetClass() != "npc_vj_piv_sickler" then
 			return ACT_IDLE_ON_FIRE
 		end
@@ -3360,8 +3409,12 @@ function ENT:TranslateActivity(act)
 		then
 			return ACT_IDLE_RELAXED
 		end
-		if act == ACT_RUN && !self.PIV_Jogger && !self.Running then
-			return ACT_WALK
+		if act == ACT_RUN then
+			if self:GetClass() == "npc_vj_piv_spitter" && self.PIV_Mutated then
+				return ACT_SPRINT
+			elseif !self.PIV_Jogger && !self.Running then
+				return ACT_WALK
+			end
 		elseif act == ACT_RUN && self.Running && self:GetClass() == "npc_vj_piv_phorid" then
 			return ACT_RUN_AIM
 		end
@@ -3458,13 +3511,25 @@ function ENT:TranslateActivity(act)
 
 	if self.PIV_Crippled or self.PIV_FuckingCrawlingLittleCunt then
 		if act == ACT_IDLE or act == ACT_IDLE_AIM_RELAXED or act == ACT_IDLE_AIM_STIMULATED or act == ACT_IDLE_RELAXED or act == ACT_IDLE_AIM_STEALTH or act == ACT_IDLE_ON_FIRE then
-			return ACT_IDLE_STIMULATED
+			if self.PIV_UseAgitatedCrawlerMovement then
+				return ACT_IDLE_AGITATED
+			else
+				return ACT_IDLE_STIMULATED
+			end
 		end
 		if act == ACT_WALK or act == ACT_WALK_RELAXED or act == ACT_WALK_AIM_STEALTH or act == ACT_WALK_AIM_STEALTH or act == ACT_WALK_ON_FIRE then
-			return ACT_WALK_STIMULATED
+			if self.PIV_UseAgitatedCrawlerMovement then
+				return ACT_WALK_AGITATED
+			else
+				return ACT_WALK_STIMULATED
+			end
 		end
 		if act == ACT_RUN or act == ACT_WALK_ANGRY or act == ACT_SPRINT then
-			return ACT_WALK_STIMULATED
+			if self.PIV_UseAgitatedCrawlerMovement then
+				return ACT_WALK_AGITATED
+			else
+				return ACT_WALK_STIMULATED
+			end
 		end
 	end
 
@@ -3739,6 +3804,103 @@ end
 --------------------
 function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
+	if self:GetClass() == "npc_vj_piv_exploder" then
+		timer.Simple(0.8,function() if IsValid(self) then
+			self:TakeDamage(self:Health() + 1000)
+		end end)
+		return
+	end -- if we're expanding this blacklist then maybe we should just use something like 'if self.PIV_CustomOnMeleeBlacklisted then return end'
+
+-- (self:GetClass() == "npc_vj_piv_brawler" || self:GetClass() == "npc_vj_piv_brawler_f")
+
+	if self.PIV_IsBrawlerThugGuyYeah then
+		if self.Combo == 1 then
+			self.MeleeAttackDistance = 40
+			self.AnimTbl_MeleeAttack = {"vjseq_cmb02"}
+			if self:GetClass() == "npc_vj_piv_brawler_boss" then
+				self.MeleeAttackDamage = math.random(23,28)
+				self.SoundTbl_MeleeAttackMiss = {"vj_piv/Miss1.wav","vj_piv/Miss2.wav","vj_piv/Miss3.wav","vj_piv/Miss4.wav","vj_piv/Miss5.wav"}
+				self.SoundTbl_MeleeAttack = {"vj_piv/wrenchhit1.wav","vj_piv/wrenchhit2.wav","vj_piv/wrenchhit3.wav","vj_piv/wrenchhit4.wav"}
+			else
+				self.MeleeAttackDamage = math.random(20,25)
+				self.HasMeleeAttackKnockBack = false
+				self.MeleeAttackDamageDistance = 60				
+				self.SoundTbl_MeleeAttack = {"vj_piv/z_hit-01.wav","vj_piv/z_hit-02.wav","vj_piv/z_hit-03.wav","vj_piv/z_hit-04.wav","vj_piv/z_hit-05.wav","vj_piv/z_hit-06.wav"}
+				self.SoundTbl_MeleeAttackMiss = {"vj_piv/z-swipe-1.wav","vj_piv/z-swipe-2.wav","vj_piv/z-swipe-3.wav","vj_piv/z-swipe-4.wav","vj_piv/z-swipe-5.wav","vj_piv/z-swipe-6.wav"}	
+			end
+		elseif self.Combo == 2 then
+			self.AnimTbl_MeleeAttack = {"vjseq_cmb03"}
+			self.MeleeAttackDistance = 150
+			self.MeleeAttackDamageDistance = 70
+			self.SoundTbl_MeleeAttack = {"vj_piv/BodyHit-3.wav","vj_piv/BodyHit-4.wav","vj_piv/BodyHit-5.wav","vj_piv/BodyHit-6.wav"}
+			self.SoundTbl_MeleeAttackMiss = {"vj_piv/Miss1.wav","vj_piv/Miss2.wav","vj_piv/Miss3.wav","vj_piv/Miss4.wav","vj_piv/Miss5.wav"}
+			if self:GetClass() == "npc_vj_piv_brawler_boss" then
+				self.MeleeAttackDamage = math.random(30,35)
+			else
+				self.MeleeAttackDamage = math.random(25,30)
+				self.HasMeleeAttackKnockBack = true
+			end
+		else
+			if self:GetClass() == "npc_vj_piv_brawler_boss" then
+				local randdemonattack = math.random(1,3)
+				if randdemonattack == 1 then
+					self.MeleeAttackAnimationAllowOtherTasks = true
+					self.MeleeAttackDamage = math.random(25,30)
+					self.MeleeAttackDistance = 40
+					self.SoundTbl_MeleeAttackMiss = {"vj_piv/Miss1.wav","vj_piv/Miss2.wav","vj_piv/Miss3.wav","vj_piv/Miss4.wav","vj_piv/Miss5.wav"}
+					self.SoundTbl_MeleeAttack = {"vj_piv/wrenchhit1.wav","vj_piv/wrenchhit2.wav","vj_piv/wrenchhit3.wav","vj_piv/wrenchhit4.wav"}
+					self.AnimTbl_MeleeAttack = {
+						"vjges_melee_moving01a",
+						"vjges_melee_moving03a",
+						"vjges_melee_moving06a",
+					}
+				elseif randdemonattack == 2 then
+					self.MeleeAttackAnimationAllowOtherTasks = false
+					self.MeleeAttackDamage = math.random(20,25)
+					self.MeleeAttackDistance = 40
+					self.SoundTbl_MeleeAttack = {"vj_piv/z_hit-01.wav","vj_piv/z_hit-02.wav","vj_piv/z_hit-03.wav","vj_piv/z_hit-04.wav","vj_piv/z_hit-05.wav","vj_piv/z_hit-06.wav"}
+					self.SoundTbl_MeleeAttackMiss = {"vj_piv/z-swipe-1.wav","vj_piv/z-swipe-2.wav","vj_piv/z-swipe-3.wav","vj_piv/z-swipe-4.wav","vj_piv/z-swipe-5.wav","vj_piv/z-swipe-6.wav"}	
+					self.AnimTbl_MeleeAttack = {
+						"vjseq_cmb01",
+					}
+				elseif randdemonattack == 3 then
+					self.MeleeAttackAnimationAllowOtherTasks = false
+					self.MeleeAttackDamage = math.random(28,33)
+					self.MeleeAttackDistance = 160
+					self.SoundTbl_MeleeAttack = {"vj_piv/BodyHit-3.wav","vj_piv/BodyHit-4.wav","vj_piv/BodyHit-5.wav","vj_piv/BodyHit-6.wav"}
+					self.SoundTbl_MeleeAttackMiss = {"vj_piv/Miss1.wav","vj_piv/Miss2.wav","vj_piv/Miss3.wav","vj_piv/Miss4.wav","vj_piv/Miss5.wav"}
+					self.AnimTbl_MeleeAttack = {
+						"vjseq_atk_jumpkick",
+						"vjseq_atk_jumpknee",
+					}
+				end
+			else
+				if math.random(1,3) == 1 then
+					self.MeleeAttackDamage = math.random(20,25)
+					self.HasMeleeAttackKnockBack = true
+					self.MeleeAttackDistance = 150
+					self.MeleeAttackDamageDistance = 70
+					self.SoundTbl_MeleeAttack = {"vj_piv/BodyHit-3.wav","vj_piv/BodyHit-4.wav","vj_piv/BodyHit-5.wav","vj_piv/BodyHit-6.wav"}
+					self.SoundTbl_MeleeAttackMiss = {"vj_piv/Miss1.wav","vj_piv/Miss2.wav","vj_piv/Miss3.wav","vj_piv/Miss4.wav","vj_piv/Miss5.wav"}
+					self.AnimTbl_MeleeAttack = {
+						"vjseq_atk_jumpkick",
+						"vjseq_atk_jumpknee",
+					}
+				else
+					self.MeleeAttackAnimationAllowOtherTasks = false -- what is this for?
+					self.MeleeAttackDamage = math.random(15,20)
+					self.HasMeleeAttackKnockBack = false
+					self.MeleeAttackDistance = 40
+					self.MeleeAttackDamageDistance = 60
+					self.SoundTbl_MeleeAttack = {"vj_piv/z_hit-01.wav","vj_piv/z_hit-02.wav","vj_piv/z_hit-03.wav","vj_piv/z_hit-04.wav","vj_piv/z_hit-05.wav","vj_piv/z_hit-06.wav"}
+					self.SoundTbl_MeleeAttackMiss = {"vj_piv/z-swipe-1.wav","vj_piv/z-swipe-2.wav","vj_piv/z-swipe-3.wav","vj_piv/z-swipe-4.wav","vj_piv/z-swipe-5.wav","vj_piv/z-swipe-6.wav"}	
+					self.AnimTbl_MeleeAttack = {"vjseq_cmb01"}
+				end
+			end
+		end
+		return
+	end
+
 	-- When Crawling or Crippled --
     if self.PIV_Crippled or self.PIV_FuckingCrawlingLittleCunt then
 		self.MeleeAttackAnimationAllowOtherTasks = false
@@ -3967,6 +4129,20 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 end
 --------------------
 function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt, isProp)
+
+	-- Should we just make function for custom stuff here?
+	-- Something like Zombie_CustomOnMelee_After(hitEnt, isProp)?
+
+	if self.PIV_IsBrawlerThugGuyYeah && self.AttackType == VJ.ATTACK_TYPE_MELEE then
+		if self:GetSequence() == self:LookupSequence("cmb01") then
+			self.Combo = 1
+		elseif self:GetSequence() == self:LookupSequence("cmb02") then
+			self.Combo = 2
+		elseif self:GetSequence() == self:LookupSequence("cmb03") then
+			self.Combo = 0
+		end
+	end
+
 	if self:IsOnFire() && math.random(1,4) == 1 then 
 		hitEnt:Ignite(math.random(1,4))
 	end
@@ -3991,6 +4167,7 @@ function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt, isProp)
 			end)
 		end
 	end
+
 end
 --------------------
 function ENT:MeleeAttackKnockbackVelocity(hitEnt)
@@ -3998,6 +4175,17 @@ function ENT:MeleeAttackKnockbackVelocity(hitEnt)
 end
 --------------------
 function ENT:CustomOnMeleeAttack_Miss()
+
+	if self.PIV_IsBrawlerThugGuyYeah && self.AttackType == VJ.ATTACK_TYPE_MELEE then
+		if
+			self:GetSequence() == self:LookupSequence("cmb01") or
+			self:GetSequence() == self:LookupSequence("cmb02") or
+			self:GetSequence() == self:LookupSequence("cmb03")
+		then
+			self.Combo = 0
+		end
+	end
+
 	-- why do we need this AttackType check?
     if self.AttackType == VJ.ATTACK_TYPE_MELEE &&
 	    (
@@ -4078,13 +4266,18 @@ function ENT:Cripple()
     self:CapabilitiesRemove(bit.bor(CAP_MOVE_JUMP))
 	self:CapabilitiesRemove(bit.bor(CAP_MOVE_CLIMB))
 	self.HasDeathAnimation = false
-	self.HasRangeAttack = false
+	if self:GetClass() == "npc_vj_piv_grenadier" then
+		self.AnimTbl_RangeAttack = {"vjseq_Crawl_Attack2"}
+		self.RangeAttackAnimationStopMovement = true
+	else
+		self.HasRangeAttack = false
+	end
 	self.HasLeapAttack = false
 end
 --------------------
 function ENT:Zombie_CustomOnTakeDamage_PreDamage(dmginfo,hitgroup) end
 --------------------
-function ENT:Zombie_CustomOnTakeDamage_PostDamage(dmginfo,hitgroup) end -- Just gonna leave this here incase it's used in the future.
+function ENT:Zombie_CustomOnTakeDamage_PostDamage(dmginfo,hitgroup) end
 --------------------
 function ENT:OnDamaged(dmginfo,hitgroup,status)
 
@@ -4107,16 +4300,28 @@ function ENT:OnDamaged(dmginfo,hitgroup,status)
 		self:Zombie_CustomOnTakeDamage_PreDamage(dmginfo,hitgroup)
 	end
 
-	if status == "PostDamage" then
+	if status == "PostDamage" && self:GetClass() != "npc_vj_piv_exploder" then -- exploder has his own stuff going on so don't run this if we're him
 
 		self:Zombie_CustomOnTakeDamage_PostDamage(dmginfo,hitgroup)
 
 		-- Don't run any of this if "CanDoTheFunny" is false (what the hell does this do?), we're crippled, we're a crawler, we're raging, we're crawling on all fours, or we're a husk torso
 		if !self.CanDoTheFunny or self.PIV_Crippled or self.PIV_FuckingCrawlingLittleCunt or self.Apeshit or self.PIV_GoblinMode or self:GetClass() == "npc_vj_piv_husk_torso" or self:GetClass() == "npc_vj_piv_husk_torso_f" then return end
 
-		if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SNIPER) then
-			if hitgroup == HITGROUP_HEAD or hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH then
-				if self.PIVNextStumbleT < CurTime() then
+		if (dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SNIPER)) && self.PIVNextStumbleT < CurTime() then
+			if self:GetClass() == "npc_vj_piv_brawler_boss" then
+				if (dmginfo:GetDamage() > 60 or dmginfo:GetDamageForce():Length() > 10000) && math.random(1,2) == 1 then
+					self:VJ_ACT_PLAYACTIVITY("vjseq_flinch_heavy_f",true,false,false)
+					self.PIVNextStumbleT = CurTime() + 5
+				end
+			elseif self.PIV_IsBrawlerThugGuyYeah && self:GetClass() != "npc_vj_piv_brawler_boss" then
+				if dmginfo:GetDamage() > 40 or dmginfo:GetDamageForce():Length() > 10000 then
+					if math.random(1,2) == 1 then
+						self:VJ_ACT_PLAYACTIVITY("vjseq_flinch_heavy_f",true,false,false)
+						self.PIVNextStumbleT = CurTime() + 5
+					end
+				end
+			else
+				if hitgroup == HITGROUP_HEAD or hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH then
 					if dmginfo:GetDamage() > 49 or dmginfo:GetDamageForce():Length() > 10000 then
 						if math.random (1,2) == 1 then
 							self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
@@ -4126,8 +4331,8 @@ function ENT:OnDamaged(dmginfo,hitgroup,status)
 					elseif dmginfo:GetDamage() > 24 or dmginfo:GetDamageForce():Length() > 5000 then
 						if math.random (1,3) == 1 then
 							self:VJ_ACT_PLAYACTIVITY(ACT_SMALL_FLINCH,true,false,false)
-							self:RemoveAllGestures()
 							self.PIVNextStumbleT = CurTime() + 5
+							self:RemoveAllGestures()
 						end
 					else
 						if math.random (1,5) == 1 then
@@ -4136,9 +4341,7 @@ function ENT:OnDamaged(dmginfo,hitgroup,status)
 							self:RemoveAllGestures()
 						end
 					end
-				end
-			elseif hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then		 
-				if self.PIVNextStumbleT < CurTime() then
+				elseif hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then		 
 					if math.random (1,5) == 1 then
 						local anim = {"run_stumble_01","run_stumble1","run_stumble2","run_stumble3","run_stumble4","run_stumble5","run_stumble6"} -- falling animations
 						self:VJ_ACT_PLAYACTIVITY(anim,true,false,false) -- play a fall animation 
@@ -4150,17 +4353,31 @@ function ENT:OnDamaged(dmginfo,hitgroup,status)
 		end
 
 		if dmginfo:IsDamageType(DMG_CLUB) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_GENERIC) then
-			if dmginfo:GetDamage() > 49 or dmginfo:GetDamageForce():Length() > 10000 then
-				if self.PIV_NextShoveT < CurTime() then
-					self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
-					self.PIV_NextShoveT = CurTime() + math.random(5,8)
-					self:RemoveAllGestures()
+			if self:GetClass() == "npc_vj_piv_brawler_boss" then
+				if (dmginfo:GetDamage() > 40 or dmginfo:GetDamageForce():Length() > 10000) && self.PIV_NextShoveT < CurTime() then
+					self:VJ_ACT_PLAYACTIVITY("vjseq_flinch_heavy_f",true,false,false)
+					self.PIV_NextShoveT = CurTime() + math.random(8,12)
 				end
-			elseif dmginfo:GetDamage() > 24 or dmginfo:GetDamageForce():Length() > 5000 then
-				if self.PIV_NextShoveT < CurTime() then
-					self:VJ_ACT_PLAYACTIVITY(ACT_SMALL_FLINCH,true,false,false)
-					self.PIV_NextShoveT = CurTime() + math.random(5,8)
-					self:RemoveAllGestures()
+			elseif self.PIV_IsBrawlerThugGuyYeah && self:GetClass() != "npc_vj_piv_brawler_boss" then
+				if dmginfo:GetDamage() > 20 or dmginfo:GetDamageForce():Length() > 10000 then
+					if self.PIV_NextShoveT < CurTime() then
+						self:VJ_ACT_PLAYACTIVITY("vjseq_flinch_heavy_f",true,false,false)
+						self.PIV_NextShoveT = CurTime() + math.random(5,8)
+					end
+				end
+			else
+				if dmginfo:GetDamage() > 49 or dmginfo:GetDamageForce():Length() > 10000 then
+					if self.PIV_NextShoveT < CurTime() then
+						self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
+						self.PIV_NextShoveT = CurTime() + math.random(5,8)
+						self:RemoveAllGestures()
+					end
+				elseif dmginfo:GetDamage() > 24 or dmginfo:GetDamageForce():Length() > 5000 then
+					if self.PIV_NextShoveT < CurTime() then
+						self:VJ_ACT_PLAYACTIVITY(ACT_SMALL_FLINCH,true,false,false)
+						self.PIV_NextShoveT = CurTime() + math.random(5,8)
+						self:RemoveAllGestures()
+					end
 				end
 			end
 		return !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt  && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
@@ -4168,22 +4385,31 @@ function ENT:OnDamaged(dmginfo,hitgroup,status)
 
 		if dmginfo:IsExplosionDamage() then
 			if self.NextSplodeStumbleT < CurTime() then
-				if math.random(1,2) == 1 then
-					self:DropTheFuckignWeaponGoddamn()
-				end
-				if math.random(1,2) == 1 then
-					self:VJ_ACT_PLAYACTIVITY("vjseq_shove_forward_01",true,false,false)
-					self:RemoveAllGestures()
+				if self.PIV_IsBrawlerThugGuyYeah then
+					self:VJ_ACT_PLAYACTIVITY("vjseq_flinch_heavy_f",true,false,false)
+					if self:GetClass() == "npc_vj_piv_brawler_boss" then
+						self.NextSplodeStumbleT = CurTime() + 6
+					else
+						self.NextSplodeStumbleT = CurTime() + 5
+					end
 				else
-					self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
-					self:RemoveAllGestures()
+					if math.random(1,2) == 1 then
+						self:DropTheFuckignWeaponGoddamn()
+					end
+					if math.random(1,2) == 1 then
+						self:VJ_ACT_PLAYACTIVITY("vjseq_shove_forward_01",true,false,false)
+						self:RemoveAllGestures()
+					else
+						self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
+						self:RemoveAllGestures()
+					end
 				end
 				self.NextSplodeStumbleT = CurTime() + 5
 			end
 		return !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt  && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
 		end
 
-		if GetConVarNumber("vj_piv_cripple") == 1 && self.PIV_CanBeCrippled then  -- if the convars not on don't run this
+		if GetConVar("vj_piv_cripple"):GetInt() == 1 && self.PIV_CanBeCrippled then  -- if the convars not on don't run this
 			if hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then -- are we hitting the leg?
 				self.PIV_LegHP = self.PIV_LegHP -dmginfo:GetDamage() -- take away leg hp
 			end
@@ -4230,6 +4456,8 @@ function ENT:OnFlinch(dmginfo,hitgroup,status)
 	end
 
 end
+--------------------
+function ENT:Zombie_CustomOnDeath_Finish(dmginfo, hitgroup) end
 --------------------
 function ENT:OnDeath(dmginfo, hitgroup, status)
 
@@ -4378,6 +4606,11 @@ function ENT:OnDeath(dmginfo, hitgroup, status)
 
 		end
 	end
+
+	if status == "Finish" then
+		self:Zombie_CustomOnDeath_Finish(dmginfo, hitgroup)
+	end
+
 end
 --------------------
 function ENT:Zombie_CustomOnCreateDeathCorpse(dmginfo, hitgroup, corpseEnt) end

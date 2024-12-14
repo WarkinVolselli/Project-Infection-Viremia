@@ -1,7 +1,7 @@
 include("entities/npc_vj_piv_base/init.lua")
 AddCSLuaFile("shared.lua")
 include('shared.lua')
---------------------
+-------------------- i think we could merge all of this stuff into the male civilian walker, but eh
 ENT.Model = {
 	"models/vj_piv/hl2/citizens/female_01.mdl",
 	"models/vj_piv/hl2/citizens/female_02.mdl",

@@ -1,123 +1,186 @@
+include("entities/npc_vj_piv_base/init.lua")
 AddCSLuaFile("shared.lua")
 include('shared.lua')
-/*-----------------------------------------------
-	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
-	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
-	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
------------------------------------------------*/
-ENT.Model = {"models/vj_piv/specials/brawler/male_01.mdl","models/vj_piv/specials/brawler/male_02.mdl","models/vj_piv/specials/brawler/male_03.mdl","models/vj_piv/specials/brawler/male_04.mdl","models/vj_piv/specials/brawler/male_05.mdl","models/vj_piv/specials/brawler/male_07.mdl","models/vj_piv/specials/brawler/male_09.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
-ENT.StartHealth = 200
-ENT.AnimTbl_IdleStand = {ACT_IDLE}
-ENT.AnimTbl_Walk = {ACT_WALK}
-ENT.AnimTbl_Run = {ACT_RUN}
-
-ENT.Combo = 0
-ENT.PIV_IsSpecial = true
-
-ENT.PIV_HasSubclasses = false
-ENT.PIV_CanBeThrower = false
-ENT.PIV_HasWeapons = false
-
-ENT.MeleeAttackDistance = 50
-ENT.MeleeAttackDamageDistance = 60
-
-ENT.PIV_NextStrafeT = 0
-ENT.PIV_NextRunT = 0
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Zombie_CustomOnInitialize()
-
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
-
-	if self.Combo == 1 then
-		self.MeleeAttackDamage = math.random(20,25)
-		self.HasMeleeAttackKnockBack = false
-		self.MeleeAttackDistance = 40
-		self.MeleeAttackDamageDistance = 60
-			
-		self.SoundTbl_MeleeAttack = {"vj_piv/z_hit-01.wav","vj_piv/z_hit-02.wav","vj_piv/z_hit-03.wav","vj_piv/z_hit-04.wav","vj_piv/z_hit-05.wav","vj_piv/z_hit-06.wav"}
-		self.SoundTbl_MeleeAttackMiss = {"vj_piv/z-swipe-1.wav","vj_piv/z-swipe-2.wav","vj_piv/z-swipe-3.wav","vj_piv/z-swipe-4.wav","vj_piv/z-swipe-5.wav","vj_piv/z-swipe-6.wav"}	
-
-		self.AnimTbl_MeleeAttack = {
-			"vjseq_cmb02",
+--------------------
+function ENT:Zombie_CustomOnPreInitialize()
+	if self:GetClass() == "npc_vj_piv_brawler_f" then
+		self.Model = {
+			"models/vj_piv/specials/brawler/female_01.mdl",
+			"models/vj_piv/specials/brawler/female_02.mdl",
+			"models/vj_piv/specials/brawler/female_03.mdl",
+			"models/vj_piv/specials/brawler/female_04.mdl",
+			"models/vj_piv/specials/brawler/female_06.mdl",
+			"models/vj_piv/specials/brawler/female_07.mdl"
 		}
-	elseif self.Combo == 2 then
-		self.MeleeAttackDamage = math.random(25,30)
-		self.HasMeleeAttackKnockBack = true
-		self.MeleeAttackDistance = 150
-		self.MeleeAttackDamageDistance = 70
-			
-		self.SoundTbl_MeleeAttack = {"vj_piv/BodyHit-3.wav","vj_piv/BodyHit-4.wav","vj_piv/BodyHit-5.wav","vj_piv/BodyHit-6.wav"}
-		self.SoundTbl_MeleeAttackMiss = {"vj_piv/Miss1.wav","vj_piv/Miss2.wav","vj_piv/Miss3.wav","vj_piv/Miss4.wav","vj_piv/Miss5.wav"}
-
-		self.AnimTbl_MeleeAttack = {
-			"vjseq_cmb03",
-		}
+		self.PIV_Gender = 2
 	else
-		self.MeleeAttackAnimationAllowOtherTasks = false
-		
-		self.MeleeAttackDamage = math.random(15,20)
-		self.HasMeleeAttackKnockBack = false
-		self.MeleeAttackDistance = 40
-		self.MeleeAttackDamageDistance = 60
-			
-		self.SoundTbl_MeleeAttack = {"vj_piv/z_hit-01.wav","vj_piv/z_hit-02.wav","vj_piv/z_hit-03.wav","vj_piv/z_hit-04.wav","vj_piv/z_hit-05.wav","vj_piv/z_hit-06.wav"}
-		self.SoundTbl_MeleeAttackMiss = {"vj_piv/z-swipe-1.wav","vj_piv/z-swipe-2.wav","vj_piv/z-swipe-3.wav","vj_piv/z-swipe-4.wav","vj_piv/z-swipe-5.wav","vj_piv/z-swipe-6.wav"}	
-
-		self.AnimTbl_MeleeAttack = {
-			"vjseq_cmb01",
+		self.Model = {
+			"models/vj_piv/specials/brawler/male_01.mdl",
+			"models/vj_piv/specials/brawler/male_02.mdl",
+			"models/vj_piv/specials/brawler/male_03.mdl",
+			"models/vj_piv/specials/brawler/male_04.mdl",
+			"models/vj_piv/specials/brawler/male_05.mdl",
+			"models/vj_piv/specials/brawler/male_07.mdl",
+			"models/vj_piv/specials/brawler/male_09.mdl"
 		}
-		
-		if math.random(1,3) == 1 then
-		
-			self.MeleeAttackDamage = math.random(20,25)
-			self.HasMeleeAttackKnockBack = true
-			self.MeleeAttackDistance = 150
-			self.MeleeAttackDamageDistance = 70
-			
-			self.SoundTbl_MeleeAttack = {"vj_piv/BodyHit-3.wav","vj_piv/BodyHit-4.wav","vj_piv/BodyHit-5.wav","vj_piv/BodyHit-6.wav"}
-			self.SoundTbl_MeleeAttackMiss = {"vj_piv/Miss1.wav","vj_piv/Miss2.wav","vj_piv/Miss3.wav","vj_piv/Miss4.wav","vj_piv/Miss5.wav"}
+	end
+	if self:GetClass() == "npc_vj_piv_brawler_boss" then
+		self.StartHealth = 2000
+		self.HasMeleeAttackKnockBack = true
+		self.MeleeAttackDamageDistance = 70
+		self.PIV_IsHugeZombie = true
+		self.PIV_IsBoss = true
+		self.HasSoundTrack = true
+		self.SoundTrackVolume = 0.3
+		self.SoundTbl_SoundTrack = {"vj_piv/music/yakuzads_majima_theme.mp3"}
+		-- I don't see the point in having these since the stuff in CustomOnMeleeAttack_BeforeStartTimer changes these values anyways
+		-- self.MeleeAttackDistance = 100
+		-- self.MeleeAttackDamageDistance = 60
+	else
+		self.StartHealth = 200
+		-- See above
+		-- self.MeleeAttackDistance = 50
+		-- self.MeleeAttackDamageDistance = 60
+	end
+	self.PIV_IsRunner = true
+	self.PIV_Infection_IsWalker = false
+	self.PIV_IsSpecial = true
+	self.PIV_HasSubclasses = false
+	self.PIV_CanBeThrower = false
+	self.PIV_HasWeapons = false
+	self.PIV_CanBeCrippled = false
+	self.PIV_IsBrawlerThugGuyYeah = true
+	self.HitGroupFlinching_Values = {
+		{HitGroup = {HITGROUP_HEAD}, Animation = {"vjges_ep_flinch_head"}}, 
+		{HitGroup = {HITGROUP_STOMACH}, Animation = {"vjges_ep_flinch_chest"}}, 
+		{HitGroup = {HITGROUP_CHEST}, Animation = {"vjges_ep_flinch_chest"}}, 
+		{HitGroup = {HITGROUP_LEFTARM}, Animation = {"vjges_ep_flinch_leftarm"}}, 
+		{HitGroup = {HITGROUP_RIGHTARM}, Animation = {"vjges_ep_flinch_rightarm"}}, 
+		{HitGroup = {HITGROUP_LEFTLEG}, Animation = {"vjseq_ep_flinch_leftLeg"}},
+		{HitGroup = {HITGROUP_RIGHTLEG}, Animation = {"vjseq_ep_flinch_rightLeg"}}
+	}
+end
+--------------------
+function ENT:Zombie_GiveVoice()
+	if self:GetClass() == "npc_vj_piv_brawler_boss" then
+		self.SoundTbl_Idle = {
+			"vj_piv/demolisher/idle_1.mp3",
+			"vj_piv/demolisher/idle_2.mp3",
+			"vj_piv/demolisher/idle_3.mp3",
+			"vj_piv/demolisher/idle_4.mp3",
+			"vj_piv/demolisher/idle_5.mp3",
+			"vj_piv/demolisher/idle_6.mp3",
+			"vj_piv/demolisher/idle_7.mp3",
+			"vj_piv/demolisher/idle_8.mp3"
+		}
+		self.SoundTbl_Alert = {
+			"vj_piv/demolisher/alert_1.mp3",
+			"vj_piv/demolisher/alert_2.mp3"
+		}
+		self.SoundTbl_CombatIdle = {
+			"vj_piv/demolisher/idle_1.mp3",
+			"vj_piv/demolisher/idle_2.mp3",
+			"vj_piv/demolisher/idle_3.mp3",
+			"vj_piv/demolisher/idle_4.mp3",
+			"vj_piv/demolisher/idle_5.mp3",
+			"vj_piv/demolisher/idle_6.mp3",
+			"vj_piv/demolisher/idle_7.mp3",
+			"vj_piv/demolisher/idle_8.mp3"
+		}
+		self.SoundTbl_BeforeMeleeAttack = {
+			"vj_piv/demolisher/attack_1.mp3",
+			"vj_piv/demolisher/attack_2.mp3",
+			"vj_piv/demolisher/attack_3.mp3",
+			"vj_piv/demolisher/attack_4.mp3",
+			"vj_piv/demolisher/attack_5.mp3",
+			"vj_piv/demolisher/attack_6.mp3",
+			"vj_piv/demolisher/attack_7.mp3"
+		}
+		self.SoundTbl_Pain = {
+			"vj_piv/demolisher/pain_1.mp3",
+			"vj_piv/demolisher/pain_2.mp3",
+			"vj_piv/demolisher/pain_3.mp3",
+			"vj_piv/demolisher/pain_4.mp3",
+			"vj_piv/demolisher/pain_5.mp3"
+		}
+		self.SoundTbl_Death = {"vj_piv/demolisher/death_cutoff.mp3"}
+		self.GeneralSoundPitch1 = 120
+		self.GeneralSoundpitch2 = 120
+	else
+		self:Zombie_GiveVoice_Default()
+	end
+end
+--------------------
+function ENT:Zombie_CustomOnInitialize()
+	if self:GetClass() == "npc_vj_piv_brawler_boss" then
 
-			self.AnimTbl_MeleeAttack = {
-				"vjseq_atk_jumpkick",
-				"vjseq_atk_jumpknee",
-			}
+		self.PIV_SpawnCoolDownT = CurTime() + 10
+
+		--[[
+		if GetConVar("vj_piv_lights"):GetInt() == 1 then 
+
+		self.Light2 = ents.Create("light_dynamic")
+		self.Light2:SetKeyValue("brightness", "1")
+		self.Light2:SetKeyValue("distance", "75")
+		self.Light2:SetLocalPos(self:GetPos())
+		self.Light2:SetLocalAngles(self:GetAngles())
+		self.Light2:Fire("Color", "255 0 0 255")
+		self.Light2:SetParent(self)
+		self.Light2:Spawn()
+		self.Light2:Activate()
+		self.Light2:Fire("SetParentAttachment","eyes")
+		self.Light2:Fire("TurnOn", "", 0)
+		self:DeleteOnRemove(self.Light2)
+
 		end
+		--]]
+
+		self:SetModelScale(1.3)
+
+		self.ExtraGunModel1 = ents.Create("prop_physics")
+		self.ExtraGunModel1:SetModel("models/props_canal/mattpipe.mdl")
+		self.ExtraGunModel1:SetOwner(self)
+		self.ExtraGunModel1:SetParent(self)
+		self.ExtraGunModel1:SetLocalAngles(Angle(-120,45,90))
+		self.ExtraGunModel1:Fire("SetParentAttachmentMaintainOffset","anim_attachment_LH")
+		self.ExtraGunModel1:Fire("SetParentAttachment","anim_attachment_RH")
+		self.ExtraGunModel1:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
+		self.ExtraGunModel1:Spawn()
+		self.ExtraGunModel1:Activate()
+		self.ExtraGunModel1:SetSolid(SOLID_NONE)
+		self.ExtraGunModel1:AddEffects(EF_BONEMERGE)
+		self.ExtraGunModel1:SetLocalPos(self:GetPos())
 	end
-	        
 end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt, isProp) 
-    if self.AttackType == VJ.ATTACK_TYPE_MELEE && self:GetSequence() == self:LookupSequence("cmb01") then
-		self.Combo = 1
-    elseif self.AttackType == VJ.ATTACK_TYPE_MELEE && self:GetSequence() == self:LookupSequence("cmb02") then
-		self.Combo = 2
-    elseif self.AttackType == VJ.ATTACK_TYPE_MELEE && self:GetSequence() == self:LookupSequence("cmb03") then
-		self.Combo = 0
-	end
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnMeleeAttack_Miss()
-    if self.AttackType == VJ.ATTACK_TYPE_MELEE &&
-	    (
-        self:GetSequence() == self:LookupSequence("cmb01") or
-        self:GetSequence() == self:LookupSequence("cmb02") or
-        self:GetSequence() == self:LookupSequence("cmb03")
-		)
-	then
-        self.Combo = 0
-    end
-end
----------------------------------------------------------------------------------------------------------------------------------------------
+--------------------
 function ENT:Zombie_CustomOnThink_AIEnabled()
+
+    if
+		self.VJ_IsBeingControlled == true or
+		self.PIV_Crawler or
+		self.PIV_Crippled or
+		self.Flinching or
+		self:GetSequence() == self:LookupSequence(ACT_BIG_FLINCH) or
+		self.DeathAnimationCodeRan
+	then
+		return
+	end
+
 	-- Dodge System
-    if self.VJ_IsBeingControlled == true or self.PIV_Crawler or self.PIV_Crippled or self.Flinching or self:GetSequence() == self:LookupSequence(ACT_BIG_FLINCH) or self.DeathAnimationCodeRan then return end
-    if IsValid(self:GetEnemy()) == true && self.MeleeAttacking == false && self.VJ_IsBeingControlled == false && CurTime() > self.PIV_NextStrafeT && self:GetPos():Distance(self:GetEnemy():GetPos()) < 200 && self:GetPos():Distance(self:GetEnemy():GetPos()) > 50 then
+    if
+		IsValid(self:GetEnemy()) == true &&
+		self.AttackType != VJ.ATTACK_TYPE_MELEE &&
+		-- self.MeleeAttacking == false
+		self.VJ_IsBeingControlled == false &&
+		CurTime() > self.PIV_NextStrafeT &&
+		-- math.random(1,20) == 1
+		self:GetPos():Distance(self:GetEnemy():GetPos()) < 200 &&
+		self:GetPos():Distance(self:GetEnemy():GetPos()) > 50
+	then
         self:StopMoving()
         self:VJ_ACT_PLAYACTIVITY({"vjseq_sway_b","vjseq_sway_f","vjseq_sway_l","vjseq_sway_r"}, true, false, false)
 		VJ.EmitSound(self,"vj_piv/Miss"..math.random(1,5)..".wav",70,100)
-        self.PIV_NextRunT = CurTime() + 2
+        -- self.PIV_NextRunT = CurTime() + 2 -- this seems to be unused/doesn't do anything?
         if self.PIV_Mutated == false then
 			self.PIV_NextStrafeT = CurTime() + math.random(3,6)
 		else
@@ -126,44 +189,4 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 	end
 	
 end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
-	if self.CanDoTheFunny == false then return end
-
-	if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SNIPER) then
-		if hitgroup == HITGROUP_HEAD or hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH then
-			if self.PIVNextStumbleT < CurTime() then
-				if dmginfo:GetDamage() > 40 or dmginfo:GetDamageForce():Length() > 10000 then
-					if math.random (1,2) == 1 then
-						self:VJ_ACT_PLAYACTIVITY("vjseq_flinch_heavy_f",true,false,false)
-						self.PIVNextStumbleT = CurTime() + 5
-					end
-				end
-			end
-		end
-	end
-
-	if dmginfo:IsDamageType(DMG_CLUB) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_GENERIC) then
-		if dmginfo:GetDamage() > 20 or dmginfo:GetDamageForce():Length() > 10000 then
-			if self.PIV_NextShoveT < CurTime() then
-				self:VJ_ACT_PLAYACTIVITY("vjseq_flinch_heavy_f",true,false,false)
-				self.PIV_NextShoveT = CurTime() + math.random(5,8)
-			end
-		end
-    return !self.PIVCrippled && !self.PIVFuckingCrawlingLittleCunt  && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
-	end
-
-	if dmginfo:IsExplosionDamage() then
-		if self.NextSplodeStumbleT < CurTime() then
-			self:VJ_ACT_PLAYACTIVITY("vjseq_flinch_heavy_f",true,false,false)
-			self.NextSplodeStumbleT = CurTime() + 5
-		end
-	return !self.PIVCrippled && !self.PIVFuckingCrawlingLittleCunt  && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
-	end
-
-end
-/*-----------------------------------------------
-	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
-	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
-	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
------------------------------------------------*/
+--------------------

@@ -1,203 +1,7 @@
+include("entities/npc_vj_piv_brawler/init.lua")
 AddCSLuaFile("shared.lua")
 include('shared.lua')
-/*-----------------------------------------------
-	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
-	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
-	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
------------------------------------------------*/
-ENT.Model = {"models/vj_piv/specials/brawler/male_01.mdl","models/vj_piv/specials/brawler/male_02.mdl","models/vj_piv/specials/brawler/male_03.mdl","models/vj_piv/specials/brawler/male_04.mdl","models/vj_piv/specials/brawler/male_05.mdl","models/vj_piv/specials/brawler/male_07.mdl","models/vj_piv/specials/brawler/male_09.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
-ENT.StartHealth = 2000
-ENT.PIV_IsHugeZombie = true
-
-ENT.PIV_IsBoss = true
-
-ENT.AnimTbl_IdleStand = {ACT_IDLE}
-ENT.AnimTbl_Walk = {ACT_WALK}
-ENT.AnimTbl_Run = {ACT_RUN}
-
-ENT.MeleeAttackDistance = 100
-ENT.MeleeAttackDamageDistance = 60
-
-ENT.GeneralSoundPitch1 = 120
-ENT.GeneralSoundpitch2 = 120
-
-ENT.PIV_NextStrafeT = 0
-ENT.PIV_NextRunT = 0
-
-ENT.HasSoundTrack = true
-ENT.SoundTrackVolume = 0.3
-ENT.SoundTbl_SoundTrack = {"vj_piv/music/yakuzads_majima_theme.mp3"}
-
-ENT.PIV_SpawnCoolDownT = 0
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Zombie_CustomOnInitialize()
-
-self.PIV_SpawnCoolDownT = CurTime() + 10
---[[
-if GetConVar("vj_piv_lights"):GetInt() == 1 then 
-
-self.Light2 = ents.Create("light_dynamic")
-self.Light2:SetKeyValue("brightness", "1")
-self.Light2:SetKeyValue("distance", "75")
-self.Light2:SetLocalPos(self:GetPos())
-self.Light2:SetLocalAngles(self:GetAngles())
-self.Light2:Fire("Color", "255 0 0 255")
-self.Light2:SetParent(self)
-self.Light2:Spawn()
-self.Light2:Activate()
-self.Light2:Fire("SetParentAttachment","eyes")
-self.Light2:Fire("TurnOn", "", 0)
-self:DeleteOnRemove(self.Light2)
-
-end
---]]
-	self:SetModelScale(1.3)
-	
-	self.ExtraGunModel1 = ents.Create("prop_physics")
-	self.ExtraGunModel1:SetModel("models/props_canal/mattpipe.mdl")
-	self.ExtraGunModel1:SetOwner(self)
-	self.ExtraGunModel1:SetParent(self)
-	self.ExtraGunModel1:SetLocalAngles(Angle(-120,45,90))
-	self.ExtraGunModel1:Fire("SetParentAttachmentMaintainOffset","anim_attachment_LH")
-	self.ExtraGunModel1:Fire("SetParentAttachment","anim_attachment_RH")
-	self.ExtraGunModel1:SetCollisionGroup(COLLISION_GROUP_IN_VEHICLE)
-	self.ExtraGunModel1:Spawn()
-	self.ExtraGunModel1:Activate()
-	self.ExtraGunModel1:SetSolid(SOLID_NONE)
-	self.ExtraGunModel1:AddEffects(EF_BONEMERGE)
-	self.ExtraGunModel1:SetLocalPos(self:GetPos())
-	
-self.SoundTbl_Idle = {
-	"vj_piv/demolisher/idle_1.mp3",
-	"vj_piv/demolisher/idle_2.mp3",
-	"vj_piv/demolisher/idle_3.mp3",
-	"vj_piv/demolisher/idle_4.mp3",
-	"vj_piv/demolisher/idle_5.mp3",
-	"vj_piv/demolisher/idle_6.mp3",
-	"vj_piv/demolisher/idle_7.mp3",
-	"vj_piv/demolisher/idle_8.mp3"
-}
-
-self.SoundTbl_Alert = {
-	"vj_piv/demolisher/alert_1.mp3",
-	"vj_piv/demolisher/alert_2.mp3"
-}
-
-self.SoundTbl_CombatIdle = {
-	"vj_piv/demolisher/idle_1.mp3",
-	"vj_piv/demolisher/idle_2.mp3",
-	"vj_piv/demolisher/idle_3.mp3",
-	"vj_piv/demolisher/idle_4.mp3",
-	"vj_piv/demolisher/idle_5.mp3",
-	"vj_piv/demolisher/idle_6.mp3",
-	"vj_piv/demolisher/idle_7.mp3",
-	"vj_piv/demolisher/idle_8.mp3"
-}
-
-self.SoundTbl_BeforeMeleeAttack = {
-	"vj_piv/demolisher/attack_1.mp3",
-	"vj_piv/demolisher/attack_2.mp3",
-	"vj_piv/demolisher/attack_3.mp3",
-	"vj_piv/demolisher/attack_4.mp3",
-	"vj_piv/demolisher/attack_5.mp3",
-	"vj_piv/demolisher/attack_6.mp3",
-	"vj_piv/demolisher/attack_7.mp3"
-}
-
-self.SoundTbl_Pain = {
-	"vj_piv/demolisher/pain_1.mp3",
-	"vj_piv/demolisher/pain_2.mp3",
-	"vj_piv/demolisher/pain_3.mp3",
-	"vj_piv/demolisher/pain_4.mp3",
-	"vj_piv/demolisher/pain_5.mp3"
-}
-	
-self.SoundTbl_Death = {
-	"vj_piv/demolisher/death_cutoff.mp3"
-}
-
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
-
-	if self.Combo == 1 then
-		self.MeleeAttackDamage = math.random(23,28)
-		self.HasMeleeAttackKnockBack = true
-		self.MeleeAttackDistance = 40
-		self.MeleeAttackDamageDistance = 70
-			
-		self.SoundTbl_MeleeAttackMiss = {"vj_piv/Miss1.wav","vj_piv/Miss2.wav","vj_piv/Miss3.wav","vj_piv/Miss4.wav","vj_piv/Miss5.wav"}
-		self.SoundTbl_MeleeAttack = {"vj_piv/wrenchhit1.wav","vj_piv/wrenchhit2.wav","vj_piv/wrenchhit3.wav","vj_piv/wrenchhit4.wav"}
-
-		self.AnimTbl_MeleeAttack = {
-			"vjseq_cmb02",
-		}
-	elseif self.Combo == 2 then
-		self.MeleeAttackDamage = math.random(30,35)
-		self.HasMeleeAttackKnockBack = true
-		self.MeleeAttackDistance = 150
-		self.MeleeAttackDamageDistance = 70
-			
-		self.SoundTbl_MeleeAttack = {"vj_piv/BodyHit-3.wav","vj_piv/BodyHit-4.wav","vj_piv/BodyHit-5.wav","vj_piv/BodyHit-6.wav"}
-		self.SoundTbl_MeleeAttackMiss = {"vj_piv/Miss1.wav","vj_piv/Miss2.wav","vj_piv/Miss3.wav","vj_piv/Miss4.wav","vj_piv/Miss5.wav"}
-
-		self.AnimTbl_MeleeAttack = {
-			"vjseq_cmb03",
-		}
-	else
-		if math.random(1,3) == 1 then
-			self.MeleeAttackAnimationAllowOtherTasks = true
-			
-			self.MeleeAttackDamage = math.random(25,30)
-			self.HasMeleeAttackKnockBack = true
-			self.MeleeAttackDistance = 40
-			self.MeleeAttackDamageDistance = 70
-			
-			self.SoundTbl_MeleeAttackMiss = {"vj_piv/Miss1.wav","vj_piv/Miss2.wav","vj_piv/Miss3.wav","vj_piv/Miss4.wav","vj_piv/Miss5.wav"}
-			self.SoundTbl_MeleeAttack = {"vj_piv/wrenchhit1.wav","vj_piv/wrenchhit2.wav","vj_piv/wrenchhit3.wav","vj_piv/wrenchhit4.wav"}
-
-			self.AnimTbl_MeleeAttack = {
-				"vjges_melee_moving01a",
-				"vjges_melee_moving03a",
-				"vjges_melee_moving06a",
-			}
-		
-			elseif math.random(1,3) == 2 then
-		
-			self.MeleeAttackAnimationAllowOtherTasks = false
-		
-			self.MeleeAttackDamage = math.random(20,25)
-			self.HasMeleeAttackKnockBack = true
-			self.MeleeAttackDistance = 40
-			self.MeleeAttackDamageDistance = 70
-			
-			self.SoundTbl_MeleeAttack = {"vj_piv/z_hit-01.wav","vj_piv/z_hit-02.wav","vj_piv/z_hit-03.wav","vj_piv/z_hit-04.wav","vj_piv/z_hit-05.wav","vj_piv/z_hit-06.wav"}
-			self.SoundTbl_MeleeAttackMiss = {"vj_piv/z-swipe-1.wav","vj_piv/z-swipe-2.wav","vj_piv/z-swipe-3.wav","vj_piv/z-swipe-4.wav","vj_piv/z-swipe-5.wav","vj_piv/z-swipe-6.wav"}	
-
-			self.AnimTbl_MeleeAttack = {
-				"vjseq_cmb01",
-			}
-			
-			elseif math.random(1,3) == 3 then
-			
-				self.MeleeAttackAnimationAllowOtherTasks = false
-				
-				self.MeleeAttackDamage = math.random(28,33)
-				self.HasMeleeAttackKnockBack = true
-				self.MeleeAttackDistance = 160
-				self.MeleeAttackDamageDistance = 70
-			
-				self.SoundTbl_MeleeAttack = {"vj_piv/BodyHit-3.wav","vj_piv/BodyHit-4.wav","vj_piv/BodyHit-5.wav","vj_piv/BodyHit-6.wav"}
-				self.SoundTbl_MeleeAttackMiss = {"vj_piv/Miss1.wav","vj_piv/Miss2.wav","vj_piv/Miss3.wav","vj_piv/Miss4.wav","vj_piv/Miss5.wav"}
-
-				self.AnimTbl_MeleeAttack = {
-					"vjseq_atk_jumpkick",
-					"vjseq_atk_jumpknee",
-				}
-		end
-	end
-end
----------------------------------------------------------------------------------------------------------------------------------------------
+--------------------
 function ENT:Zombie_CustomOnThink_AIEnabled()
 	if !IsValid(self:GetEnemy()) then
 		self.AnimTbl_Walk = {ACT_WALK}
@@ -234,7 +38,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 	end
 
 end
----------------------------------------------------------------------------------------------------------------------------------------------
+--------------------
 function ENT:PIV_SummonHelp_Spawn()
 	if !IsValid(self.ThugHelp1) then
 		self.ThugHelp1 = self:PIV_SummonHelp()
@@ -251,13 +55,13 @@ function ENT:PIV_SummonHelp_Spawn()
 	end
 	return 15
 end
----------------------------------------------------------------------------------------------------------------------------------------------
+--------------------
 function ENT:PIV_SummonHelp()
     
-	if math.random(1,2) == 1 then
-	self.ThugMinion = "npc_vj_piv_brawler"
+	if math.random(1,3) == 1 then
+		self.ThugMinion = "npc_vj_piv_brawler_f"
 	else
-	self.ThugMinion = "npc_vj_piv_brawler_f"
+		self.ThugMinion = "npc_vj_piv_brawler"
     end
 	
 	local tr = util.TraceLine({
@@ -266,8 +70,11 @@ function ENT:PIV_SummonHelp()
 		filter = {self},
 		mask = MASK_ALL,
 	})
+
 	local spawnpos = tr.HitPos + tr.HitNormal*300
+
 	local ally = ents.Create(self.ThugMinion)
+
 	ally:SetPos(spawnpos)
 	ally:SetAngles(self:GetAngles())
 	ally:Spawn()
@@ -276,48 +83,8 @@ function ENT:PIV_SummonHelp()
 	ally.VJ_NPC_Class = self.VJ_NPC_Class
 	return ally
 end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnTakeDamage_AfterDamage(dmginfo,hitgroup)
-	if self.CanDoTheFunny == false then return end
-
-	if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SNIPER) then
-		if hitgroup == HITGROUP_HEAD or hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH then
-			if self.PIVNextStumbleT < CurTime() then
-				if dmginfo:GetDamage() > 60 or dmginfo:GetDamageForce():Length() > 10000 then
-					if math.random (1,2) == 1 then
-						self:VJ_ACT_PLAYACTIVITY("vjseq_flinch_heavy_f",true,false,false)
-						self.PIVNextStumbleT = CurTime() + 5
-					end
-				end
-			end
-		end
-	end
-
-	if dmginfo:IsDamageType(DMG_CLUB) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_GENERIC) then
-		if dmginfo:GetDamage() > 40 or dmginfo:GetDamageForce():Length() > 10000 then
-			if self.PIV_NextShoveT < CurTime() then
-				self:VJ_ACT_PLAYACTIVITY("vjseq_flinch_heavy_f",true,false,false)
-				self.PIV_NextShoveT = CurTime() + math.random(8,12)
-			end
-		end
-    return !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt  && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
-	end
-
-	if dmginfo:IsExplosionDamage() then
-		if self.NextSplodeStumbleT < CurTime() then
-			self:VJ_ACT_PLAYACTIVITY("vjseq_flinch_heavy_f",true,false,false)
-			self.NextSplodeStumbleT = CurTime() + 6
-		end
-	return !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt  && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
-	end
-
-end
----------------------------------------------------------------------------------------------------------------------------------------------
+--------------------
 function ENT:MeleeAttackKnockbackVelocity(hitEnt)
 	return self:GetForward()*math.random(180, 220) + self:GetUp()*math.random(90,120)
 end
-/*-----------------------------------------------
-	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
-	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
-	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
------------------------------------------------*/
+--------------------
