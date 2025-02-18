@@ -3,12 +3,12 @@ include('shared.lua')
 --------------------
 ENT.Model = {"models/vj_piv/hl2/citizens/male_01.mdl"}
 ENT.StartHealth = 125
-ENT.JumpVars = {
+ENT.JumpParams = {
 	MaxRise = 64,
 	MaxDrop = 512,
 	MaxDistance = 256,
 }
-ENT.VJC_Data = {
+ENT.ControllerParams = {
 	CameraMode = 1,
 	ThirdP_Offset = Vector(40, 20, -50),
 	FirstP_Bone = "ValveBiped.Bip01_Spine2",
@@ -92,6 +92,9 @@ ENT.SoundTbl_MeleeAttack = {""}
 ENT.GeneralSoundPitch1 = 100
 ENT.GeneralSoundPitch2 = 90
 ENT.FootStepPitch = VJ.SET(100, 100)
+--------------------
+-- DO NOT REMOBVE THIS PLEEASE DON'T
+ENT.SoundTbl_FootStep = "common/null.wav"
 --------------------
 ENT.FootSteps = {
 	[MAT_ANTLION] = {
@@ -333,6 +336,8 @@ ENT.PIV_NextRunT = 0
 ENT.PIV_SpawnCoolDownT = 0
 ENT.PIV_IsBrawlerThugGuyYeah = false
 ENT.PIV_UseAgitatedCrawlerMovement = false
+ENT.PIV_Waterlogged = false
+ENT.PIV_UseRunRelaxed = false
 --------------------
 function ENT:Zombie_CustomOnPreInitialize() end
 --------------------
@@ -2805,7 +2810,8 @@ end
 function ENT:OnInput(key,activator,caller,data)
 
 	if key == "step" then
-		self:FootStepSoundCode()
+		-- self:FootStepSoundCode()
+		self:PlayFootstepSound()
 
 	    if self.PIV_IsHugeZombie == true then
 			if self.PIV_Tank then
@@ -2821,19 +2827,22 @@ function ENT:OnInput(key,activator,caller,data)
 		else
 			if self.PIV_HasArmor then
 				VJ.EmitSound(self, "vj_piv/mil_zomb/step_"..math.random(1,4)..".mp3", 75, 100)
-			end
-			if self.PIV_IsZombine then
+			elseif self.PIV_IsZombine then
 				VJ.EmitSound(self, "npc/combine_soldier/gear"..math.random(1,6)..".wav", 70, 100)
-			end
-			if self.PIV_IsMetropolice then
+			elseif self.PIV_IsMetropolice then
 				VJ.EmitSound(self, "npc/metropolice/gear"..math.random(1,6)..".wav", 70, 100)
-			end
-			if self.PIV_IsMilitary == true then
+			elseif self.PIV_IsMilitary == true then
 				VJ.EmitSound(self, "vj_piv/mil_zomb/gear"..math.random(1,6)..".wav", 70, 100)
-			end
-			if self.PIV_IsHEV == true then
+			elseif self.PIV_IsHEV == true then
 				VJ.EmitSound(self, "physics/metal/metal_box_footstep"..math.random(1,4)..".wav", 70, 100)
 			end		
+		end
+		if self:GetClass() == "npc_vj_piv_drowned_suit" then
+			if self:GetActivity() == ACT_RUN || self:GetActivity() == ACT_SPRINT || self:GetActivity() == ACT_RUN_AIM || self:GetActivity() == ACT_RUN_RELAXED then
+				VJ.EmitSound(self, "vj_piv/drowned/suit/deepsea_diver_run_step_0"..math.random(1,6)..".wav", 65, 100)
+			else
+				VJ.EmitSound(self, "vj_piv/drowned/suit/deepsea_diver_walk_step_0"..math.random(1,6)..".wav", 65, 100)
+			end
 		end
 		if self:GetClass() == "npc_vj_piv_phorid" then
 			VJ.EmitSound(self, "vj_piv/phorid/brut_fs_walk_heel_01_"..math.random(0,20)..".wav", 70, 100)
@@ -3064,6 +3073,28 @@ function ENT:OnInput(key,activator,caller,data)
 			VJ.EmitSound(self,"vj_piv/spitter/pain"..math.random(1,5)..".mp3",60,math.random(90,100))
 		end
 	end
+
+	if key == "throw" && self:GetClass() == "npc_vj_piv_tank" then 
+		self:SetBodygroup(1,1)
+		self:EmitSound("vj_piv/concrete_break"..math.random(2,3)..".wav",80,100)
+		util.ScreenShake(self:GetPos(), 300, 500, 1.6, 1200)
+		local pos = self:LocalToWorld(Vector(50,0,0))
+		ParticleEffect("strider_impale_ground",pos,Angle(0,0,0),nil)
+		ParticleEffect("strider_cannon_impact",pos,Angle(0,0,0),nil)
+	end
+	if key == "throw_end" && self:GetClass() == "npc_vj_piv_tank"  then
+		self:SetBodygroup(1,0)
+		self:RangeAttackCode()
+	end
+	
+	if key == "metal" && self:GetClass() == "npc_vj_piv_sickler" then
+		VJ.EmitSound(self, "vj_piv/sickler/stalker_footstep"..math.random(1,4)..".wav", 65, 110)	
+	end
+	
+	if key == "twitch" && self:GetClass() == "npc_vj_piv_sickler" then
+		VJ.EmitSound(self, "vj_piv/sickler/twitch"..math.random(1,3)..".wav", 65, 100)	
+	end
+
 end
 --------------------
 -- function ENT:CustomOnIsJumpLegal(startPos, apex, endPos) -- this function doesn't exist, just make it so they can't jump at all
@@ -3350,6 +3381,10 @@ function ENT:Zombie_CustomOnThink_AIEnabled() end
 --------------------
 function ENT:TranslateActivity(act)
 
+	if self:GetClass() == "npc_vj_piv_tank" && act == ACT_IDLE then
+		return ACT_IDLE
+	end
+
 	if self.PIV_UseActIdleStimulated && act == ACT_IDLE && !self.PIV_WeHaveAWeapon && !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt then
 		return ACT_IDLE_AIM_STIMULATED
 	end
@@ -3382,7 +3417,7 @@ function ENT:TranslateActivity(act)
 		if act == ACT_RUN then
 			if self.PIV_Super_Sprinter then
 				return ACT_RUN_AIM
-			elseif self.PIV_Rusher then
+			elseif self.PIV_Rusher || self.PIV_UseRunRelaxed then
 				return ACT_RUN_RELAXED
 			else
 				return ACT_SPRINT
@@ -3678,6 +3713,7 @@ function ENT:TranslateActivity(act)
 			return ACT_IDLE_HURT
 		end
 	end
+	return act
 end
 --------------------
 function ENT:OnAlert(ent)
@@ -3811,6 +3847,24 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		return
 	end -- if we're expanding this blacklist then maybe we should just use something like 'if self.PIV_CustomOnMeleeBlacklisted then return end'
 
+	if self:GetClass() == "npc_vj_piv_tank" then		
+		if self:IsMoving()then
+		
+			self.MeleeAttackDistance = 60
+			self.MeleeAttackDamageDistance = 80
+			self.MeleeAttackAnimationAllowOtherTasks = true		
+			self.AnimTbl_MeleeAttack = {"vjges_attack_moving"}
+
+		else
+		
+			self.MeleeAttackAnimationAllowOtherTasks = false
+			self.MeleeAttackDistance = 50
+			self.MeleeAttackDamageDistance = 70
+			self.AnimTbl_MeleeAttack = {"vjseq_attack"}
+
+		end
+		return
+	end
 -- (self:GetClass() == "npc_vj_piv_brawler" || self:GetClass() == "npc_vj_piv_brawler_f")
 
 	if self.PIV_IsBrawlerThugGuyYeah then
@@ -3917,13 +3971,26 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		self.SoundTbl_MeleeAttack = {"vj_piv/z_hit-01.wav","vj_piv/z_hit-02.wav","vj_piv/z_hit-03.wav","vj_piv/z_hit-04.wav","vj_piv/z_hit-05.wav","vj_piv/z_hit-06.wav"}
 		self.SoundTbl_MeleeAttackMiss = {"vj_piv/z-swipe-1.wav","vj_piv/z-swipe-2.wav","vj_piv/z-swipe-3.wav","vj_piv/z-swipe-4.wav","vj_piv/z-swipe-5.wav","vj_piv/z-swipe-6.wav"}	
 		
-		self.AnimTbl_MeleeAttack = {"vjseq_crawl_attack"}
+		self.AnimTbl_MeleeAttack = {"vjseq_crawl_attack","vjseq_crawl_attack2"}
 	return end
 
 	-- When Moving --
 	if self:IsMoving() then
 
 		self.MeleeAttackAnimationAllowOtherTasks = true
+
+		if self:GetClass() == "npc_vj_piv_panzer_boss" && self.Berserk == true && math.random(1,4) == 1 then
+		
+			self.MeleeAttackAnimationAllowOtherTasks = false
+			self.HasMeleeAttackKnockBack = true
+	
+			self.MeleeAttackDistance = 150
+			self.MeleeAttackDamageDistance = 70
+		
+			self.AnimTbl_MeleeAttack = {
+				"vjseq_atk_jump"
+			}
+		end
 
 		if self.PIV_WeHaveAWeapon == true then
 		
@@ -3981,16 +4048,26 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 			}
 
 		else
-
-			self.MeleeAttackDamage = math.random(15,20)
 			if self.PIV_Brute == true then
 				self.MeleeAttackDamage = math.random(20,25)
+			elseif self:GetClass() == "npc_vj_piv_panzer" then
+				self.MeleeAttackDamage = math.random(30,35)
+			elseif self:GetClass() == "npc_vj_piv_panzer_boss" then
+				self.MeleeAttackDamage = math.random(40,45)
+			else
+				self.MeleeAttackDamage = math.random(15,20)
 			end
-			self.HasMeleeAttackKnockBack = false
+			if self:GetClass() == "npc_vj_piv_panzer_boss" then
+				self.HasMeleeAttackKnockBack = true
+				self.MeleeAttackDistance = 50
+				self.MeleeAttackDamageDistance = 70
+			else
+				self.HasMeleeAttackKnockBack = false
+				self.MeleeAttackDistance = 40
+				self.MeleeAttackDamageDistance = 60
+			end
 			self.SlowPlayerOnMeleeAttack = false
 			self.MeleeAttackAnimationDecreaseLengthAmount = 0
-			self.MeleeAttackDistance = 40
-			self.MeleeAttackDamageDistance = 60
 			self.SoundTbl_MeleeAttack = {"vj_piv/z_hit-01.wav","vj_piv/z_hit-02.wav","vj_piv/z_hit-03.wav","vj_piv/z_hit-04.wav","vj_piv/z_hit-05.wav","vj_piv/z_hit-06.wav"}
 			self.SoundTbl_MeleeAttackMiss = {"vj_piv/z-swipe-1.wav","vj_piv/z-swipe-2.wav","vj_piv/z-swipe-3.wav","vj_piv/z-swipe-4.wav","vj_piv/z-swipe-5.wav","vj_piv/z-swipe-6.wav"}	
 			
@@ -4078,15 +4155,27 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 			self.SoundTbl_MeleeAttackMiss = {"vj_piv/z-swipe-1.wav","vj_piv/z-swipe-2.wav","vj_piv/z-swipe-3.wav","vj_piv/z-swipe-4.wav","vj_piv/z-swipe-5.wav","vj_piv/z-swipe-6.wav"}	
 		else
 		
-			self.MeleeAttackDamage = math.random(15,20)
+			self.HasMeleeAttackKnockBack = false
 			if self.PIV_Brute == true then
 				self.MeleeAttackDamage = math.random(20,25)
+			elseif self:GetClass() == "npc_vj_piv_panzer" then
+				self.MeleeAttackDamage = math.random(30,35)
+			elseif self:GetClass() == "npc_vj_piv_panzer_boss" then
+				self.MeleeAttackDamage = math.random(40,45)
+			else
+				self.MeleeAttackDamage = math.random(15,20)
 			end
-			self.HasMeleeAttackKnockBack = false
+			if self:GetClass() == "npc_vj_piv_panzer_boss" then
+				self.HasMeleeAttackKnockBack = true
+				self.MeleeAttackDistance = 50
+				self.MeleeAttackDamageDistance = 70
+			else
+				self.HasMeleeAttackKnockBack = false
+				self.MeleeAttackDistance = 40
+				self.MeleeAttackDamageDistance = 60
+			end
 			self.SlowPlayerOnMeleeAttack = false
 			self.MeleeAttackAnimationDecreaseLengthAmount = 0
-			self.MeleeAttackDistance = 40
-			self.MeleeAttackDamageDistance = 60
 			self.SoundTbl_MeleeAttack = {"vj_piv/z_hit-01.wav","vj_piv/z_hit-02.wav","vj_piv/z_hit-03.wav","vj_piv/z_hit-04.wav","vj_piv/z_hit-05.wav","vj_piv/z_hit-06.wav"}
 			self.SoundTbl_MeleeAttackMiss = {"vj_piv/z-swipe-1.wav","vj_piv/z-swipe-2.wav","vj_piv/z-swipe-3.wav","vj_piv/z-swipe-4.wav","vj_piv/z-swipe-5.wav","vj_piv/z-swipe-6.wav"}	
 			
@@ -4101,11 +4190,14 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 				"vjseq_nz_attack_stand_au_2-4",
 			}
 			
-			if math.random(1,4) == 1 then 
+			if math.random(1,4) == 1 && !self:GetClass() == "npc_vj_piv_panzer_boss" then 
 				
-				self.MeleeAttackDamage = math.random(20,25)
 				if self.PIV_Brute == true then
 					self.MeleeAttackDamage = math.random(25,30)
+				elseif self:GetClass() == "npc_vj_piv_panzer" then
+					self.MeleeAttackDamage = math.random(35,40)
+				else
+					self.MeleeAttackDamage = math.random(20,25)
 				end
 				self.HasMeleeAttackKnockBack = true
 				self.SlowPlayerOnMeleeAttack = false
@@ -4171,7 +4263,11 @@ function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt, isProp)
 end
 --------------------
 function ENT:MeleeAttackKnockbackVelocity(hitEnt)
-	return self:GetForward()*math.random(140, 180) + self:GetUp()*math.random(60,80)
+	if self:GetClass() == "npc_vj_piv_tank" then
+		return self:GetForward()*math.random(200, 300) + self:GetUp()*math.random(200, 300)
+	else
+		return self:GetForward()*math.random(140, 180) + self:GetUp()*math.random(60,80)
+	end
 end
 --------------------
 function ENT:CustomOnMeleeAttack_Miss()
@@ -4201,7 +4297,11 @@ function ENT:CustomOnMeleeAttack_Miss()
 end
 --------------------
 function ENT:RangeAttackCode_GetShootPos(TheProjectile)
-	return self:CalculateProjectile("Curve", self:GetAttachment(self:LookupAttachment(self.RangeUseAttachmentForPosID)).Pos, self:GetEnemy():GetPos() + self:GetEnemy():OBBCenter(), 1000) + self:GetUp()*math.Rand(-30,30) + self:GetRight()*math.Rand(-40,40)
+	if self:GetClass() == "npc_vj_piv_tank" then
+		return self:CalculateProjectile("Curve", self:GetAttachment(self:LookupAttachment(self.RangeUseAttachmentForPosID)).Pos, self:GetEnemy():GetPos() + self:GetEnemy():OBBCenter(), 2500) + self:GetUp()*math.Rand(-10,10) + self:GetRight()*math.Rand(-10,10)
+	else
+		return self:CalculateProjectile("Curve", self:GetAttachment(self:LookupAttachment(self.RangeUseAttachmentForPosID)).Pos, self:GetEnemy():GetPos() + self:GetEnemy():OBBCenter(), 1000) + self:GetUp()*math.Rand(-30,30) + self:GetRight()*math.Rand(-40,40)
+	end
 end
 --------------------
 function ENT:CustomOnRangeAttack_AfterStartTimer(seed)
@@ -4320,6 +4420,46 @@ function ENT:OnDamaged(dmginfo,hitgroup,status)
 						self.PIVNextStumbleT = CurTime() + 5
 					end
 				end
+			elseif self:GetClass() == "npc_vj_piv_panzer_boss" then
+				if hitgroup == HITGROUP_HEAD or hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH then
+					if self.PIVNextStumbleT < CurTime() then
+						if dmginfo:GetDamage() > 60 or dmginfo:GetDamageForce():Length() > 10000 then
+							if math.random (1,2) == 1 then
+								self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
+								self.PIVNextStumbleT = CurTime() + math.random(5,10)
+							end
+						elseif dmginfo:GetDamage() > 40 or dmginfo:GetDamageForce():Length() > 5000 then
+							if math.random (1,3) == 1 then
+								self:VJ_ACT_PLAYACTIVITY(ACT_SMALL_FLINCH,true,false,false)
+								self.PIVNextStumbleT = CurTime() + math.random(5,10)
+							end
+						else
+							if math.random (1,5) == 1 then
+								self:VJ_ACT_PLAYACTIVITY(ACT_STEP_BACK,true,1.6)
+								self.PIVNextStumbleT = CurTime() + math.random(5,10)
+							end
+						end
+					end
+				elseif hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then		 
+					if self.PIVNextStumbleT < CurTime() then
+						if math.random (1,5) == 1 then
+							self:VJ_ACT_PLAYACTIVITY(ACT_STEP_FORE,true,1.6)
+							self.PIVNextStumbleT = CurTime() + math.random(6,12)
+						end
+					end
+				end
+			elseif self:GetClass() == "npc_vj_piv_tank" then
+				if hitgroup == HITGROUP_HEAD or hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH then
+					if self.PIVNextStumbleT < CurTime() then
+						if dmginfo:GetDamage() > 40 or dmginfo:GetDamageForce():Length() > 10000 then
+							if math.random (1,2) == 1 then
+								self:VJ_ACT_PLAYACTIVITY("vjseq_shoved_backward",true,false,false)
+								self.PIVNextStumbleT = CurTime() + math.random(6,8)
+								self:StopCharging()
+							end
+						end
+					end
+				end
 			else
 				if hitgroup == HITGROUP_HEAD or hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH then
 					if dmginfo:GetDamage() > 49 or dmginfo:GetDamageForce():Length() > 10000 then
@@ -4365,6 +4505,26 @@ function ENT:OnDamaged(dmginfo,hitgroup,status)
 						self.PIV_NextShoveT = CurTime() + math.random(5,8)
 					end
 				end
+			elseif self:GetClass() == "npc_vj_piv_panzer_boss" then
+				if dmginfo:GetDamage() > 80 or dmginfo:GetDamageForce():Length() > 10000 then
+					if self.PIV_NextShoveT < CurTime() then
+						self:VJ_ACT_PLAYACTIVITY(ACT_BIG_FLINCH,true,false,false)
+						self.PIV_NextShoveT = CurTime() + math.random(8,12)
+					end
+				elseif dmginfo:GetDamage() > 60 or dmginfo:GetDamageForce():Length() > 5000 then
+					if self.PIV_NextShoveT < CurTime() then
+						self:VJ_ACT_PLAYACTIVITY(ACT_SMALL_FLINCH,true,false,false)
+						self.PIV_NextShoveT = CurTime() + math.random(8,12)
+					end
+				end
+			elseif self:GetClass() == "npc_vj_piv_tank" then
+				if dmginfo:GetDamage() > 40 or dmginfo:GetDamageForce():Length() > 10000 then
+					if self.PIV_NextShoveT < CurTime() then
+						self:VJ_ACT_PLAYACTIVITY("vjseq_shoved_backward",true,false,false)
+						self.PIV_NextShoveT = CurTime() + math.random(8,12)
+						self:StopCharging()
+					end
+				end
 			else
 				if dmginfo:GetDamage() > 49 or dmginfo:GetDamageForce():Length() > 10000 then
 					if self.PIV_NextShoveT < CurTime() then
@@ -4392,6 +4552,11 @@ function ENT:OnDamaged(dmginfo,hitgroup,status)
 					else
 						self.NextSplodeStumbleT = CurTime() + 5
 					end
+				elseif self:GetClass() == "npc_vj_piv_tank" then
+					local tankstumbles = VJ.PICK({"vjseq_shoved_backward","vjseq_shoved_rightward","vjseq_shoved_leftward","vjseq_shoved_forward",})
+					self:VJ_ACT_PLAYACTIVITY(tankstumbles,true,VJ.AnimDuration(self,tbl),false)
+					self.NextSplodeStumbleT = CurTime() + math.random(6,8)
+					self:StopCharging()
 				else
 					if math.random(1,2) == 1 then
 						self:DropTheFuckignWeaponGoddamn()
@@ -4470,140 +4635,152 @@ function ENT:OnDeath(dmginfo, hitgroup, status)
 	end
 
 	if status == "DeathAnim" then
-		if self:IsMoving() then
-			-- We're Running
-			if self:GetActivity() == ACT_SPRINT || self:GetActivity() == ACT_RUN_AIM || self:GetActivity() == ACT_RUN_RELAXED then
+		if self:GetClass() == "npc_vj_piv_tank" then
+			if !self:IsMoving() then
 				self.AnimTbl_Death = {
-					"vjseq_witch_death",
-					"vjseq_sonic_death_2",
-					"vjseq_sonic_death_3",
-					"vjseq_deathrunning_01",
-					"vjseq_deathrunning_03",
-					"vjseq_deathrunning_04",
-					"vjseq_deathrunning_05",
-					"vjseq_deathrunning_06",
-					"vjseq_deathrunning_07",
-					"vjseq_deathrunning_08",
-					"vjseq_deathrunning_09",
-					"vjseq_deathrunning_10",
-					"vjseq_deathrunning_11",
-					"vjseq_deathrunning_11a",
-					"vjseq_deathrunning_11b",
-					"vjseq_deathrunning_11c",
-					"vjseq_deathrunning_11d",
-					"vjseq_deathrunning_11e",
-					"vjseq_death03",
-					"vjseq_nz_sonic_death_1",
-					"vjseq_nz_sonic_death_3",
-					"vjseq_nz_sonic_death_2"
-				}
-			else
-			-- We're Walking
+					"vjseq_death",
+					"vjseq_death_11ab"
+				}	
+			end
+			if self:IsMoving() then			
+				self.AnimTbl_Death = {"vjseq_death_running_07"}
+			end
+		else
+			if self:IsMoving() then
+				-- We're Running
+				if self:GetActivity() == ACT_SPRINT || self:GetActivity() == ACT_RUN_AIM || self:GetActivity() == ACT_RUN_RELAXED then
+					self.AnimTbl_Death = {
+						"vjseq_witch_death",
+						"vjseq_sonic_death_2",
+						"vjseq_sonic_death_3",
+						"vjseq_deathrunning_01",
+						"vjseq_deathrunning_03",
+						"vjseq_deathrunning_04",
+						"vjseq_deathrunning_05",
+						"vjseq_deathrunning_06",
+						"vjseq_deathrunning_07",
+						"vjseq_deathrunning_08",
+						"vjseq_deathrunning_09",
+						"vjseq_deathrunning_10",
+						"vjseq_deathrunning_11",
+						"vjseq_deathrunning_11a",
+						"vjseq_deathrunning_11b",
+						"vjseq_deathrunning_11c",
+						"vjseq_deathrunning_11d",
+						"vjseq_deathrunning_11e",
+						"vjseq_death03",
+						"vjseq_nz_sonic_death_1",
+						"vjseq_nz_sonic_death_3",
+						"vjseq_nz_sonic_death_2"
+					}
+				else
+				-- We're Walking
+					self.AnimTbl_Death = {
+						"vjseq_witch_death",
+						"vjseq_nz_death_f_1",
+						"vjseq_nz_death_f_2",
+						"vjseq_nz_death_f_3",
+						"vjseq_nz_death_f_4",
+						"vjseq_nz_death_f_5",
+						"vjseq_nz_death_f_6",
+						"vjseq_nz_death_f_7",
+						"vjseq_nz_death_f_8",
+						"vjseq_nz_death_f_9",
+						"vjseq_nz_death_f_10",
+						"vjseq_nz_death_f_11",
+						"vjseq_nz_death_f_12",
+						"vjseq_nz_death_f_13"
+					}
+				end
+			end
+
+			if hitgroup == HITGROUP_HEAD then -- When killed by a headshot
 				self.AnimTbl_Death = {
-					"vjseq_witch_death",
-					"vjseq_nz_death_f_1",
-					"vjseq_nz_death_f_2",
-					"vjseq_nz_death_f_3",
-					"vjseq_nz_death_f_4",
-					"vjseq_nz_death_f_5",
-					"vjseq_nz_death_f_6",
-					"vjseq_nz_death_f_7",
-					"vjseq_nz_death_f_8",
-					"vjseq_nz_death_f_9",
-					"vjseq_nz_death_f_10",
-					"vjseq_nz_death_f_11",
-					"vjseq_nz_death_f_12",
-					"vjseq_nz_death_f_13"
+					"vjseq_deathheadshotback",
+					"vjseq_deathheadshotfront",
+					"vjseq_death_shotgun_backward_collapse",
+					"vjseq_death01",
+					"vjseq_death02",
+					"vjseq_death04",
+					"vjseq_death_02a",
+					"vjseq_death_05"
 				}
 			end
-		end
 
-		if hitgroup == HITGROUP_HEAD then -- When killed by a headshot
-			self.AnimTbl_Death = {
-				"vjseq_deathheadshotback",
-				"vjseq_deathheadshotfront",
-				"vjseq_death_shotgun_backward_collapse",
-				"vjseq_death01",
-				"vjseq_death02",
-				"vjseq_death04",
-				"vjseq_death_02a",
-				"vjseq_death_05"
-			}
-		end
+			if self:IsOnFire() && !self.Immune_Fire then -- When killed by fire damage
+				self.AnimTbl_Death = {
+					"vjseq_witch_death",
+					"vjseq_nz_death_fire_1",
+					"vjseq_nz_death_fire_2",
+					"vjseq_death04",
+					"vjseq_infectiondeath"
+				} 
+			end	
 
-		if self:IsOnFire() && !self.Immune_Fire then -- When killed by fire damage
-			self.AnimTbl_Death = {
-				"vjseq_witch_death",
-				"vjseq_nz_death_fire_1",
-				"vjseq_nz_death_fire_2",
-				"vjseq_death04",
-				"vjseq_infectiondeath"
-			} 
-		end	
+			if dmginfo:IsExplosionDamage() then -- When killed by explosion damage
+				self.AnimTbl_Death = {
+					"vjseq_nz_death_expl_f_1",
+					"vjseq_nz_death_expl_f_2",
+					"vjseq_nz_death_expl_f_3",
+					"vjseq_nz_death_expl_b_1",
+					"vjseq_nz_death_expl_l_1",
+					"vjseq_nz_death_expl_r_1"
+				}
+			end
 
-		if dmginfo:IsExplosionDamage() then -- When killed by explosion damage
-			self.AnimTbl_Death = {
-				"vjseq_nz_death_expl_f_1",
-				"vjseq_nz_death_expl_f_2",
-				"vjseq_nz_death_expl_f_3",
-				"vjseq_nz_death_expl_b_1",
-				"vjseq_nz_death_expl_l_1",
-				"vjseq_nz_death_expl_r_1"
-			}
-		end
+			-- disabled until it's fixed
+			-- if
+				-- dmginfo:IsDamageType(DMG_SHOCK)
+				-- dmginfo:GetAttacker():IsPlayer()
+				-- dmginfo:GetAttacker():GetActiveWeapon():GetClass() == "arc9_go_zeus" or
+				-- dmginfo:GetAttacker():GetActiveWeapon():GetClass() == "arc9_go_akimbo_taser"
+			-- then -- When killed by shock damage or a taser
+			   -- self.AnimTbl_Death = {
+					-- "vjseq_nz_death_elec_1",
+					-- "vjseq_nz_death_elec_2",
+					-- "vjseq_nz_death_elec_3",
+					-- "vjseq_nz_death_elec_4",
+					-- "vjseq_nz_death_elec_5"
+				-- }
+			-- end
 
-		-- disabled until it's fixed
-		-- if
-			-- dmginfo:IsDamageType(DMG_SHOCK)
-			-- dmginfo:GetAttacker():IsPlayer()
-			-- dmginfo:GetAttacker():GetActiveWeapon():GetClass() == "arc9_go_zeus" or
-			-- dmginfo:GetAttacker():GetActiveWeapon():GetClass() == "arc9_go_akimbo_taser"
-		-- then -- When killed by shock damage or a taser
-		   -- self.AnimTbl_Death = {
-				-- "vjseq_nz_death_elec_1",
-				-- "vjseq_nz_death_elec_2",
-				-- "vjseq_nz_death_elec_3",
-				-- "vjseq_nz_death_elec_4",
-				-- "vjseq_nz_death_elec_5"
-			-- }
-		-- end
+			if dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:GetDamage() > 100 && dmginfo:GetDamageForce():Length() > 10000 && !dmginfo:IsExplosionDamage() then -- When killed by a shotgun or attack with high force
 
-		if dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:GetDamage() > 100 && dmginfo:GetDamageForce():Length() > 10000 && !dmginfo:IsExplosionDamage() then -- When killed by a shotgun or attack with high force
+				self.AnimTbl_Death = {
+					"vjseq_death_shotgun_backward_03",
+					"vjseq_death_shotgun_backward_04",
+					"vjseq_death_shotgun_backward_05",
+					"vjseq_death_shotgun_backward_06",
+					"vjseq_death_shotgun_backward_07",
+					"vjseq_death_shotgun_backward_08",
+					"vjseq_death_shotgun_backward_09",
+					"vjseq_death_shotgun_backward_collapse",
+					"vjseq_death03"
+				}
 
-			self.AnimTbl_Death = {
-				"vjseq_death_shotgun_backward_03",
-				"vjseq_death_shotgun_backward_04",
-				"vjseq_death_shotgun_backward_05",
-				"vjseq_death_shotgun_backward_06",
-				"vjseq_death_shotgun_backward_07",
-				"vjseq_death_shotgun_backward_08",
-				"vjseq_death_shotgun_backward_09",
-				"vjseq_death_shotgun_backward_collapse",
-				"vjseq_death03"
-			}
+			end
 
-		end
+			if dmginfo:IsDamageType(DMG_DISSOLVE) then -- When killed by dissolving
 
-		if dmginfo:IsDamageType(DMG_DISSOLVE) then -- When killed by dissolving
+				self.AnimTbl_Death = {
+					"vjseq_nz_death_deathray_1",
+					"vjseq_nz_death_deathray_2",
+					"vjseq_nz_death_deathray_3",
+					"vjseq_nz_death_deathray_4"
+				}
 
-			self.AnimTbl_Death = {
-				"vjseq_nz_death_deathray_1",
-				"vjseq_nz_death_deathray_2",
-				"vjseq_nz_death_deathray_3",
-				"vjseq_nz_death_deathray_4"
-			}
+			end
 
-		end
+			if dmginfo:IsDamageType(DMG_PARALYZE) then -- When killed by a paralyzing damage
 
-		if dmginfo:IsDamageType(DMG_PARALYZE) then -- When killed by a paralyzing damage
+				self.AnimTbl_Death = {
+					"vjseq_nz_death_freeze_1",
+					"vjseq_nz_death_freeze_2",
+					"vjseq_nz_death_freeze_3",
+					"vjseq_nz_death_freeze_4"
+				}
 
-			self.AnimTbl_Death = {
-				"vjseq_nz_death_freeze_1",
-				"vjseq_nz_death_freeze_2",
-				"vjseq_nz_death_freeze_3",
-				"vjseq_nz_death_freeze_4"
-			}
-
+			end
 		end
 	end
 

@@ -9,7 +9,7 @@ ENT.Model = {"models/vj_piv/hl2/citizens/male_01.mdl"} -- The game will pick a r
 
 ENT.PIV_IsSpecial = true
 -----------------------------------------------*/
-function ENT:CustomInitialize()
+function ENT:Init()
 timer.Simple(0.1,function()
 local death = VJ.PICK({"Infectiondeath","Infectiondeath2","Death_04"})
 self:VJ_ACT_PLAYACTIVITY(death,true,4,false)
@@ -57,7 +57,7 @@ end
 end)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnDeath_AfterCorpseSpawned(dmginfo,hitgroup,GetCorpse)
+function ENT:OnCreateDeathCorpse(dmginfo,hitgroup,GetCorpse)
 GetCorpse:VJ_PIV_CreateBoneMerge(GetCorpse,self.Bonemerge:GetModel(),self.Bonemerge:GetSkin(),self.Bonemerge:GetColor(),self.Bonemerge:GetMaterial(),self.Bonemerge:GetPlayerColor())
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -68,7 +68,7 @@ function ENT:BonemergeCorpse(dmginfo,hitgroup,GetCorpse)
     end    
 end  
 ---------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnPreInitialize()	
+function ENT:PreInit()	
 
 end  
 /*-----------------------------------------------

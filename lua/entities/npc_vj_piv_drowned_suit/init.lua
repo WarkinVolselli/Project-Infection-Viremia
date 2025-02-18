@@ -1,30 +1,90 @@
+include("entities/npc_vj_piv_base/init.lua")
 AddCSLuaFile("shared.lua")
 include('shared.lua')
-/*-----------------------------------------------
-	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
-	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
-	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
------------------------------------------------*/
-ENT.Model = {"models/vj_piv/specials/drowned/drowned_haimatsu.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
-ENT.StartHealth = 200
+--------------------
+function ENT:Zombie_CustomOnPreInitialize()
+	self.Model = {"models/vj_piv/specials/drowned/drowned_haimatsu.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
+	self.StartHealth = 200
+	self.PIV_IsRunner = true
+	self.PIV_Infection_IsWalker = false
 
-ENT.PIV_IsSpecial = true
+	self.PIV_IsSpecial = true
 
-ENT.PIV_HasWeapons = false
-ENT.PIV_CanBeThrower = false
+	self.PIV_HasWeapons = false
+	self.PIV_CanBeThrower = false
 
-ENT.PIV_AllowedToVomit = false
-ENT.PIV_CanBeBiter = false
-
-ENT.SoundTbl_Idle = {"vj_piv/drowned/suit/deepsea_suit_idle_001.wav","vj_piv/drowned/suit/deepsea_suit_idle_002.wav","vj_piv/drowned/suit/deepsea_suit_idle_003.wav","vj_piv/drowned/suit/deepsea_suit_idle_004.wav","vj_piv/drowned/suit/deepsea_suit_idle_005.wav","vj_piv/drowned/suit/deepsea_suit_idle_006.wav","vj_piv/drowned/suit/deepsea_suit_idle_007.wav","vj_piv/drowned/suit/deepsea_suit_idle_008.wav","vj_piv/drowned/suit/deepsea_suit_idle_009.wav","vj_piv/drowned/suit/deepsea_suit_idle_010.wav","vj_piv/drowned/suit/deepsea_suit_idle_011.wav","vj_piv/drowned/suit/deepsea_suit_idle_012.wav","vj_piv/drowned/suit/deepsea_suit_idle_013.wav"}
-ENT.SoundTbl_Alert = {"vj_piv/drowned/suit/deepsea_suit_hears_something_001.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_002.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_003.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_004.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_005.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_006.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_007.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_008.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_009.wav"}
-ENT.SoundTbl_CombatIdle = {"vj_piv/drowned/suit/deepsea_suit_search_001.wav","vj_piv/drowned/suit/deepsea_suit_search_002.wav","vj_piv/drowned/suit/deepsea_suit_search_003.wav","vj_piv/drowned/suit/deepsea_suit_search_004.wav","vj_piv/drowned/suit/deepsea_suit_search_005.wav","vj_piv/drowned/suit/deepsea_suit_search_006.wav","vj_piv/drowned/suit/deepsea_suit_search_007.wav","vj_piv/drowned/suit/deepsea_suit_search_008.wav","vj_piv/drowned/suit/deepsea_suit_search_009.wav","vj_piv/drowned/suit/deepsea_suit_search_010.wav","vj_piv/drowned/suit/deepsea_suit_search_011.wav"}
-ENT.SoundTbl_Pain = {"vj_piv/drowned/suit/deepsea_suit_hunt_001.wav","vj_piv/drowned/suit/deepsea_suit_hunt_002.wav","vj_piv/drowned/suit/deepsea_suit_hunt_003.wav","vj_piv/drowned/suit/deepsea_suit_hunt_004.wav","vj_piv/drowned/suit/deepsea_suit_hunt_005.wav"}
-ENT.SoundTbl_Death = {"vj_piv/drowned/suit/deepsea_suit_hears_something_001.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_002.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_003.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_004.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_005.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_006.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_007.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_008.wav","vj_piv/drowned/suit/deepsea_suit_hears_something_009.wav"}
-ENT.SoundTbl_BeforeMeleeAttack = {"vj_piv/drowned/suit/deepsea_suit_hunt_001.wav","vj_piv/drowned/suit/deepsea_suit_hunt_002.wav","vj_piv/drowned/suit/deepsea_suit_hunt_003.wav","vj_piv/drowned/suit/deepsea_suit_hunt_004.wav","vj_piv/drowned/suit/deepsea_suit_hunt_005.wav"}
----------------------------------------------------------------------------------------------------------------------------------------------
+	self.PIV_AllowedToVomit = false
+end
+--------------------
+function ENT:Zombie_GiveVoice()
+	self.SoundTbl_Idle = {
+		"vj_piv/drowned/suit/deepsea_suit_idle_001.wav",
+		"vj_piv/drowned/suit/deepsea_suit_idle_002.wav",
+		"vj_piv/drowned/suit/deepsea_suit_idle_003.wav",
+		"vj_piv/drowned/suit/deepsea_suit_idle_004.wav",
+		"vj_piv/drowned/suit/deepsea_suit_idle_005.wav",
+		"vj_piv/drowned/suit/deepsea_suit_idle_006.wav",
+		"vj_piv/drowned/suit/deepsea_suit_idle_007.wav",
+		"vj_piv/drowned/suit/deepsea_suit_idle_008.wav",
+		"vj_piv/drowned/suit/deepsea_suit_idle_009.wav",
+		"vj_piv/drowned/suit/deepsea_suit_idle_010.wav",
+		"vj_piv/drowned/suit/deepsea_suit_idle_011.wav",
+		"vj_piv/drowned/suit/deepsea_suit_idle_012.wav",
+		"vj_piv/drowned/suit/deepsea_suit_idle_013.wav"
+	}
+	self.SoundTbl_Alert = {
+		"vj_piv/drowned/suit/deepsea_suit_hears_something_001.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hears_something_002.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hears_something_003.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hears_something_004.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hears_something_005.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hears_something_006.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hears_something_007.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hears_something_008.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hears_something_009.wav"
+	}
+	self.SoundTbl_CombatIdle = {
+		"vj_piv/drowned/suit/deepsea_suit_search_001.wav",
+		"vj_piv/drowned/suit/deepsea_suit_search_002.wav",
+		"vj_piv/drowned/suit/deepsea_suit_search_003.wav",
+		"vj_piv/drowned/suit/deepsea_suit_search_004.wav",
+		"vj_piv/drowned/suit/deepsea_suit_search_005.wav",
+		"vj_piv/drowned/suit/deepsea_suit_search_006.wav",
+		"vj_piv/drowned/suit/deepsea_suit_search_007.wav",
+		"vj_piv/drowned/suit/deepsea_suit_search_008.wav",
+		"vj_piv/drowned/suit/deepsea_suit_search_009.wav",
+		"vj_piv/drowned/suit/deepsea_suit_search_010.wav",
+		"vj_piv/drowned/suit/deepsea_suit_search_011.wav"
+	}
+	self.SoundTbl_Pain = {
+		"vj_piv/drowned/suit/deepsea_suit_hunt_001.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hunt_002.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hunt_003.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hunt_004.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hunt_005.wav"
+	}
+	self.SoundTbl_Death = {
+		"vj_piv/drowned/suit/deepsea_suit_hears_something_001.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hears_something_002.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hears_something_003.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hears_something_004.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hears_something_005.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hears_something_006.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hears_something_007.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hears_something_008.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hears_something_009.wav"
+	}
+	self.SoundTbl_BeforeMeleeAttack = {
+		"vj_piv/drowned/suit/deepsea_suit_hunt_001.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hunt_002.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hunt_003.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hunt_004.wav",
+		"vj_piv/drowned/suit/deepsea_suit_hunt_005.wav"
+	}
+end
+--------------------
 function ENT:Zombie_CustomOnInitialize()
-	if GetConVarNumber("vj_piv_reducedlights") == 1 then
+	if GetConVar("vj_piv_reducedlights"):GetInt() == 1 then
 		self.light = ents.Create("env_projectedtexture")
 		self.light:SetLocalPos( self:GetPos() + Vector(0,0,0) )
 		self.light:SetLocalAngles( self:GetAngles() + Angle(0,0,0) )
@@ -73,9 +133,9 @@ function ENT:Zombie_CustomOnInitialize()
 		self.light2:DeleteOnRemove(self.light2)
 	end
 	
-	if GetConVarNumber("vj_npc_noidleparticle") == 0 then
+	if GetConVar("vj_npc_reduce_vfx"):GetInt() != 1 then
 		local eyeglow1 = ents.Create("env_sprite")
-		eyeglow1:SetKeyValue("model","vj_base/sprites/vj_glow1.vmt")
+		eyeglow1:SetKeyValue("model","vj_base/sprites/glow.vmt")
 		eyeglow1:SetKeyValue("scale","0.06")
 		eyeglow1:SetKeyValue("rendermode","5")
 		eyeglow1:SetKeyValue("rendercolor","246 242 119")
@@ -84,10 +144,10 @@ function ENT:Zombie_CustomOnInitialize()
 		eyeglow1:Fire("SetParentAttachment","helmetglow1",0)
 		eyeglow1:Spawn()
 		eyeglow1:Activate()
-		self:DeleteOnRemove(eyeglow1)    
+		self:DeleteOnRemove(eyeglow1)
 
 		local eyeglow2 = ents.Create("env_sprite")
-		eyeglow2:SetKeyValue("model","vj_base/sprites/vj_glow1.vmt")
+		eyeglow2:SetKeyValue("model","vj_base/sprites/glow.vmt")
 		eyeglow2:SetKeyValue("scale","0.06")
 		eyeglow2:SetKeyValue("rendermode","5")
 		eyeglow2:SetKeyValue("rendercolor","246 242 119")
@@ -96,64 +156,57 @@ function ENT:Zombie_CustomOnInitialize()
 		eyeglow2:Fire("SetParentAttachment","helmetglow2",0)
 		eyeglow2:Spawn()
 		eyeglow2:Activate()
-		self:DeleteOnRemove(eyeglow2)  
+		self:DeleteOnRemove(eyeglow2)
 	end
 end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 
-		if (dmginfo:IsBulletDamage()) then
-			dmginfo:ScaleDamage(0.75)
-			local attacker = dmginfo:GetAttacker()
-			self.DamageSpark1 = ents.Create("env_spark")
-			self.DamageSpark1:SetKeyValue("Magnitude","1")
-			self.DamageSpark1:SetKeyValue("Spark Trail Length","1")
-			self.DamageSpark1:SetPos(dmginfo:GetDamagePosition())
-			self.DamageSpark1:SetAngles(self:GetAngles())
-			self.DamageSpark1:SetParent(self)
-			self.DamageSpark1:Spawn()
-			self.DamageSpark1:Activate()
-			self.DamageSpark1:Fire("StartSpark", "", 0)
-			self.DamageSpark1:Fire("StopSpark", "", 0.001)
-			self:DeleteOnRemove(self.DamageSpark1)
-		end
-		if self.HasSounds == true && self.HasImpactSounds == true then VJ.EmitSound(self,"vj_base/impact/armor"..math.random(1,10)..".wav",70) end
-	end	
-
+function ENT:Zombie_CustomOnTakeDamage_PreDamage(dmginfo,hitgroup)
+	if (dmginfo:IsBulletDamage()) then
+		dmginfo:ScaleDamage(0.75)
+		local attacker = dmginfo:GetAttacker()
+		self.DamageSpark1 = ents.Create("env_spark")
+		self.DamageSpark1:SetKeyValue("Magnitude","1")
+		self.DamageSpark1:SetKeyValue("Spark Trail Length","1")
+		self.DamageSpark1:SetPos(dmginfo:GetDamagePosition())
+		self.DamageSpark1:SetAngles(self:GetAngles())
+		self.DamageSpark1:SetParent(self)
+		self.DamageSpark1:Spawn()
+		self.DamageSpark1:Activate()
+		self.DamageSpark1:Fire("StartSpark", "", 0)
+		self.DamageSpark1:Fire("StopSpark", "", 0.001)
+		self:DeleteOnRemove(self.DamageSpark1)
+	end
+	if self.HasSounds == true && self.HasImpactSounds == true then VJ.EmitSound(self,"vj_base/impact/armor"..math.random(1,10)..".wav",70) end
 end
----------------------------------------------------------------------------------------------------------------------------------------------
+--------------------
 function ENT:PIV_CustomMutate()
-self.AnimTbl_Walk = {ACT_WALK}
-self.AnimTbl_Run = {ACT_RUN_RELAXED}
+	-- self.AnimTbl_Walk = {ACT_WALK}
+	-- self.AnimTbl_Run = {ACT_RUN_RELAXED}
+	self.PIV_UseRunRelaxed = true
 
-self.StartHealth = self.StartHealth *2
-self:SetHealth(self.StartHealth)
+	self.StartHealth = self.StartHealth *2
+	self:SetHealth(self.StartHealth)
 		
-local mymaxhealth = self:Health()
-self:SetMaxHealth(mymaxhealth)
+	local mymaxhealth = self:Health()
+	self:SetMaxHealth(mymaxhealth)
 
-self.PIV_LegHP = self.PIV_LegHP *2
+	self.PIV_LegHP = self.PIV_LegHP *2
 
-if GetConVar("vj_piv_lights"):GetInt() == 1 then 
+		if GetConVar("vj_piv_lights"):GetInt() == 1 then 
 
-self.Light2 = ents.Create("light_dynamic")
-self.Light2:SetKeyValue("brightness", "1")
-self.Light2:SetKeyValue("distance", "50")
-self.Light2:SetLocalPos(self:GetPos())
-self.Light2:SetLocalAngles(self:GetAngles())
-self.Light2:Fire("Color", "0 161 255 255")
-self.Light2:SetParent(self)
-self.Light2:Spawn()
-self.Light2:Activate()
-self.Light2:Fire("SetParentAttachment","eyes")
-self.Light2:Fire("TurnOn", "", 0)
-self:DeleteOnRemove(self.Light2)
+		self.Light2 = ents.Create("light_dynamic")
+		self.Light2:SetKeyValue("brightness", "1")
+		self.Light2:SetKeyValue("distance", "50")
+		self.Light2:SetLocalPos(self:GetPos())
+		self.Light2:SetLocalAngles(self:GetAngles())
+		self.Light2:Fire("Color", "0 161 255 255")
+		self.Light2:SetParent(self)
+		self.Light2:Spawn()
+		self.Light2:Activate()
+		self.Light2:Fire("SetParentAttachment","eyes")
+		self.Light2:Fire("TurnOn", "", 0)
+		self:DeleteOnRemove(self.Light2)
+
+	end
 
 end
-
-end
-/*-----------------------------------------------
-	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
-	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
-	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
------------------------------------------------*/
