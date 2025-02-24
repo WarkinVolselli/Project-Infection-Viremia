@@ -315,6 +315,7 @@ ENT.IsDigging = false
 ENT.Voice = 1
 ENT.PIV_MakeCrispyCorpse = false
 ENT.PIV_UseActIdleStimulated = false -- use ACT_IDLE_AIM_STIMULATED as our idle activity
+ENT.PIV_UseActIdleAimRelaxed = false
 ENT.PIV_IsInfectee = false
 ENT.PIV_Type = 0
 --[[
@@ -338,6 +339,8 @@ ENT.PIV_IsBrawlerThugGuyYeah = false
 ENT.PIV_UseAgitatedCrawlerMovement = false
 ENT.PIV_Waterlogged = false
 ENT.PIV_UseRunRelaxed = false
+ENT.Apeshit = false
+ENT.PIV_UseRunAsWalk = false
 --------------------
 function ENT:Zombie_CustomOnPreInitialize() end
 --------------------
@@ -3385,8 +3388,38 @@ function ENT:TranslateActivity(act)
 		return ACT_IDLE
 	end
 
+	if self:GetClass() == "npc_vj_piv_blood_bomber" && !self.PIV_FuckingCrawlingLittleCunt && !self.PIV_Crippled then
+		if self:GetEnemy() != nil && IsValid(self:GetEnemy()) then
+			if self:GetPos():Distance(self:GetEnemy():GetPos()) < 600 then
+				if act == ACT_WALK then
+					return ACT_WALK_ANGRY
+				elseif act == ACT_RUN then
+					return ACT_WALK_ANGRY
+				end
+			else
+				if act == ACT_WALK then
+					return ACT_WALK_RELAXED
+				elseif act == ACT_RUN then
+					return ACT_RUN
+				end
+			end
+		else
+			if act == ACT_WALK then
+				return ACT_WALK_RELAXED
+			elseif act == ACT_RUN then
+				return ACT_WALK_ANGRY
+			end
+		end
+	end
+
 	if self.PIV_UseActIdleStimulated && act == ACT_IDLE && !self.PIV_WeHaveAWeapon && !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt then
 		return ACT_IDLE_AIM_STIMULATED
+	end
+	if self.PIV_UseActIdleAimRelaxed && act == ACT_IDLE && !self.PIV_WeHaveAWeapon && !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt then
+		return ACT_IDLE_AIM_RELAXED
+	end
+	if self.PIV_UseRunAsWalk && act == ACT_WALK && !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt then
+		return ACT_RUN
 	end
 
 	if self.PIV_IsRunner then
@@ -3847,6 +3880,25 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		return
 	end -- if we're expanding this blacklist then maybe we should just use something like 'if self.PIV_CustomOnMeleeBlacklisted then return end'
 
+	if self:GetClass() == "npc_vj_piv_cremator" then
+		if !self:IsMoving()	then
+			self.AnimTbl_MeleeAttack = {"nz_sonic_attack_1"}
+			self.TimeUntilMeleeAttackDamage = 0.7
+			self.MeleeAttackDamageType = DMG_BURN
+			self.MeleeAttackDistance = 150 -- How close does it have to be until it attacks?
+			self.MeleeAttackDamageDistance = 200 -- How far does the damage go?
+			self.MeleeAttackDamageAngleRadius = 180 -- What is the damage angle radius? | 100 = In front of the SNPC | 180 = All around the SNPC
+		else
+			self.AnimTbl_MeleeAttack = {"nz_sonic_attack_2"}
+			self.TimeUntilMeleeAttackDamage = 1.1
+			self.MeleeAttackDamageType = DMG_BURN
+			self.MeleeAttackDistance = 150 -- How close does it have to be until it attacks?
+			self.MeleeAttackDamageDistance = 200 -- How far does the damage go?
+			self.MeleeAttackDamageAngleRadius = 180 -- What is the damage angle radius? | 100 = In front of the SNPC | 180 = All around the SNPC
+		end
+		return
+	end
+
 	if self:GetClass() == "npc_vj_piv_tank" then		
 		if self:IsMoving()then
 		
@@ -4235,6 +4287,9 @@ function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt, isProp)
 		end
 	end
 
+	if self:GetClass() == "npc_vj_piv_cremator" then
+		hitEnt:Ignite(math.random(3,6))
+	end
 	if self:IsOnFire() && math.random(1,4) == 1 then 
 		hitEnt:Ignite(math.random(1,4))
 	end
@@ -4299,6 +4354,12 @@ end
 function ENT:RangeAttackCode_GetShootPos(TheProjectile)
 	if self:GetClass() == "npc_vj_piv_tank" then
 		return self:CalculateProjectile("Curve", self:GetAttachment(self:LookupAttachment(self.RangeUseAttachmentForPosID)).Pos, self:GetEnemy():GetPos() + self:GetEnemy():OBBCenter(), 2500) + self:GetUp()*math.Rand(-10,10) + self:GetRight()*math.Rand(-10,10)
+	elseif self:GetClass() == "npc_vj_piv_blood_bomber" then
+		return self:CalculateProjectile("Curve", self:GetAttachment(self:LookupAttachment(self.RangeUseAttachmentForPosID)).Pos, self:GetEnemy():GetPos() + self:GetEnemy():OBBCenter(), 1250) + self:GetUp()*math.Rand(-10,10) + self:GetRight()*math.Rand(-10,10)
+	elseif self:GetClass() == "npc_vj_piv_remordeo" then
+		return self:CalculateProjectile("Curve", self:GetAttachment(self:LookupAttachment(self.RangeUseAttachmentForPosID)).Pos, self:GetEnemy():GetPos() + self:GetEnemy():OBBCenter(), 1500) + self:GetUp()*math.Rand(0,100) + self:GetRight()*math.Rand(-200,200)
+	elseif self:GetClass() == "npc_vj_piv_shocker" then
+		return (self:GetEnemy():GetPos() - self:LocalToWorld(Vector(math.random(10,10),math.random(1,1),math.random(24,27))))*5 + self:GetUp()*45
 	else
 		return self:CalculateProjectile("Curve", self:GetAttachment(self:LookupAttachment(self.RangeUseAttachmentForPosID)).Pos, self:GetEnemy():GetPos() + self:GetEnemy():OBBCenter(), 1000) + self:GetUp()*math.Rand(-30,30) + self:GetRight()*math.Rand(-40,40)
 	end
@@ -4383,7 +4444,7 @@ function ENT:OnDamaged(dmginfo,hitgroup,status)
 
 	if status == "PreDamage" then
 		if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 && self.PIV_IsBoss == false then
-			dmginfo:ScaleDamage(GetConVarNumber("vj_piv_headshot_damage_mult"))
+			dmginfo:ScaleDamage(GetConVar("vj_piv_headshot_damage_mult"):GetInt())
 		end
 		-- have commons/non-specials take extra damage from explosives
 		if
@@ -4794,7 +4855,7 @@ function ENT:Zombie_CustomOnCreateDeathCorpse(dmginfo, hitgroup, corpseEnt) end
 --------------------
 function ENT:OnCreateDeathCorpse(dmginfo, hitgroup, corpseEnt)
 	self:Zombie_CustomOnCreateDeathCorpse(dmginfo, hitgroup, corpseEnt)
-	if GetConVar("vj_piv_burntexture"):GetInt() == 1 && self.PIV_MakeCrispyCorpse then
+	if GetConVar("vj_piv_burntexture"):GetInt() == 1 && self.PIV_MakeCrispyCorpse && !self.Immune_Fire then
 		corpseEnt:SetMaterial("models/vj_piv/shared/burning/burning")
 		corpseEnt:SetKeyValue("rendercolor","255 255 255 255")
 	end

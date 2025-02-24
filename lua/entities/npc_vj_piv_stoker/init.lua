@@ -1,76 +1,64 @@
+include("entities/npc_vj_piv_base/init.lua")
 AddCSLuaFile("shared.lua")
 include('shared.lua')
-/*-----------------------------------------------
-	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
-	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
-	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
------------------------------------------------*/
-ENT.Model = {"models/vj_piv/hl2/charple.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
-ENT.StartHealth = 200
+--------------------
+function ENT:Zombie_CustomOnPreInitialize()
+	self.Model = {"models/vj_piv/hl2/charple.mdl"}
+	self.StartHealth = 200
 
-ENT.PIV_IsSpecial = true
-ENT.PIV_HasSubclasses = false
-ENT.PIV_CanBeCrippled = false
-ENT.PIV_CanBeThrower = false
+	self.PIV_IsSpecial = true
+	self.PIV_HasSubclasses = false
+	self.PIV_CanBeCrippled = false
+	self.PIV_CanBeThrower = false
 
-ENT.Immune_Fire = true -- Immune to fire-type damages
+	self.Immune_Fire = true -- Immune to fire-type damages
 
-ENT.HasLeapAttack = false 
-ENT.LeapAttackDamage = math.random(15,20)
-ENT.LeapAttackDamageType = DMG_SLASH
-ENT.AnimTbl_LeapAttack = {ACT_LEAP} 
-ENT.LeapDistance = 300
-ENT.LeapToMeleeDistance = 150
-ENT.LeapAttackDamageDistance = 150
-ENT.TimeUntilLeapAttackDamage = 0.8
-ENT.TimeUntilLeapAttackVelocity = 0.1 
-ENT.NextLeapAttackTime = 8
-ENT.NextAnyAttackTime_Leap = 1
-ENT.LeapAttackVelocityForward = 100
-ENT.LeapAttackVelocityUp = 200
+	self.HasLeapAttack = false 
+	self.LeapAttackDamage = math.random(15,20)
+	self.LeapAttackDamageType = DMG_SLASH
+	self.AnimTbl_LeapAttack = {ACT_LEAP} 
+	self.LeapDistance = 300
+	self.LeapToMeleeDistance = 150
+	self.LeapAttackDamageDistance = 150
+	self.TimeUntilLeapAttackDamage = 0.8
+	self.TimeUntilLeapAttackVelocity = 0.1 
+	self.NextLeapAttackTime = 8
+	self.NextAnyAttackTime_Leap = 1
+	self.LeapAttackVelocityForward = 100
+	self.LeapAttackVelocityUp = 200
+end
+--------------------
+function ENT:Zombie_GiveVoice()
+	self.SoundTbl_Breath = {"ambient/fire/firebig.wav"}
+	self.BreathSoundLevel = 60
+	self.SoundTbl_Idle = {"vj_piv/stoker/idle_1.mp3","vj_piv/stoker/idle_2.mp3","vj_piv/stoker/idle_3.mp3","vj_piv/stoker/idle_4.mp3"}
+	self.SoundTbl_BeforeMeleeAttack = {"vj_piv/stoker/attack_1.mp3","vj_piv/stoker/attack_2.mp3"}
+	self.SoundTbl_Alert = {"vj_piv/stoker/attack_1.mp3","vj_piv/stoker/attack_2.mp3"}
+	self.SoundTbl_Death = {"vj_piv/stoker/death.mp3"}
 
-ENT.SoundTbl_Breath = {"ambient/fire/firebig.wav"}
-ENT.BreathSoundLevel = 60
-ENT.SoundTbl_Idle = {"vj_piv/stoker/idle_1.mp3","vj_piv/stoker/idle_2.mp3","vj_piv/stoker/idle_3.mp3","vj_piv/stoker/idle_4.mp3"}
-ENT.SoundTbl_BeforeMeleeAttack = {"vj_piv/stoker/attack_1.mp3","vj_piv/stoker/attack_2.mp3"}
-ENT.SoundTbl_Alert = {"vj_piv/stoker/attack_1.mp3","vj_piv/stoker/attack_2.mp3"}
-ENT.SoundTbl_Death = {"vj_piv/stoker/death.mp3"}
-
-ENT.SoundTbl_LeapAttackJump = {"vj_piv/stoker/attack_1.mp3","vj_piv/stoker/attack_2.mp3"}
-ENT.SoundTbl_LeapAttackDamage = {"ambient/fire/ignite.wav"}
-
-ENT.PI_LegHP = 10000
-ENT.Apeshit = false
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnInitialize()
+	self.SoundTbl_LeapAttackJump = {"vj_piv/stoker/attack_1.mp3","vj_piv/stoker/attack_2.mp3"}
+	self.SoundTbl_LeapAttackDamage = {"ambient/fire/ignite.wav"}
+end
+--------------------
+function ENT:Zombie_CustomOnInitialize()
 	self.HasBreathSound = false
 	self:SetSkin(6)
-    self.PI_LegHP = self.StartHealth * 2
 end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnPreInitialize()	
-	self.IsDigging = false
-	self:Dig()
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
+--------------------
+function ENT:Zombie_CustomOnTakeDamage_PreDamage(dmginfo,hitgroup)
 
-	if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 then
-		dmginfo:ScaleDamage(GetConVarNumber("vj_piv_headshot_damage_mult"))
-    end
-	
 	if self.Apeshit == false &&
 		(
-        dmginfo:IsBulletDamage() or
-        dmginfo:IsExplosionDamage() or
-		dmginfo:IsDamageType(DMG_BUCKSHOT) or
-        dmginfo:IsDamageType(DMG_SHOCK) or
-        dmginfo:IsDamageType(DMG_SLASH) or
-		dmginfo:IsDamageType(DMG_BURN)
+			dmginfo:IsBulletDamage() or
+			dmginfo:IsExplosionDamage() or
+			dmginfo:IsDamageType(DMG_BUCKSHOT) or
+			dmginfo:IsDamageType(DMG_SHOCK) or
+			dmginfo:IsDamageType(DMG_SLASH) or
+			dmginfo:IsDamageType(DMG_BURN)
 		)
 	then
-		self.Apeshit = true
 
+		self.Apeshit = true
 		self.HasLeapAttack = true
 		self.GodMode = true -- Immune to everything
 
@@ -80,7 +68,7 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 		
 		self:DropTheFuckignWeaponGoddamn()
 		
-	    timer.Simple(1.2,function() if IsValid(self) then
+		timer.Simple(1.2,function() if IsValid(self) then
 			self:SetSkin(8)
 			self.DeathCorpseSkin = 7
 			
@@ -122,19 +110,16 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 	self.SoundTbl_Idle = {"vj_piv/stoker/attack_1.mp3","vj_piv/stoker/attack_2.mp3"}
 	self.SoundTbl_Alert = {"vj_piv/stoker/rage_1.mp3","vj_piv/stoker/rage_2.mp3"}
 
-    end   
+	end   
 	
 	if self.Apeshit == true then
 		dmginfo:ScaleDamage(0.5)
 	end
+
 end
----------------------------------------------------------------------------------------------------------------------------------------------
+--------------------
 function ENT:CustomOnLeapAttack_AfterChecks(hitEnt, isProp)
     hitEnt:Ignite(math.random(2,4)) 
     return false
 end
-/*-----------------------------------------------
-	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
-	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
-	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
------------------------------------------------*/
+--------------------
