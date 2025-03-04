@@ -260,48 +260,8 @@ function ENT:Zombie_CustomOnTakeDamage_PreDamage(dmginfo,hitgroup)
 end
 --------------------
 function ENT:Zombie_CustomOnTakeDamage_PostDamage(dmginfo,hitgroup)
-
 	if !self.Angry then -- if we're not angy then run this
 		self.Angry_Amount = self.Angry_Amount +dmginfo:GetDamage() -- update angy ammount and add how much damage we took
-	end
-	
-	-- move this shit to the base npc
-	if self.CanDoTheFunny == false then return end
-	
-	local stumble = VJ.PICK({"vjseq_shoved_backward","vjseq_shoved_rightward","vjseq_shoved_leftward","vjseq_shoved_forward",})
-	
-	if dmginfo:IsBulletDamage() or dmginfo:IsDamageType(DMG_BUCKSHOT) or dmginfo:IsDamageType(DMG_SNIPER) then
-		if hitgroup == HITGROUP_HEAD or hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH then
-			if self.PIVNextStumbleT < CurTime() then
-				if dmginfo:GetDamage() > 40 or dmginfo:GetDamageForce():Length() > 10000 then
-					if math.random (1,2) == 1 then
-						self:VJ_ACT_PLAYACTIVITY("vjseq_shoved_backward",true,false,false)
-						self.PIVNextStumbleT = CurTime() + 5
-						self:StopCharging()
-					end
-				end
-			end
-		end
-	end
-
-	if dmginfo:IsDamageType(DMG_CLUB) or dmginfo:IsDamageType(DMG_SLASH) or dmginfo:IsDamageType(DMG_GENERIC) then
-		if dmginfo:GetDamage() > 20 or dmginfo:GetDamageForce():Length() > 10000 then
-			if self.PIV_NextShoveT < CurTime() then
-				self:VJ_ACT_PLAYACTIVITY("vjseq_shoved_backward",true,false,false)
-				self.PIV_NextShoveT = CurTime() + math.random(5,8)
-				self:StopCharging()
-			end
-		end
-	return !self.PIVCrippled && !self.PIVFuckingCrawlingLittleCunt  && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
-	end
-
-	if dmginfo:IsExplosionDamage() then
-		if self.NextSplodeStumbleT < CurTime() then
-			self:VJ_ACT_PLAYACTIVITY(stumble,true,VJ.AnimDuration(self,tbl),false)
-			self.NextSplodeStumbleT = CurTime() + 5
-			self:StopCharging()
-		end
-	return !self.PIVCrippled && !self.PIVFuckingCrawlingLittleCunt  && self:GetSequence() != self:LookupSequence(ACT_BIG_FLINCH) && self:GetSequence() != self:LookupSequence(ACT_SMALL_FLINCH)
 	end
 end
 --------------------

@@ -4601,6 +4601,18 @@ function ENT:OnDamaged(dmginfo,hitgroup,status)
 						end
 					end
 				end
+			elseif self:GetClass() == "npc_vj_piv_bruiser" then
+				if hitgroup == HITGROUP_HEAD or hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH then
+					if self.PIVNextStumbleT < CurTime() then
+						if dmginfo:GetDamage() > 40 or dmginfo:GetDamageForce():Length() > 10000 then
+							if math.random (1,2) == 1 then
+								self:VJ_ACT_PLAYACTIVITY("vjseq_shoved_backward",true,false,false)
+								self.PIVNextStumbleT = CurTime() + 5
+								self:StopCharging()
+							end
+						end
+					end
+				end
 			else
 				if hitgroup == HITGROUP_HEAD or hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH then
 					if dmginfo:GetDamage() > 49 or dmginfo:GetDamageForce():Length() > 10000 then
@@ -4666,6 +4678,14 @@ function ENT:OnDamaged(dmginfo,hitgroup,status)
 						self:StopCharging()
 					end
 				end
+			elseif self:GetClass() == "npc_vj_piv_bruiser" then
+				if dmginfo:GetDamage() > 20 or dmginfo:GetDamageForce():Length() > 10000 then
+					if self.PIV_NextShoveT < CurTime() then
+						self:VJ_ACT_PLAYACTIVITY("vjseq_shoved_backward",true,false,false)
+						self.PIV_NextShoveT = CurTime() + math.random(5,8)
+						self:StopCharging()
+					end
+				end
 			else
 				if dmginfo:GetDamage() > 49 or dmginfo:GetDamageForce():Length() > 10000 then
 					if self.PIV_NextShoveT < CurTime() then
@@ -4697,6 +4717,10 @@ function ENT:OnDamaged(dmginfo,hitgroup,status)
 					local tankstumbles = VJ.PICK({"vjseq_shoved_backward","vjseq_shoved_rightward","vjseq_shoved_leftward","vjseq_shoved_forward",})
 					self:VJ_ACT_PLAYACTIVITY(tankstumbles,true,VJ.AnimDuration(self,tbl),false)
 					self.NextSplodeStumbleT = CurTime() + math.random(6,8)
+				elseif self:GetClass() == "npc_vj_piv_bruiser" then
+					local bruiserstumbles = VJ.PICK({"vjseq_shoved_backward","vjseq_shoved_rightward","vjseq_shoved_leftward","vjseq_shoved_forward",})
+					self:VJ_ACT_PLAYACTIVITY(bruiserstumbles,true,VJ.AnimDuration(self,tbl),false)
+					self.NextSplodeStumbleT = CurTime() + 5
 					self:StopCharging()
 				else
 					if math.random(1,2) == 1 then
