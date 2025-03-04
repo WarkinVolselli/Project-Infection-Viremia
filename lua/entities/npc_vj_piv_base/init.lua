@@ -341,6 +341,7 @@ ENT.PIV_Waterlogged = false
 ENT.PIV_UseRunRelaxed = false
 ENT.Apeshit = false
 ENT.PIV_UseRunAsWalk = false
+ENT.RunT = 0
 --------------------
 function ENT:Zombie_CustomOnPreInitialize() end
 --------------------
@@ -3385,7 +3386,29 @@ function ENT:Zombie_CustomOnThink_AIEnabled() end
 function ENT:TranslateActivity(act)
 
 	if self:GetClass() == "npc_vj_piv_tank" && act == ACT_IDLE then
-		return ACT_IDLE
+		if act == ACT_IDLE then
+			if self.IsCharging then
+				return self.Bruiser_AnimationCache["vjseq_run_3"]
+			end
+			return ACT_IDLE
+		elseif (act == ACT_WALK or act == ACT_RUN) then
+			if self.IsCharging then
+				return self.Bruiser_AnimationCache["vjseq_run_3"]
+			end
+		end
+	end
+
+	if self:GetClass() == "npc_vj_piv_bruiser" then
+		if act == ACT_IDLE then
+			if self.IsCharging then
+				return self.Bruiser_AnimationCache["charger_charge"]
+			end
+			return ACT_IDLE
+		elseif (act == ACT_WALK or act == ACT_RUN) then
+			if self.IsCharging then
+				return self.Bruiser_AnimationCache["charger_charge"]
+			end
+		end
 	end
 
 	if self:GetClass() == "npc_vj_piv_blood_bomber" && !self.PIV_FuckingCrawlingLittleCunt && !self.PIV_Crippled then
@@ -3873,6 +3896,8 @@ end
 --------------------
 function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
+	if self:GetClass() == "npc_vj_piv_sickler" || self:GetClass() == "npc_vj_piv_slammer" then return end
+
 	if self:GetClass() == "npc_vj_piv_exploder" then
 		timer.Simple(0.8,function() if IsValid(self) then
 			self:TakeDamage(self:Health() + 1000)
@@ -3917,7 +3942,53 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		end
 		return
 	end
--- (self:GetClass() == "npc_vj_piv_brawler" || self:GetClass() == "npc_vj_piv_brawler_f")
+
+	if self:GetClass() == "npc_vj_piv_bruiser" then
+		if math.random(1,3) == 1 then
+			self.MeleeAttackAnimationAllowOtherTasks = false
+			self.MeleeAttackAnimationFaceEnemy = false
+			self.MeleeAttackDamage = math.random(30,35)
+			self.HasMeleeAttackKnockBack = true
+			self.MeleeAttackDistance = 50
+			self.MeleeAttackDamageDistance = 70
+			self.TimeUntilMeleeAttackDamage = 0.7
+			self.SoundTbl_MeleeAttack = {"vj_piv/BodyHit-3.wav","vj_piv/BodyHit-4.wav","vj_piv/BodyHit-5.wav","vj_piv/BodyHit-6.wav"}
+			self.SoundTbl_MeleeAttackMiss = {""}
+			self.AnimTbl_MeleeAttack = {
+				"vjseq_charger_pummel"
+			}
+			timer.Simple(0.7,function() if IsValid(self) then
+				VJ.EmitSound(self,self.SoundTbl_Crash,self.AlertSoundLevel,self:VJ_DecideSoundPitch(95,100))
+				util.ScreenShake(self:GetPos(), 300, 500, 1.6, 1200) end end)
+				local pos = self:LocalToWorld(Vector(50,0,0))
+				timer.Simple(0.7,function() if IsValid(self) then
+				ParticleEffect("strider_impale_ground",pos,Angle(0,0,0),nil)
+	
+				local effectdata = EffectData()
+				effectdata:SetOrigin(pos,Angle(0,0,0))
+				effectdata:SetScale( 50 )
+
+				util.Effect( "ThumperDust", effectdata )
+				VJ.ApplyRadiusDamage(self, self, pos, 100, math.random(5,10), DMG_GENERIC, true, true, {DisableVisibilityCheck=true, Force=80})
+				util.ScreenShake(pos, 300, 500, 1.6, 1200)
+			end end)
+		else
+			self.MeleeAttackAnimationAllowOtherTasks = true
+			self.MeleeAttackAnimationFaceEnemy = true
+			self.MeleeAttackDamage = math.random(20,25)
+			self.HasMeleeAttackKnockBack = true
+			self.MeleeAttackDistance = 50
+			self.MeleeAttackDamageDistance = 70
+			self.TimeUntilMeleeAttackDamage = false
+			self.SoundTbl_MeleeAttack = {"vj_piv/BodyHit-3.wav","vj_piv/BodyHit-4.wav","vj_piv/BodyHit-5.wav","vj_piv/BodyHit-6.wav"}
+			self.SoundTbl_MeleeAttackMiss = {"vj_piv/Miss1.wav","vj_piv/Miss2.wav","vj_piv/Miss3.wav","vj_piv/Miss4.wav","vj_piv/Miss4.wav"}
+			self.AnimTbl_MeleeAttack = {
+				"vjges_melee_01",
+				"vjges_melee_03"
+			}
+		end
+		return
+	end
 
 	if self.PIV_IsBrawlerThugGuyYeah then
 		if self.Combo == 1 then
@@ -4294,6 +4365,10 @@ function ENT:CustomOnMeleeAttack_AfterChecks(hitEnt, isProp)
 		hitEnt:Ignite(math.random(1,4))
 	end
 
+	if self:GetClass() == "npc_vj_piv_bruiser" && self.Angry then
+		self.Angry_Time = CurTime() - math.random(5,10) -- remove some time since hitting stuff calms us a little
+	end
+
     if self.PIV_Biter && !isProp && !self.PIV_Crippled && !self.PIV_FuckingCrawlingLittleCunt then	
 		if hitEnt.IsVJBaseSNPC && VJ.PICK(hitEnt.CustomBlood_Particle) then
 			ParticleEffectAttach(VJ.PICK(hitEnt.CustomBlood_Particle),PATTACH_POINT_FOLLOW,self,self:LookupAttachment("mouth"))
@@ -4335,6 +4410,11 @@ function ENT:CustomOnMeleeAttack_Miss()
 		then
 			self.Combo = 0
 		end
+	end
+
+	if self:GetClass() == "npc_vj_piv_stalker" then
+		self:SetMaterial("Models/effects/vol_light001")
+		self:DrawShadow(false)
 	end
 
 	-- why do we need this AttackType check?
@@ -4683,11 +4763,14 @@ function ENT:OnFlinch(dmginfo,hitgroup,status)
 
 end
 --------------------
+function ENT:Zombie_CustomOnDeath_Initial(dmginfo, hitgroup) end
+--------------------
 function ENT:Zombie_CustomOnDeath_Finish(dmginfo, hitgroup) end
 --------------------
 function ENT:OnDeath(dmginfo, hitgroup, status)
 
 	if status == "Initial" then
+		self:Zombie_CustomOnDeath_Initial(dmginfo, hitgroup)
 		self:DropTheFuckignWeaponGoddamn()
 		self:DropTheShield()
 		if self:IsOnFire() && !self.Immune_Fire then

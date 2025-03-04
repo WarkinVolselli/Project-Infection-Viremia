@@ -207,96 +207,113 @@ function ENT:Zombie_CustomOnInitialize()
 	end
 	self.StopChargingT = CurTime()
 	self.Charging = false
-end
---------------------
-function ENT:Zombie_CustomOnThink()
-	-- if self.Charging then
-		-- local tPos = hasEnemy && ent:GetPos() or self:GetPos() +self:GetForward() *500
-		-- local setangs = self:GetFaceAngle((tPos -self:GetPos()):Angle())
-		-- self:SetAngles(Angle(setangs.p,self:GetAngles().y,setangs.r))
-		-- self:AutoMovement(self:GetAnimTimeInterval() *self.ChargePercentage) -- For some reason, letting it go at 100% forces the walkframe speed to be doubled, essentially ignoring the walkframes in the animation. Basically, think how NextBots just slide everywhere faster than their animation is supposed to
-		-- self:SetGroundEntity(NULL)
-		-- self:FaceCertainEntity(self:GetEnemy(),true)
-		-- local tr = util.TraceHull({
-			-- start = self:GetPos() + self:OBBCenter(),
-			-- endpos = self:GetPos() + self:OBBCenter() + self:GetForward()*30,
-			-- mins = Vector(self:OBBMins()),
-			-- maxs = Vector(15, 15, 50),
-			-- filter = {self}
-		-- })	
-		-- local hitEnt = NULL
-		-- if IsValid(tr.Entity) && (tr.Entity != self.VJ_TheController && tr.Entity != self.VJ_TheControllerBullseye) then
-			-- if self:Disposition(tr.Entity) != D_LI then			
-				-- hitEnt = tr.Entity
-				-- VJ.EmitSound(self,self.SoundTbl_ChargeHit,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
-				-- local dmginfo = DamageInfo()
-				-- dmginfo:SetDamage(math.random(40,45))
-				-- dmginfo:SetDamageType(DMG_CLUB)
-				-- dmginfo:SetDamagePosition(tr.Entity:GetPos() +tr.Entity:OBBCenter())
-				-- dmginfo:SetAttacker(self)
-				-- dmginfo:SetInflictor(self)
-				-- tr.Entity:TakeDamageInfo(dmginfo,self,self)
-				-- tr.Entity:SetGroundEntity(NULL)
-				-- tr.Entity:SetVelocity(self:GetForward() *math.random(100, 200) *2 + self:GetUp()*math.random(50, 100) *2 + self:GetRight()*math.random(-10, 10) *2)
-				-- if tr.Entity:GetClass() == "prop_physics" then
-					-- local HitProp = tr.Entity:GetPhysicsObject()
-					-- if IsValid(ent) && IsValid(HitProp) then
-						-- HitProp:EnableMotion(true)
-						-- HitProp:SetVelocity(((ent:GetPos() + ent:OBBCenter()) - (self:GetPos() + self:OBBCenter())):GetNormal()*400 + self:GetForward()*300 + self:GetUp()*300)
-					-- elseif !IsValid(ent) && IsValid(HitProp) then
-						-- HitProp:SetVelocity(((self:GetPos() + self:OBBCenter()) - (self:GetPos() + self:OBBCenter())):GetNormal()*400 + self:GetForward()*300 + self:GetUp()*300)			
-					-- end
-					-- if IsValid(HitProp) && tr.Entity:GetClass() == "prop_physics" && tr.Entity:Health() >= 0 then
-						-- tr.Entity:TakeDamage(tr.Entity:GetMaxHealth())
-					-- end
-				-- end
-                -- if IsValid(tr.Entity) && tr.Entity:GetClass() != "prop_physics" then
-					-- local chargeattack = self:VJ_ACT_PLAYACTIVITY("vjseq_raw_hulk_runattack1",true,false,false)					
-				-- end
-			-- end
-		-- end
-		-- if CurTime() > self.StopChargingT or tr.HitWorld or (IsValid(tr.Entity) && tr.Entity:GetClass() != "prop_physics" && self:Disposition(tr.Entity) != D_LI) then
-			-- self:StopCharging(tr && tr.HitWorld)
-		-- end
-	-- end
-end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:Zombie_CustomOnThink_AIEnabled()
-	-- if IsValid(self:GetEnemy()) && !self.Flinching then
-		-- local ent = self:GetEnemy()
-		-- local dist = self:VJ_GetNearestPointToEntityDistance(ent)
-		-- local controlled = IsValid(self.VJ_TheController)
-		
-		-- if ((controlled && self.VJ_TheController:KeyDown(IN_ATTACK2)) or !controlled) && dist <= self.ChargeDistance && dist > self.MinChargeDistance && (self:GetForward():Dot((ent:GetPos() -self:GetPos()):GetNormalized()) > math.cos(math.rad(10))) && !self:BusyWithActivity() && CurTime() > self.NextChargeT && !self.Charging && ent:Visible(self)then
-			-- VJ.EmitSound(self,self.SoundTbl_StartCharge,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
-			-- self.HasMeleeAttack = false
-			-- self.HasRangeAttack = false
-			-- self.StopChargingT = CurTime() +math.random(4,6)
-			-- self.Charging = true
-			-- self:SetState(VJ_STATE_ONLY_ANIMATION)
-		-- end
-	-- end
+
+	self.ChargePercentage = 0.65
+	self.Bruiser_AnimationCache = {}
+	self.ChargeAnim = VJ.SequenceToActivity(self, "vjseq_run_3")
+
+	self.NextChargeT = CurTime() +5
+	self.StopChargingT = CurTime()
+	self.Charging = false
+
+	if !self.Bruiser_AnimationCache["vjseq_run_3"] then
+		self.Bruiser_AnimationCache["vjseq_run_3"] = self:GetSequenceActivity(self:LookupSequence("vjseq_run_3"))
+	end
 end
 --------------------
 function ENT:Zombie_CustomOnAlert(ent)
-	--self.NextChargeT = CurTime() +math.random(6,12)
+	self.NextChargeT = CurTime() + math.random(6,12)
 end
 --------------------
-function ENT:StopCharging(crash)
-	self:SetState()
-	self.HasMeleeAttack = true
-	self.HasRangeAttack = true
-	self.Charging = false
-	self.StopChargingT = CurTime()
-	self.NextChargeT = CurTime() +math.Rand(10,20)
-	if crash then
-		util.ScreenShake(self:GetPos(),16,100,1,150)
-	    VJ.EmitSound(self,self.SoundTbl_Crash,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
-		VJ.EmitSound(self,self.SoundTbl_Pain,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
-	    self:VJ_ACT_PLAYACTIVITY(crash && "vjseq_hulk_stumblea",true,false,false)
-	else
-		VJ.EmitSound(self,self.SoundTbl_Pain,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
-	    self:VJ_ACT_PLAYACTIVITY(crash && "vjseq_shoved_forward",true,false,false)
-	end	
+function ENT:OnThinkAttack(isAttacking, enemy)
+	local eneData = self.EnemyData
+	local dist = eneData.DistanceNearest
+	if self.IsCharging then
+		if CurTime() > self.ChargeT then
+			self:SetMaxYawSpeed(self.TurningSpeed)
+			self.IsCharging = false
+			self.ChargeT = 0
+			self.DisableChasingEnemy = false
+			self.HasMeleeAttack = true
+			self.HasRangeAttack = true
+			self:CapabilitiesAdd(CAP_MOVE_JUMP)
+			self:PlayAnim("shoved_forward",true,false,false)
+			return
+		end
+
+		self.DisableChasingEnemy = true
+		self.HasMeleeAttack = false
+		self.HasRangeAttack = false
+		self:SetMaxYawSpeed(2)
+		self:SetTurnTarget(enemy, -1)
+		local tr = util.TraceHull({
+			start = self:GetPos() +self:OBBCenter(),
+			endpos = self:GetPos() +self:OBBCenter() +self:GetForward() *100,
+			filter = self,
+			mins = self:OBBMins() *0.85,
+			maxs = self:OBBMaxs() *0.85,
+		})
+		self:SetLastPosition(tr.HitPos +tr.HitNormal *200)
+		self:SCHEDULE_GOTO_POSITION("TASK_RUN_PATH",function(x) x:EngTask("TASK_FACE_ENEMY", 0) x.TurnData = {Type = VJ.FACE_ENEMY} end)
+		if self:OnGround() then
+			self:SetVelocity(self:GetMoveVelocity() *1.01)
+		end
+		-- VJ.DEBUG_TempEnt(self:GetLastPosition(), self:GetAngles(), Color(255,0,0), 5)
+		if tr.Hit then
+			self:SetMaxYawSpeed(self.TurningSpeed)
+			self.IsCharging = false
+			self.ChargeT = 0
+			self.HasMeleeAttack = true
+			self.HasRangeAttack = true
+			self.DisableChasingEnemy = false
+			self:CapabilitiesAdd(CAP_MOVE_JUMP)
+			self:SetState()
+			if tr.HitWorld then
+				self:PlayAnim({"shoved_backward"},true,false,false)
+				util.ScreenShake(self:GetPos(),1000,100,1,500)
+				VJ.CreateSound(self,"npc/antlion_guard/shove1.wav",75)
+			else
+				self:PlayAnim("rage_at_enemy_04",true,false,false)
+				VJ.CreateSound(self,"npc/antlion_guard/shove1.wav",75)
+				local ent = tr.Entity
+				local isProp = IsValid(ent) && VJ.IsProp(ent) or false
+				if IsValid(ent) && (isProp or self:CheckRelationship(ent) == D_HT) then
+					if isProp then
+						local phys = ent:GetPhysicsObject()
+						if IsValid(phys) then
+							phys:ApplyForceCenter(self:GetForward() *1000 +self:GetUp() *200)
+						end
+					else
+						local vel = self:GetForward() *600 +self:GetUp() *200
+						ent:SetGroundEntity(NULL)
+						ent:SetVelocity(vel)
+					end
+					local dmginfo = DamageInfo()
+					dmginfo:SetDamage(50) -- feel free to change this
+					dmginfo:SetDamageType(bit.bor(DMG_SLASH,DMG_CRUSH))
+					dmginfo:SetDamageForce(self:GetForward() *1000)
+					dmginfo:SetAttacker(self)
+					dmginfo:SetInflictor(self)
+					dmginfo:SetDamagePosition(tr.HitPos)
+					ent:TakeDamageInfo(dmginfo)
+				end
+			end
+			-- PrintTable(tr)
+			-- VJ.DEBUG_TempEnt(tr.HitPos, self:GetAngles(), Color(255,0,0), 5)
+		end
+		return
+	end
+
+	local controlled = self.VJ_IsBeingControlled
+	local ply = self.VJ_TheController
+	if (controlled && ply:KeyDown(IN_ATTACK2) or !controlled && eneData.Visible && dist > 500 && dist <= 2500 && !self:IsBusy() && math.random(1,50) == 1 && math.abs(self:GetPos().z -enemy:GetPos().z) <= 128) && !self.IsCharging then
+		self.IsCharging = true
+		self.ChargeT = CurTime() +6
+		-- placeholder sound
+		VJ.CreateSound(self,{"npc/antlion_guard/angry1.wav","npc/antlion_guard/angry2.wav","npc/antlion_guard/angry3.wav"},100)
+		self:CapabilitiesRemove(CAP_MOVE_JUMP)
+		return
+	end
+
 end
 --------------------
