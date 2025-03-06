@@ -1,54 +1,95 @@
+include("entities/npc_vj_piv_base/init.lua")
 AddCSLuaFile("shared.lua")
 include('shared.lua')
-/*-----------------------------------------------
-	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
-	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
-	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
------------------------------------------------*/
-ENT.Model = {"models/vj_piv/specials/phorid/phorid.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
-ENT.StartHealth = 3000
-ENT.PIV_IsHugeZombie = true
-ENT.PIV_HasArmor = true
-ENT.PIV_IsBoss = true
+-------------------- 
+function ENT:Zombie_CustomOnPreInitialize()
+	self.Model = {"models/vj_piv/specials/phorid/phorid.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
+	self.StartHealth = 3000
+	self.PIV_IsHugeZombie = true
+	self.PIV_HasArmor = true
+	self.PIV_IsBoss = true
 
-ENT.PIV_Jogger = true
+	self.PIV_Jogger = true
 
-ENT.HullType = HULL_MEDIUM 
+	self.HullType = HULL_MEDIUM 
 
-ENT.MeleeAttackDistance = 70
-ENT.MeleeAttackDamageDistance = 140
-ENT.MeleeAttackDamage = math.random(25,30)
+	self.MeleeAttackDistance = 70
+	self.MeleeAttackDamageDistance = 140
+	self.MeleeAttackDamage = math.random(25,30)
 
-ENT.NextRunT = 0
-ENT.Running = false
-ENT.RunT = 0
+	self.NextRunT = 0
+	self.Running = false
+	self.RunT = 0
 
-ENT.PIV_NextLongAttackT = 0
-ENT.PIV_LongAttack = false
- 
-ENT.PIV_SpawnCoolDownT = 0
+	self.PIV_NextLongAttackT = 0
+	self.PIV_LongAttack = false
 
-ENT.PIV_LegHP = 10000
+	self.PIV_SpawnCoolDownT = 0
 
-ENT.HasSoundTrack = true
-ENT.HasExtraMeleeAttackSounds = true
-ENT.SoundTrackVolume = 0.75
-ENT.ExtraMeleeAttackSoundLevel = 75
-ENT.MeleeAttackSoundLevel = 80
-ENT.PainSoundLevel = 80
-ENT.BeforeMeleeAttackSoundLevel = 80
-ENT.DeathSoundLevel = 85
- 
-ENT.SoundTbl_SoundTrack = {"vj_piv/music/phorid.mp3"}
-ENT.SoundTbl_Idle = {"vj_piv/phorid/brut_vx_idle_01_nr_00.wav","vj_piv/phorid/brut_vx_idle_01_nr_01.wav","vj_piv/phorid/brut_vx_idle_01_nr_02.wav","vj_piv/phorid/brut_vx_idle_01_nr_03.wav","vj_piv/phorid/brut_vx_idle_01_nr_04.wav","vj_piv/phorid/brut_vx_idle_01_nr_05.wav","vj_piv/phorid/brut_vx_idle_01_nr_06.wav","vj_piv/phorid/brut_vx_idle_01_nr_07.wav","vj_piv/phorid/brut_vx_idle_01_nr_08.wav"}
-ENT.SoundTbl_Alert = {"vj_piv/phorid/brute_roar_01.wav","vj_piv/phorid/brute_roar_02.wav","vj_piv/phorid/brute_roar_03.wav","vj_piv/phorid/brute_roar_04.wav"}
-ENT.SoundTbl_CombatIdle = {"vj_piv/phorid/brut_vx_idle_01_nr_00.wav","vj_piv/phorid/brut_vx_idle_01_nr_01.wav","vj_piv/phorid/brut_vx_idle_01_nr_02.wav","vj_piv/phorid/brut_vx_idle_01_nr_03.wav","vj_piv/phorid/brut_vx_idle_01_nr_04.wav","vj_piv/phorid/brut_vx_idle_01_nr_05.wav","vj_piv/phorid/brut_vx_idle_01_nr_06.wav","vj_piv/phorid/brut_vx_idle_01_nr_07.wav","vj_piv/phorid/brut_vx_idle_01_nr_08.wav"}
-ENT.SoundTbl_BeforeMeleeAttack = {"vj_piv/phorid/brute_attack_01.wav","vj_piv/phorid/brute_attack_02.wav","vj_piv/phorid/brute_attack_03.wav","vj_piv/phorid/brute_attack_04.wav"}
-ENT.SoundTbl_Pain = {"vj_piv/phorid/brut_vx_hit_react_01_nr_00.wav","vj_piv/phorid/brut_vx_hit_react_01_nr_01.wav","vj_piv/phorid/brut_vx_hit_react_01_nr_02.wav"}
-ENT.SoundTbl_Death = {"vj_piv/phorid/brut_vx_death_01_nr_00.wav","vj_piv/phorid/brut_vx_death_01_nr_01.wav"}
-ENT.SoundTbl_Charge = {"vj_piv/phorid/brut_vx_death_01_nr_00.wav","vj_piv/phorid/brut_vx_death_01_nr_01.wav"}
+	self.PIV_LegHP = 10000
 
----------------------------------------------------------------------------------------------------------------------------------------------
+	self.HasExtraMeleeAttackSounds = true
+	self.SoundTrackVolume = 0.75
+	self.ExtraMeleeAttackSoundLevel = 75
+	self.MeleeAttackSoundLevel = 80
+	self.SoundTbl_SoundTrack = {"vj_piv/music/phorid.mp3"}
+	self.HasSoundTrack = true
+	self.PIV_Phorid_Summon = nil
+end
+--------------------
+function ENT:Zombie_GiveVoice()
+	self.SoundTbl_Idle = {
+		"vj_piv/phorid/brut_vx_idle_01_nr_00.wav",
+		"vj_piv/phorid/brut_vx_idle_01_nr_01.wav",
+		"vj_piv/phorid/brut_vx_idle_01_nr_02.wav",
+		"vj_piv/phorid/brut_vx_idle_01_nr_03.wav",
+		"vj_piv/phorid/brut_vx_idle_01_nr_04.wav",
+		"vj_piv/phorid/brut_vx_idle_01_nr_05.wav",
+		"vj_piv/phorid/brut_vx_idle_01_nr_06.wav",
+		"vj_piv/phorid/brut_vx_idle_01_nr_07.wav",
+		"vj_piv/phorid/brut_vx_idle_01_nr_08.wav"
+	}
+	self.SoundTbl_Alert = {
+		"vj_piv/phorid/brute_roar_01.wav",
+		"vj_piv/phorid/brute_roar_02.wav",
+		"vj_piv/phorid/brute_roar_03.wav",
+		"vj_piv/phorid/brute_roar_04.wav"
+	}
+	self.SoundTbl_CombatIdle = {
+		"vj_piv/phorid/brut_vx_idle_01_nr_00.wav",
+		"vj_piv/phorid/brut_vx_idle_01_nr_01.wav",
+		"vj_piv/phorid/brut_vx_idle_01_nr_02.wav",
+		"vj_piv/phorid/brut_vx_idle_01_nr_03.wav",
+		"vj_piv/phorid/brut_vx_idle_01_nr_04.wav",
+		"vj_piv/phorid/brut_vx_idle_01_nr_05.wav",
+		"vj_piv/phorid/brut_vx_idle_01_nr_06.wav",
+		"vj_piv/phorid/brut_vx_idle_01_nr_07.wav",
+		"vj_piv/phorid/brut_vx_idle_01_nr_08.wav"
+	}
+	self.SoundTbl_BeforeMeleeAttack = {
+		"vj_piv/phorid/brute_attack_01.wav",
+		"vj_piv/phorid/brute_attack_02.wav",
+		"vj_piv/phorid/brute_attack_03.wav",
+		"vj_piv/phorid/brute_attack_04.wav"
+	}
+	self.SoundTbl_Pain = {
+		"vj_piv/phorid/brut_vx_hit_react_01_nr_00.wav",
+		"vj_piv/phorid/brut_vx_hit_react_01_nr_01.wav",
+		"vj_piv/phorid/brut_vx_hit_react_01_nr_02.wav"
+	}
+	self.SoundTbl_Death = {
+		"vj_piv/phorid/brut_vx_death_01_nr_00.wav",
+		"vj_piv/phorid/brut_vx_death_01_nr_01.wav"
+	}
+	self.SoundTbl_Charge = {
+		"vj_piv/phorid/brut_vx_death_01_nr_00.wav",
+		"vj_piv/phorid/brut_vx_death_01_nr_01.wav"
+	}
+	self.PainSoundLevel = 80
+	self.BeforeMeleeAttackSoundLevel = 80
+	self.DeathSoundLevel = 85
+end
+--------------------
 function ENT:Zombie_CustomOnInitialize()
     self.NextRunT = CurTime() + math.random(2,6)
 	self.PIV_SpawnCoolDownT = CurTime() + 10
@@ -73,7 +114,7 @@ function ENT:Zombie_CustomOnInitialize()
 	self:SetModelScale(1.3)
 
 end
----------------------------------------------------------------------------------------------------------------------------------------------
+--------------------
 function ENT:Zombie_CustomOnThink_AIEnabled()
 
     if
@@ -86,7 +127,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		self.VJ_IsBeingControlled == false
     then
 
-        VJ_EmitSound(self,self.SoundTbl_Charge,self.DeathSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
+        VJ_EmitSound(self,self.SoundTbl_Charge,self.DeathSoundLevel,math.random(95,100))
 
         self.Running = true
         self.RunT = CurTime() + math.random(5,10)
@@ -111,7 +152,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 		if self:IsMoving() && self:GetSequence() == self:LookupSequence(ACT_RUN_AIM) then
 			local stop = VJ.PICK({"vjseq_running_to_standing","vjseq_running_to_standing_02","vjseq_shove_forward_01"})
 			self:VJ_ACT_PLAYACTIVITY(stop,true,VJ.AnimDuration(self,tbl),false)
-			VJ.EmitSound(self,self.SoundTbl_Pain,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.BeforeMeleeAttackSoundPitch.a,self.BeforeMeleeAttackSoundPitch.b))
+			VJ.EmitSound(self,self.SoundTbl_Pain,self.AlertSoundLevel,math.random(95,100))
 		end
 	end
 	
@@ -120,7 +161,7 @@ function ENT:Zombie_CustomOnThink_AIEnabled()
 	    self.PIV_SpawnCoolDownT = CurTime() + 10
 		self:PIV_SummonHelp()
 		self:VJ_ACT_PLAYACTIVITY("vjseq_stand_threaten_0",true,false,false)
-		VJ_EmitSound(self,self.SoundTbl_Alert,self.AlertSoundLevel,self:VJ_DecideSoundPitch(self.AlertSoundPitch.a,self.AlertSoundPitch.b))
+		VJ_EmitSound(self,self.SoundTbl_Alert,self.AlertSoundLevel,math.random(95,100))
 
 	end
 end
@@ -143,27 +184,26 @@ function ENT:PIV_SummonHelp_Spawn()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
 function ENT:PIV_SummonHelp()
-    
-	if math.random(1,9) == 1 then
-	self.PhoridMinion = "npc_vj_piv_shambler"
-	elseif math.random(1,9) == 2 then
-	self.PhoridMinion = "npc_vj_piv_shambler_f"
-	elseif math.random(1,9) == 3 then
-	self.PhoridMinion = "npc_vj_piv_husk"
-	elseif math.random(1,9) == 4 then
-	self.PhoridMinion = "npc_vj_piv_husk_f"
-	elseif math.random(1,9) == 5 then
-	self.PhoridMinion = "npc_vj_piv_revenant"
-	elseif math.random(1,9) == 6 then
-	self.PhoridMinion = "npc_vj_piv_revenant_f"
-	elseif math.random(1,9) == 7 then
-	self.PhoridMinion = "npc_vj_piv_shikari"
-	elseif math.random(1,9) == 8 then
-	self.PhoridMinion = "npc_vj_piv_virulent"
-	elseif math.random(1,9) == 9 then
-	self.PhoridMinion = "npc_vj_piv_blood_bomber"
-    end
-	
+	local randomminion = math.random(1,9)
+	self.PIV_Phorid_Summon = "npc_vj_piv_husk"
+	if randomminion == 2 then
+		self.PIV_Phorid_Summon = "npc_vj_piv_husk_f"
+	elseif randomminion == 3 then
+		self.PIV_Phorid_Summon = "npc_vj_piv_shambler"
+	elseif randomminion == 4 then
+		self.PIV_Phorid_Summon = "npc_vj_piv_shambler_f"
+	elseif randomminion == 5 then
+		self.PIV_Phorid_Summon = "npc_vj_piv_revenant"
+	elseif randomminion == 6 then
+		self.PIV_Phorid_Summon = "npc_vj_piv_revenant_f"
+	elseif randomminion == 7 then
+		self.PIV_Phorid_Summon = "npc_vj_piv_shikari"
+	elseif randomminion == 8 then
+		self.PIV_Phorid_Summon = "npc_vj_piv_blood_bomber"
+	elseif randomminion == 9 then
+		self.PIV_Phorid_Summon = "npc_vj_piv_virulent"
+	end
+
 	local tr = util.TraceLine({
 		start = self:GetPos(),
 		endpos = self:GetPos() + self:GetForward() * math.Rand(-2000, 2000) + self:GetRight() * math.Rand(-2000, 2000) + self:GetUp() * 50,
@@ -171,13 +211,13 @@ function ENT:PIV_SummonHelp()
 		mask = MASK_ALL,
 	})
 	local spawnpos = tr.HitPos + tr.HitNormal*300
-	local ally = ents.Create(self.PhoridMinion)
+	local ally = ents.Create(self.PIV_Phorid_Summon)
 	ally:SetPos(spawnpos)
 	ally:SetAngles(self:GetAngles())
 	ally:Spawn()
 	ally:Activate()
 	ally:ForceDig()
-	ally.VJ_NPC_Class = self.VJ_NPC_Class
+	-- ally.VJ_NPC_Class = self.VJ_NPC_Class
 	return ally
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -202,12 +242,4 @@ function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
 		dmginfo:ScaleDamage(0.50)
 	end
 end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:MeleeAttackKnockbackVelocity(hitEnt)
-	return self:GetForward()*math.random(180, 220) + self:GetUp()*math.random(90,120)
-end
-/*-----------------------------------------------
-	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
-	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
-	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
------------------------------------------------*/
+--------------------

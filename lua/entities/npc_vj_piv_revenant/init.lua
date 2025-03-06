@@ -1,35 +1,50 @@
+include("entities/npc_vj_piv_base/init.lua")
 AddCSLuaFile("shared.lua")
 include('shared.lua')
-/*-----------------------------------------------
-	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
-	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
-	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
------------------------------------------------*/
-ENT.Model = {"models/vj_piv/specials/shambler/shambler_male.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
-ENT.StartHealth = 200
-ENT.ReviveRevenant = false
+--------------------
+function ENT:Zombie_CustomOnPreInitialize()
+	if self:GetClass() == "npc_vj_piv_revenant_f" then
+		self.Model = {"models/vj_piv/specials/shambler/shambler_female.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
+	else
+		self.Model = {"models/vj_piv/specials/shambler/shambler_male.mdl"} -- The game will pick a random model from the table when the SNPC is spawned | Add as many as you want
+	end
+	self.StartHealth = 200
+	self.ReviveRevenant = false
 
-ENT.PIV_IsSpecial = true
-ENT.PIV_Rusher = true
+	self.PIV_IsSpecial = true
+	self.PIV_Rusher = true
 
-ENT.PIV_HasSubclasses = false
-ENT.PIV_CanBeThrower = false
-ENT.PIV_HasWeapons = false
+	self.PIV_HasSubclasses = false
+	self.PIV_CanBeThrower = false
+	self.PIV_HasWeapons = false
 
-ENT.SoundTbl_Breath = {"vj_piv/revenant/crimhead_run.wav"}
-ENT.SoundTbl_Idle = {""}
-ENT.SoundTbl_Alert = {"vj_piv/revenant/crimhead_alert1.wav","vj_piv/revenant/crimhead_alert2.wav"}
-ENT.SoundTbl_CombatIdle = {"vj_piv/revenant/crimhead_alert1.wav","vj_piv/revenant/crimhead_alert2.wav"}
-ENT.SoundTbl_BeforeMeleeAttack = {"vj_piv/revenant/crimhead_frenzy.wav"}
-ENT.SoundTbl_Pain = {"vj_piv/revenant/crimhead_pain.wav"}
-ENT.SoundTbl_Death = {"vj_piv/revenant/crimhead_die.wav"}
+	self.PIV_IsRunner = true
+	self.PIV_Infection_IsWalker = false
 
-ENT.PIV_LegHP = 100 
-ENT.BreathSoundLevel = 60
-
-
-
----------------------------------------------------------------------------------------------------------------------------------------------
+	self.PIV_LegHP = 100
+end
+--------------------
+function ENT:Zombie_GiveVoice()
+	self.BreathSoundLevel = 60
+	self.SoundTbl_Breath = {"vj_piv/revenant/crimhead_run.wav"}
+	self.SoundTbl_Idle = {""}
+	self.SoundTbl_Alert = {"vj_piv/revenant/crimhead_alert1.wav","vj_piv/revenant/crimhead_alert2.wav"}
+	self.SoundTbl_CombatIdle = {"vj_piv/revenant/crimhead_alert1.wav","vj_piv/revenant/crimhead_alert2.wav"}
+	self.SoundTbl_BeforeMeleeAttack = {"vj_piv/revenant/crimhead_frenzy.wav"}
+	self.SoundTbl_Pain = {"vj_piv/revenant/crimhead_pain.wav"}
+	self.SoundTbl_Death = {"vj_piv/revenant/crimhead_die.wav"}
+	if self:GetClass() == "npc_vj_piv_revenant_f" then
+		self.IdleSoundPitch = VJ.SET(120, 120)
+		self.CombatIdleSoundPitch = VJ.SET(120, 120)
+		self.AlertSoundPitch = VJ.SET(120, 120)
+		self.CallForHelpSoundPitch = VJ.SET(120, 120)
+		self.BeforeMeleeAttackSoundPitch = VJ.SET(120, 120)
+		self.PainSoundPitch = VJ.SET(120, 120)
+		self.DeathSoundPitch = VJ.SET(120, 120)
+		self.BreathSoundPitch = VJ.SET(120, 120)
+	end
+end
+--------------------
 function ENT:Zombie_CustomOnInitialize()
 	if GetConVar("vj_piv_hl2skins"):GetInt() == 1 then -- if HL2 Skins Only is enabled, this will make the zombies only use HL2 skins
 		self:SetSkin(1)
@@ -38,19 +53,16 @@ function ENT:Zombie_CustomOnInitialize()
 	end
 	self:SetBodygroup(0,1)
 	self:SetBodygroup(1,1)
-	self:SetBodygroup(2,math.random(0,1))
-	
+	self:SetBodygroup(2,math.random(0,1))	
 	self.HasBreathSound = true
 end
----------------------------------------------------------------------------------------------------------------------------------------------
-function ENT:CustomOnTakeDamage_BeforeDamage(dmginfo,hitgroup)
-	if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 then
-		dmginfo:ScaleDamage(GetConVarNumber("vj_piv_headshot_damage_mult"))
-	else
+--------------------
+function ENT:Zombie_CustomOnTakeDamage_PreDamage(dmginfo,hitgroup)
+	if hitgroup != HITGROUP_HEAD then
 		dmginfo:ScaleDamage(0.75)
     end
 end
----------------------------------------------------------------------------------------------------------------------------------------------
+--------------------
 function ENT:Zombie_CustomOnAlert()
 	if GetConVar("vj_piv_alert_anim"):GetInt() == 1 && self.PIV_Crippled == false && self.PIV_FuckingCrawlingLittleCunt == false && self.PIV_Resting == 0 && self:GetSequence() != self:LookupSequence(ACT_OPEN_DOOR) then
 		if math.random(1,GetConVar("vj_piv_alert_anim_chance"):GetInt()) == 1 then
@@ -59,39 +71,27 @@ function ENT:Zombie_CustomOnAlert()
 		end
 	end
 end
----------------------------------------------------------------------------------------------------------------------------------------------
+--------------------
 function ENT:PIV_CustomMutate()
-self.AnimTbl_Walk = {ACT_RUN}
-self.AnimTbl_Run = {ACT_RUN_RELAXED}
-
-self.StartHealth = self.StartHealth *2
-self:SetHealth(self.StartHealth)
-		
-local mymaxhealth = self:Health()
-self:SetMaxHealth(mymaxhealth)
-
-self.PIV_LegHP = self.PIV_LegHP *2
-
-if GetConVar("vj_piv_lights"):GetInt() == 1 then 
-
-self.Light2 = ents.Create("light_dynamic")
-self.Light2:SetKeyValue("brightness", "2")
-self.Light2:SetKeyValue("distance", "30")
-self.Light2:SetLocalPos(self:GetPos())
-self.Light2:SetLocalAngles(self:GetAngles())
-self.Light2:Fire("Color", "255 93 0 255")
-self.Light2:SetParent(self)
-self.Light2:Spawn()
-self.Light2:Activate()
-self.Light2:Fire("SetParentAttachment","eyes")
-self.Light2:Fire("TurnOn", "", 0)
-self:DeleteOnRemove(self.Light2)
-
+	self.PIV_UseRunRelaxed = true
+	self.StartHealth = self.StartHealth *2
+	self:SetHealth(self.StartHealth)
+	local mymaxhealth = self:Health()
+	self:SetMaxHealth(mymaxhealth)
+	self.PIV_LegHP = self.PIV_LegHP *2
+	if GetConVar("vj_piv_lights"):GetInt() == 1 then 
+		self.Light2 = ents.Create("light_dynamic")
+		self.Light2:SetKeyValue("brightness", "2")
+		self.Light2:SetKeyValue("distance", "30")
+		self.Light2:SetLocalPos(self:GetPos())
+		self.Light2:SetLocalAngles(self:GetAngles())
+		self.Light2:Fire("Color", "255 93 0 255")
+		self.Light2:SetParent(self)
+		self.Light2:Spawn()
+		self.Light2:Activate()
+		self.Light2:Fire("SetParentAttachment","eyes")
+		self.Light2:Fire("TurnOn", "", 0)
+		self:DeleteOnRemove(self.Light2)
+	end
 end
-
-end
-/*-----------------------------------------------
-	*** Copyright (c) 2012-2023 by DrVrej, All rights reserved. ***
-	No parts of this code or any of its contents may be reproduced, copied, modified or adapted,
-	without the prior written consent of the author, unless otherwise indicated for stand-alone materials.
------------------------------------------------*/
+--------------------

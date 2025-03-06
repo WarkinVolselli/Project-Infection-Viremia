@@ -3385,6 +3385,8 @@ function ENT:Zombie_CustomOnThink_AIEnabled() end
 --------------------
 function ENT:TranslateActivity(act)
 
+	if self:GetClass() == "npc_vj_piv_shikari" || self:GetClass() == "npc_vj_piv_shikari_torso" then return end
+
 	if self:GetClass() == "npc_vj_piv_tank" && act == ACT_IDLE then
 		if act == ACT_IDLE then
 			if self.IsCharging then
@@ -3896,7 +3898,7 @@ end
 --------------------
 function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 
-	if self:GetClass() == "npc_vj_piv_sickler" || self:GetClass() == "npc_vj_piv_slammer" then return end
+	if self:GetClass() == "npc_vj_piv_sickler" || self:GetClass() == "npc_vj_piv_slammer" || self:GetClass() == "npc_vj_piv_husk_torso" || self:GetClass() == "npc_vj_piv_husk_torso_f" || self:GetClass() == "npc_vj_piv_shikari_torso" then return end
 
 	if self:GetClass() == "npc_vj_piv_exploder" then
 		timer.Simple(0.8,function() if IsValid(self) then
@@ -3904,6 +3906,77 @@ function ENT:CustomOnMeleeAttack_BeforeStartTimer(seed)
 		end end)
 		return
 	end -- if we're expanding this blacklist then maybe we should just use something like 'if self.PIV_CustomOnMeleeBlacklisted then return end'
+
+	if self:GetClass() == "npc_vj_piv_shikari" then
+		if self:IsMoving()	then
+			self.MeleeAttackAnimationAllowOtherTasks = true
+			self.AnimTbl_MeleeAttack = {"vjges_fastattack"}
+			self.MeleeAttackDistance = 44
+		else
+			self.MeleeAttackAnimationAllowOtherTasks = false
+			self.AnimTbl_MeleeAttack = {"vjseq_melee"}
+			self.MeleeAttackDistance = 32
+		end
+		return
+	end
+
+	if self:GetClass() == "npc_vj_piv_husk" || self:GetClass() == "npc_vj_piv_husk_f" then
+		if self:IsMoving()	then
+			self.MeleeAttackAnimationAllowOtherTasks = true
+			self.MeleeAttackDamage = math.random(15,20)
+			self.HasMeleeAttackKnockBack = false
+			self.MeleeAttackDistance = 40
+			self.MeleeAttackDamageDistance = 60
+			self.SoundTbl_MeleeAttack = {"vj_piv/husk/zombie_slice_1.wav","vj_piv/husk/zombie_slice_2.wav","vj_piv/husk/zombie_slice_3.wav","vj_piv/husk/zombie_slice_4.wav","vj_piv/husk/zombie_slice_5.wav","vj_piv/husk/zombie_slice_6.wav"}
+			self.SoundTbl_MeleeAttackMiss = {"vj_piv/z-swipe-1.wav","vj_piv/z-swipe-2.wav","vj_piv/z-swipe-3.wav","vj_piv/z-swipe-4.wav","vj_piv/z-swipe-5.wav","vj_piv/z-swipe-6.wav"}	
+			self.AnimTbl_MeleeAttack = {
+				"vjges_attacka",
+				"vjges_attackb",
+				"vjges_attackc",
+				"vjges_attackd",
+				"vjges_attacke",
+				"vjges_attackf",
+				"vjges_fastattack",
+				"vjges_swatleftlow",
+				"vjges_swatleftmid",
+				"vjges_swatrightlow",
+				"vjges_swatrightmid"
+			}
+		else
+			self.MeleeAttackAnimationAllowOtherTasks = false
+			self.MeleeAttackDamage = math.random(15,20)
+			self.HasMeleeAttackKnockBack = false
+			self.MeleeAttackDistance = 40
+			self.MeleeAttackDamageDistance = 60
+			self.SoundTbl_MeleeAttack = {"vj_piv/husk/zombie_slice_1.wav","vj_piv/husk/zombie_slice_2.wav","vj_piv/husk/zombie_slice_3.wav","vj_piv/husk/zombie_slice_4.wav","vj_piv/husk/zombie_slice_5.wav","vj_piv/husk/zombie_slice_6.wav"}
+			self.SoundTbl_MeleeAttackMiss = {"vj_piv/z-swipe-1.wav","vj_piv/z-swipe-2.wav","vj_piv/z-swipe-3.wav","vj_piv/z-swipe-4.wav","vj_piv/z-swipe-5.wav","vj_piv/z-swipe-6.wav"}	
+			self.AnimTbl_MeleeAttack = {
+				"vjseq_attacka_standing",
+				"vjseq_attackb_standing",
+				"vjseq_attackc_standing",
+				"vjseq_attackd_standing",
+				"vjseq_attacke_standing",
+				"vjseq_attackf_standing",
+				"vjseq_fastattack_standing",
+				"vjseq_swatleftlow_standing",
+				"vjseq_swatleftmid_standing",
+				"vjseq_swatrightlow_standing",
+				"vjseq_swatrightmid_standing"
+			}
+			if math.random(1,4) == 1 then 
+				self.MeleeAttackDamage = math.random(20,25)
+				self.HasMeleeAttackKnockBack = true
+				self.MeleeAttackDistance = 50
+				self.MeleeAttackDamageDistance = 70
+				self.SoundTbl_MeleeAttack = {"vj_piv/BodyHit-3.wav","vj_piv/BodyHit-4.wav","vj_piv/BodyHit-5.wav","vj_piv/BodyHit-6.wav"}
+				self.SoundTbl_MeleeAttackMiss = {"vj_piv/Miss1.wav","vj_piv/Miss2.wav","vj_piv/Miss3.wav","vj_piv/Miss4.wav","vj_piv/Miss5.wav"}	
+				self.AnimTbl_MeleeAttack = {
+					"vjseq_atk_kick"
+				}
+			end
+		end
+		return
+	end
 
 	if self:GetClass() == "npc_vj_piv_cremator" then
 		if !self:IsMoving()	then
@@ -4395,6 +4468,8 @@ end
 function ENT:MeleeAttackKnockbackVelocity(hitEnt)
 	if self:GetClass() == "npc_vj_piv_tank" then
 		return self:GetForward()*math.random(200, 300) + self:GetUp()*math.random(200, 300)
+	elseif self:GetClass() == "npc_vj_piv_phorid" then
+		return self:GetForward()*math.random(180, 220) + self:GetUp()*math.random(90,120)
 	else
 		return self:GetForward()*math.random(140, 180) + self:GetUp()*math.random(60,80)
 	end
@@ -4440,6 +4515,9 @@ function ENT:RangeAttackCode_GetShootPos(TheProjectile)
 		return self:CalculateProjectile("Curve", self:GetAttachment(self:LookupAttachment(self.RangeUseAttachmentForPosID)).Pos, self:GetEnemy():GetPos() + self:GetEnemy():OBBCenter(), 1500) + self:GetUp()*math.Rand(0,100) + self:GetRight()*math.Rand(-200,200)
 	elseif self:GetClass() == "npc_vj_piv_shocker" then
 		return (self:GetEnemy():GetPos() - self:LocalToWorld(Vector(math.random(10,10),math.random(1,1),math.random(24,27))))*5 + self:GetUp()*45
+	-- elseif self:GetClass() == "npc_vj_piv_virulent" then
+		-- this errors out
+		-- return self:CalculateProjectile("Curve",self:GetPos() +self:GetUp() *self.RangeAttackPos_Up +self:GetForward() *self.RangeAttackPos_Forward, self:GetEnemy():GetPos() +self:GetEnemy():OBBCenter() +self:GetEnemy():GetRight() *math.Rand(0,60) +self:GetEnemy():GetForward() *math.Rand(-50,50) +self:GetEnemy():GetUp() *math.Rand(-50,50), 600)
 	else
 		return self:CalculateProjectile("Curve", self:GetAttachment(self:LookupAttachment(self.RangeUseAttachmentForPosID)).Pos, self:GetEnemy():GetPos() + self:GetEnemy():OBBCenter(), 1000) + self:GetUp()*math.Rand(-30,30) + self:GetRight()*math.Rand(-40,40)
 	end
@@ -4521,6 +4599,8 @@ function ENT:Zombie_CustomOnTakeDamage_PreDamage(dmginfo,hitgroup) end
 function ENT:Zombie_CustomOnTakeDamage_PostDamage(dmginfo,hitgroup) end
 --------------------
 function ENT:OnDamaged(dmginfo,hitgroup,status)
+
+	if self:GetClass() == "npc_vj_piv_shikari" || self:GetClass() == "npc_vj_piv_virulent" then return end
 
 	if status == "PreDamage" then
 		if hitgroup == HITGROUP_HEAD && GetConVar("vj_piv_headshot_damage"):GetInt() == 1 && self.PIV_IsBoss == false then
